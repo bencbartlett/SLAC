@@ -36,12 +36,17 @@ def residualPlots(datas, residuals, saveAs, xdat = None):
     plt.grid()
     # Render to image
     fig1.savefig(saveAs)
+    plt.close()
 
-def multiPlots(xdat, datas, saveAs):
+def multiPlots(datas, saveAs, xdat = None):
     '''Generates a set of plots and residuals.
     xvals: zipped x value array and title
     datas: zipped data arrays and legend titles'''
-    xvals, xlabel = xdat
+    if xdat == None:
+        xvals = range(len(datas[0][0]))
+        xlabel = "Iteration"
+    else:
+        xvals, xlabel = xdat
     fig1          = plt.figure(1)
     for data, legtitle in datas:
         plt.plot(xvals, data)
@@ -49,8 +54,9 @@ def multiPlots(xdat, datas, saveAs):
     plt.legend(legendtitles, loc='upper left')
     plt.xlabel(xlabel)
     plt.grid()
-
-    plt.show()
+    # Render to image
+    fig1.savefig(saveAs)
+    plt.close()
 
 class PDF(FPDF):
     def header(self):
@@ -111,8 +117,12 @@ class PDF(FPDF):
         # Make image
         self.image(imgName, w=195)
 
-    def makeResidualImage(self, title, imgName, datas, residuals, xdat = None):
+    def makeResidualImagePage(self, title, imgName, datas, residuals, xdat = None):
         residualPlots(datas, residuals, imgName, xdat)
+        self.addImgTest(title, imgName)
+
+    def makeImagePage(self, title, imgName, datas, xdat = None):
+        multiPlots(datas, imgName, xdat)
         self.addImgTest(title, imgName)
 
     def printTest(self, num, title, name):
@@ -120,20 +130,18 @@ class PDF(FPDF):
         self.testTitle(title)
         self.chapter_body(name)
 
-x = np.arange(10)
-a = (range(10),"a")
-b = (2*np.arange(10),"b")
+if __name__ == "__main__":
+    # Example output
+    x = np.arange(10)
+    a = (range(10),"a")
+    b = (2*np.arange(10),"b")
 
+    # Instantiation of inherited class
+    pdf = PDF()
+    pdf.alias_nb_pages()
+    pdf.set_font('Arial', '', 12)
+    title = "Sample test"
+    pdf.set_title(title)
+    pdf.makeResidualImagePage(title, "asdf.jpg", [a,b],[a])
 
-
-# Instantiation of inherited class
-pdf = PDF()
-pdf.alias_nb_pages()
-pdf.set_font('Arial', '', 12)
-title = "Sample test"
-pdf.set_title(title)
-pdf.makeResidualImage(title, "asdf.jpg", [a,b],[a])
-
-
-
-pdf.output('dacTest.pdf', 'F')
+    pdf.output('dacTest.pdf', 'F')
