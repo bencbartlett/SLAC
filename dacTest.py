@@ -1,9 +1,20 @@
+# DAC Testing Script
+# Originally written by Sven Herrmann
+# Restructured/added to by Ben Bartlett (bcb@slac.stanford.edu)
+
+# To run:
+# Ensure Jython console is running (./JythonConsole or the bootstrapper program)
+# Ensure crRun.sh is running
+# Ensure DACs are loaded in the CCS console
+# "python dacTest.py [options]"
+
+
 import time
 import signal
 import sys
 import os
 import shutil
-
+import numpy as np 
 from PythonBinding import *
 
 
@@ -62,7 +73,6 @@ class JythonInterface(CcsJythonInterpreter):
            hacky work around, this should be fixed in the future.'''
         result = self.syncExecution("print ("+code+")").getOutput()
         return convert(result, dtype)
-
 
 
 # ------------ Tests ------------
@@ -178,7 +188,7 @@ def PCKRails(jy):
             (WREB_DphiPS_V_arr, "WREB.DphiPS_V (V)"))
     residuals = ((deltaPCLKLV_arr, "deltaPCLKLV_arr (V)"), \
                  (deltaPCLKUV_arr, "deltaPCLKUV_arr (V)"))
-    return data, residuals
+    return data, residuals 
 
 def SCKRails(jy):
     # SCK rails
@@ -200,7 +210,7 @@ def SCKRails(jy):
     SCLKLV_arr      = []
     SCLKLdac_arr    = []
     SCLKUV_arr      = []
-    SCLKUdac_arr    = []
+    SCLKUdac_arr    = [] 
     WREB_SCKL_V_arr = []
     WREB_SCKU_V_arr = []
     deltaSCLKLV_arr = []
@@ -234,7 +244,113 @@ def SCKRails(jy):
             (WREB_SCKU_V_arr, "WREB.SCKU_V (V)"))
     residuals = ((deltaSCLKLV_arr, "deltaSCLKLV (V)"), \
                  (deltaSCLKUV_arr, "deltaSCLKUV (V)"))
-    return data, residuals
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 4 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaSCLKLV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+    for residual in deltaSCLKUV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    ml, bl = np.polyfit(SCLKLV_arr, WREB_SCKL_V_arr, 1)
+    mu, bu = np.polyfit(SCLKUV_arr, WREB_SCKU_V_arr, 1)
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+        (ml, mu, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(ml - 1.0) > 0.05 or abs(mu - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
+
+def divergingSCKRails(jy, amplitude, startV):
+    '''Diverging SCK Rails test. Amplitude is half-wave maximum divergence, 
+    startV is initial voltage to start LV=UV diverging from.'''
+    print ("\nDiverging rail voltage generation for SCLK test ")
+    SCLKLshV   = startV - amplitude # Shift to minimum needed voltage, this is added back in later
+    SCLKUshV   = startV 
+    SCLKLshDAC = V2SHDAC(SCLKLshV,49.9,20)
+    SCLKUshDAC = V2SHDAC(SCLKUshV,49.9,20)
+    jy.do('wrebDAC.synchCommandLine(1000,"change sclkLowSh %d")' % SCLKLshDAC) 
+    jy.do('wrebDAC.synchCommandLine(1000,"change sclkHighSh %d")' % SCLKUshDAC)
+    print ("-8V and 5V amplitude set  ")
+    time.sleep(tsoak)
+    # print ("SCLKLsh[V]: %5.2f   SCLKUsh[V]: %5.2f   SCLKLsh_DACval[ADU]: %4i   SCLKUsh_DACval[ADU]: %4i " % (SCLKLshV, SCLKUshV, SCLKLshDAC, SCLKUshDAC) )
+    print ("SCLKLV[V]\tSCLKLV_DAC[ADU]\tSCLKUV[V]\tSCLKUV_DAC[ADU]\tWREB.SCLKL_V[V]\tWREB.SCLKU_V[V]")
+    # Report arrays
+    SCLKLV_arr      = []
+    SCLKLdac_arr    = []
+    SCLKUV_arr      = []
+    SCLKUdac_arr    = [] 
+    WREB_SCKL_V_arr = []
+    WREB_SCKU_V_arr = []
+    deltaSCLKLV_arr = []
+    deltaSCLKUV_arr = []
+    ClkHPS_I_arr    = []
+    for SCLKDV in step_range(0, amplitude, 0.5): 
+        SCLKLV = startV - SCLKDV
+        SCLKUV = startV + SCLKDV
+        SCLKLdac = V2DAC(SCLKLV + amplitude,startV,49.9,20) # Add the amplitude back in
+        SCLKUdac = V2DAC(SCLKUV,startV,49.9,20)
+        print ("%5.2f\t%4i\t%5.2f\t%4i" % (SCLKLV, SCLKLdac, SCLKUV, SCLKUdac) ),
+        jy.do('wrebDAC.synchCommandLine(1000,"change sclkLow %d")' % SCLKLdac)
+        jy.do('wrebDAC.synchCommandLine(1000,"change sclkHigh %d")' % SCLKUdac)
+        jy.do('wreb.synchCommandLine(1000,"loadDacs true")')   
+        time.sleep(tsoak) 
+        WREB_SCKL_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.SCKL_V").getResult()')       
+        WREB_SCKU_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.SCKU_V").getResult()')  
+        ClkHPS_I = 0.1*jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkHPS_I").getResult()') 
+        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (WREB_SCKL_V, WREB_SCKU_V, (SCLKLV - WREB_SCKL_V), (SCLKUV - WREB_SCKU_V)) )
+        # Append to arrays
+        SCLKLV_arr        .append(SCLKLV)
+        SCLKLdac_arr      .append(SCLKLdac)
+        SCLKUV_arr        .append(SCLKUV)
+        SCLKUdac_arr      .append(SCLKUdac)
+        WREB_SCKL_V_arr   .append(WREB_SCKL_V)
+        WREB_SCKU_V_arr   .append(WREB_SCKU_V)
+        deltaSCLKLV_arr   .append(SCLKLV - WREB_SCKL_V)
+        deltaSCLKUV_arr   .append(SCLKUV - WREB_SCKU_V)
+        ClkHPS_I_arr      .append(ClkHPS_I)
+    data = ((SCLKLV_arr, "SCLKLV (V)"),\
+            (SCLKUV_arr, "SCLKUV (V)"),\
+            (WREB_SCKL_V_arr, "WREB.SCKL_V (V)"), \
+            (WREB_SCKU_V_arr, "WREB.SCKU_V (V)"), \
+            (ClkHPS_I_arr, "ClkHPS_I (10mA)"))
+    residuals = ((deltaSCLKLV_arr, "deltaSCLKLV (V)"), \
+                 (deltaSCLKUV_arr, "deltaSCLKUV (V)"))
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 4 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaSCLKLV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+    for residual in deltaSCLKUV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    ml, bl = np.polyfit(SCLKLV_arr, WREB_SCKL_V_arr, 1)
+    mu, bu = np.polyfit(SCLKUV_arr, WREB_SCKU_V_arr, 1)
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+        (ml, mu, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(ml - 1.0) > 0.05 or abs(mu - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
+
 
 def RGRails(jy):
     # RG rails
@@ -253,14 +369,14 @@ def RGRails(jy):
     print ("RGLsh[V]: %5.2f   RGUsh[V]: %5.2f   RGLsh_DACval[ADU]: %4i   RGUsh_DACval[ADU]: %4i " % (RGLshV, RGUshV, RGLshDAC, RGUshDAC) )
     print ("RGLV[V]\tRGLV_DAC[ADU]\tRGUV[V]\tRGUV_DAC[ADU]\tWREB.RGL_V[V]\tWREB.RGU_V[V]")
     # Report arrays
-    RGLV_arr      = []
-    RGLdac_arr    = []
-    RGUV_arr      = []
-    RGUdac_arr    = []
+    RGLV_arr       = []
+    RGLdac_arr     = []
+    RGUV_arr       = []
+    RGUdac_arr     = []
     WREB_RGL_V_arr = []
     WREB_RGU_V_arr = []
-    deltaRGLV_arr = []
-    deltaRGUV_arr = []
+    deltaRGLV_arr  = []
+    deltaRGUV_arr  = []
     for RGLV in step_range(RGLshV, RGLshV+12, 0.5): #step trough the lower rail range
         RGLdac = V2DAC(RGLV,RGLshV,49.9,20)
         RGUV   = RGLV+RGDV #adds the delta voltage to the upper rail
@@ -290,7 +406,112 @@ def RGRails(jy):
             (WREB_RGU_V_arr, "WREB.RGU_V (V)"))
     residuals = ((deltaRGLV_arr, "deltaRGLV (V)"), \
                  (deltaRGUV_arr, "deltaRGUV (V)"))
-    return data, residuals
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 4 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaRGLV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+    for residual in deltaRGUV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    ml, bl = np.polyfit(RGLV_arr, WREB_RGL_V_arr, 1)
+    mu, bu = np.polyfit(RGUV_arr, WREB_RGU_V_arr, 1) 
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+        (ml, mu, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(ml - 1.0) > 0.05 or abs(mu - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
+
+def divergingRGRails(jy, amplitude, startV):
+    '''Diverging RG Rails test. Amplitude is half-wave maximum divergence, 
+    startV is initial voltage to start LV=UV diverging from.'''
+    print ("\nDiverging rail voltage generation for RG test ")
+    RGLshV   = startV - amplitude # Shift to minimum needed voltage, this is added back in later
+    RGUshV   = startV 
+    RGLshDAC = V2SHDAC(RGLshV,49.9,20)
+    RGUshDAC = V2SHDAC(RGUshV,49.9,20)
+    jy.do('wrebDAC.synchCommandLine(1000,"change rgLowSh %d")' % RGLshDAC) 
+    jy.do('wrebDAC.synchCommandLine(1000,"change rgHighSh %d")' % RGUshDAC)
+    print ("-8V and 5V amplitude set  ")
+    time.sleep(tsoak)
+    # print ("RGLsh[V]: %5.2f   RGUsh[V]: %5.2f   RGLsh_DACval[ADU]: %4i   RGUsh_DACval[ADU]: %4i " % (RGLshV, RGUshV, RGLshDAC, RGUshDAC) )
+    print ("RGLV[V]\tRGLV_DAC[ADU]\tRGUV[V]\tRGUV_DAC[ADU]\tWREB.RGL_V[V]\tWREB.RGU_V[V]")
+    # Report arrays
+    RGLV_arr      = []
+    RGLdac_arr    = []
+    RGUV_arr      = []
+    RGUdac_arr    = [] 
+    WREB_RGL_V_arr = []
+    WREB_RGU_V_arr = []
+    deltaRGLV_arr = []
+    deltaRGUV_arr = []
+    ClkHPS_I_arr    = []
+    for RGDV in step_range(0, amplitude, 0.5): 
+        RGLV = startV - RGDV
+        RGUV = startV + RGDV
+        RGLdac = V2DAC(RGLV + amplitude,startV,49.9,20) # Add the amplitude back in
+        RGUdac = V2DAC(RGUV,startV,49.9,20)
+        print ("%5.2f\t%4i\t%5.2f\t%4i" % (RGLV, RGLdac, RGUV, RGUdac) ),
+        jy.do('wrebDAC.synchCommandLine(1000,"change rgLow %d")' % RGLdac)
+        jy.do('wrebDAC.synchCommandLine(1000,"change rgHigh %d")' % RGUdac)
+        jy.do('wreb.synchCommandLine(1000,"loadDacs true")')   
+        time.sleep(tsoak) 
+        WREB_RGL_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RGL_V").getResult()')       
+        WREB_RGU_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RGU_V").getResult()')  
+        ClkHPS_I = 0.1 * jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkHPS_I").getResult()') 
+        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (WREB_RGL_V, WREB_RGU_V, (RGLV - WREB_RGL_V), (RGUV - WREB_RGU_V)) )
+        # Append to arrays
+        RGLV_arr        .append(RGLV)
+        RGLdac_arr      .append(RGLdac)
+        RGUV_arr        .append(RGUV)
+        RGUdac_arr      .append(RGUdac)
+        WREB_RGL_V_arr   .append(WREB_RGL_V)
+        WREB_RGU_V_arr   .append(WREB_RGU_V)
+        deltaRGLV_arr   .append(RGLV - WREB_RGL_V)
+        deltaRGUV_arr   .append(RGUV - WREB_RGU_V)
+        ClkHPS_I_arr      .append(ClkHPS_I)
+    data = ((RGLV_arr, "RGLV (V)"),\
+            (RGUV_arr, "RGUV (V)"),\
+            (WREB_RGL_V_arr, "WREB.RGL_V (V)"), \
+            (WREB_RGU_V_arr, "WREB.RGU_V (V)"), \
+            (ClkHPS_I_arr, "ClkHPS_I (10mA)"))
+    residuals = ((deltaRGLV_arr, "deltaRGLV (V)"), \
+                 (deltaRGUV_arr, "deltaRGUV (V)"))
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 4 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaRGLV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+    for residual in deltaRGUV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    ml, bl = np.polyfit(RGLV_arr, WREB_RGL_V_arr, 1)
+    mu, bu = np.polyfit(RGUV_arr, WREB_RGU_V_arr, 1)
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+        (ml, mu, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(ml - 1.0) > 0.05 or abs(mu - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
 
 def OG(jy):
     # OG
@@ -304,7 +525,7 @@ def OG(jy):
     OGV_arr       = []
     OGdac_arr     = []
     WREB_OG_V_arr = []
-    delta_OGV_arr = []
+    deltaOGV_arr = []
     for OGV in step_range(OGshV, OGshV+10, 0.5): 
         OGdac = V2DAC(OGV,OGshV,10,10)
         print ("%5.2f\t%4i" % (OGV, OGdac) ),
@@ -316,11 +537,30 @@ def OG(jy):
         OGV_arr.append(OGV)
         OGdac_arr.append(OGdac)
         WREB_OG_V_arr.append(WREB_OG_V)
-        delta_OGV_arr.append(OGV - WREB_OG_V)
+        deltaOGV_arr.append(OGV - WREB_OG_V)
     data = ((OGV_arr, "VOG (V)"), \
             (WREB_OG_V_arr, "WREB.OG_V (V)"))
-    residuals = ((delta_OGV_arr, "deltaVOG (V)"),)
-    return data, residuals
+    residuals = ((deltaOGV_arr, "deltaVOG (V)"),)
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 2 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaOGV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    m, b  = np.polyfit(OGV_arr, WREB_OG_V_arr, 1)
+    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(m - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
 
 def OD(jy):
     # OD
@@ -329,7 +569,7 @@ def OD(jy):
     ODV_arr       = []
     ODdac_arr     = []
     WREB_OD_V_arr = []
-    delta_ODV_arr = []
+    deltaODV_arr = []
     for ODV in step_range(0, 30, 1): 
         ODdac = V2DAC(ODV,0,49.9,10)
         print ("%5.2f\t%4i" % (ODV, ODdac)),
@@ -341,11 +581,30 @@ def OD(jy):
         ODV_arr.append(ODV)
         ODdac_arr.append(ODdac)
         WREB_OD_V_arr.append(WREB_OD_V)
-        delta_ODV_arr.append(ODV - WREB_OD_V)
+        deltaODV_arr.append(ODV - WREB_OD_V)
     data = ((ODV_arr, "VOD (V)"), \
             (WREB_OD_V_arr, "WREB.OD_V (V)"))
-    residuals = ((delta_ODV_arr, "deltaVOD (V)"),)
-    return data, residuals
+    residuals = ((deltaODV_arr, "deltaVOD (V)"),)
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 2 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaODV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    m, b  = np.polyfit(ODV_arr, WREB_OD_V_arr, 1)
+    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(m - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
   
 def GD(jy):
     # GD
@@ -354,7 +613,7 @@ def GD(jy):
     GDV_arr       = []
     GDdac_arr     = []
     WREB_GD_V_arr = []
-    delta_GDV_arr = []
+    deltaGDV_arr = []
     for GDV in step_range(0, 30, 1): 
         GDdac = V2DAC(GDV,0,49.9,10)
         print ("%5.2f\t%4i" % (GDV, GDdac)),
@@ -366,11 +625,30 @@ def GD(jy):
         GDV_arr.append(GDV)
         GDdac_arr.append(GDdac)
         WREB_GD_V_arr.append(WREB_GD_V)
-        delta_GDV_arr.append(GDV - WREB_GD_V)
+        deltaGDV_arr.append(GDV - WREB_GD_V)
     data = ((GDV_arr, "VGD (V)"), \
             (WREB_GD_V_arr, "WREB.GD_V (V)"))
-    residuals = ((delta_GDV_arr, "deltaVGD (V)"),)
-    return data, residuals
+    residuals = ((deltaGDV_arr, "deltaVGD (V)"),)
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 2 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaGDV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    m, b  = np.polyfit(GDV_arr, WREB_GD_V_arr, 1)
+    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(m - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
 
 def RD(jy):
     # RD
@@ -379,7 +657,7 @@ def RD(jy):
     RDV_arr       = []
     RDdac_arr     = []
     WREB_RD_V_arr = []
-    delta_RDV_arr = []
+    deltaRDV_arr = []
     for RDV in step_range(0, 30, 1): 
         RDdac = V2DAC(RDV,0,49.9,10)
         print ("%5.2f\t%4i" % (RDV, RDdac)),
@@ -391,11 +669,30 @@ def RD(jy):
         RDV_arr.append(RDV)
         RDdac_arr.append(RDdac)
         WREB_RD_V_arr.append(WREB_RD_V)
-        delta_RDV_arr.append(RDV - WREB_RD_V)
+        deltaRDV_arr.append(RDV - WREB_RD_V)
     data = ((RDV_arr, "VRD (V)"), \
             (WREB_RD_V_arr, "WREB.RD_V (V)"))
-    residuals = ((delta_RDV_arr, "deltaVRD (V)"),)
-    return data, residuals
+    residuals = ((deltaRDV_arr, "deltaVRD (V)"),)
+
+    # Give pass/fail result
+    passed       = "PASS"
+    allowedError = 0.25 # Some arbitrary value giving the allowable residual error
+    maxFails     = 2 # Some value giving the maximum number of allowed failures
+    numErrors    = 0
+    totalPoints  = 0
+    for residual in deltaRDV_arr:
+        if abs(residual) > allowedError: numErrors += 1
+        totalPoints += 1
+
+    # Other information
+    m, b  = np.polyfit(RDV_arr, WREB_RD_V_arr, 1)
+    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+
+    # Pass criterion:
+    if numErrors > maxFails or abs(m - 1.0) > 0.05:
+        passed = "FAIL" 
+
+    return data, residuals, passed, stats
 
 # --------- Execution ---------
 if __name__ == "__main__":
@@ -455,6 +752,8 @@ raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
 # print result.getResult()
     ''')
 
+    boardID = "TEST"#hex(jy.get('wreb.synchCommandLine getSerialNumber', dtype = 'int')) # Get hex board ID
+
     if not os.path.exists("tempFigures"):
         os.makedirs("tempFigures")
 
@@ -463,33 +762,126 @@ raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
     pdf = PDF()
     pdf.alias_nb_pages()
     pdf.set_font('Arial', '', 12)
+    epw = pdf.w - 2*pdf.l_margin
 
     # Execute desired tests
     idleCurrentConsumption(jy)
 
-    data = CSGate(jy)
-    pdf.makeImagePage("CSGate Test", "CSGate.jpg", data)
+    testList  = ["SCK Rails", "CCD Bias OG Voltage", "CCD Bias OD Voltage", "CCD Bias GR Voltage", "CCD Bias RD Voltage"]
+    passList  = []
+    statsList = []
 
-    data, residuals = PCKRails(jy)
-    pdf.makeResidualImagePage("PCKRails Test", "tempFigures/PCKRails.jpg", data, residuals)
+    _,_,passed,stats = divergingSCKRailsResults0 = divergingSCKRails(jy, 9.0, 0.0)
+    _,_,passed,stats = divergingSCKRailsResults3 = divergingSCKRails(jy, 9.0, 3.0)
+    _,_,passed,stats = divergingSCKRailsResultsm3 = divergingSCKRails(jy, 9.0, -3.0)
 
-    data, residuals = SCKRails(jy)
-    pdf.makeResidualImagePage("SCKRails Test", "tempFigures/SCKRails.jpg", data, residuals)
+    _,_,passed,stats = divergingRGRailsResults0 = divergingRGRails(jy, 9.0, 0.0)
+    _,_,passed,stats = divergingRGRailsResults3 = divergingRGRails(jy, 9.0, 3.0)
+    _,_,passed,stats = divergingRGRailsResultsm3 = divergingRGRails(jy, 9.0, -3.0)
+
+    CSGateResults   = CSGate(jy)
+    PCKRailsResults = PCKRails(jy)
+    #_,_,passed,stats = CSGateResults   = CSGate(jy);   passList.append(passed); statsList.append(stats)
+    #_,_,passed,stats = PCKRailsResults = PCKRails(jy); passList.append(passed); statsList.append(stats)
+    _,_,passed,stats = SCKRailsResults = SCKRails(jy); passList.append(passed); statsList.append(stats)
+    _,_,passed,stats = RGRailsResults  = RGRails(jy);  passList.append(passed); statsList.append(stats)
+    _,_,passed,stats = OGResults       = OG(jy);       passList.append(passed); statsList.append(stats)
+    _,_,passed,stats = ODResults       = OD(jy);       passList.append(passed); statsList.append(stats)
+    _,_,passed,stats = GDResults       = GD(jy);       passList.append(passed); statsList.append(stats)
+    _,_,passed,stats = RDResults       = RD(jy);       passList.append(passed); statsList.append(stats)
+
+
+    # Generate summary page
+    pdf.summaryPage(boardID, testList, passList, statsList)
+
+    # CS Gate Test
+    data = CSGateResults
+    pdf.makePlotPage("CSGate Test", "CSGate.jpg", data)
+    pdf.columnTable(data)
+
+    # PCK Rails Test
+    data, residuals = PCKRailsResults
+    pdf.makeResidualPlotPage("PCKRails Test", "tempFigures/PCKRails.jpg", data, residuals)
+
+    # SCK Rails Test
+    data, residuals, passed, stats = SCKRailsResults
+    pdf.makeResidualPlotPage("SCKRails Test", "tempFigures/SCKRails.jpg", data, residuals)
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+
+    # RG Rails
+    data, residuals, passed, stats = RGRailsResults
+    pdf.makeResidualPlotPage("RGRails Test", "tempFigures/RGRails.jpg", data, residuals)
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+
+    # SCK Diverging Rails Test
+    data, residuals, passed, stats = divergingSCKRailsResults0
+    pdf.makeResidualPlotPage("Diverging SCKRails Test 0V", "tempFigures/divergingSCKRails0.jpg", data, residuals, pltRange = [-12,12])
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+    # SCK Diverging Rails Test
+    data, residuals, passed, stats = divergingSCKRailsResults3
+    pdf.makeResidualPlotPage("Diverging SCKRails Test 3V", "tempFigures/divergingSCKRails3.jpg", data, residuals, pltRange = [-12,12])
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+    # SCK Diverging Rails Test
+    data, residuals, passed, stats = divergingSCKRailsResultsm3
+    pdf.makeResidualPlotPage("Diverging SCKRails Test -3V", "tempFigures/divergingSCKRailsm3.jpg", data, residuals, pltRange = [-12,12])
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+
+    # RG Diverging Rails Test
+    data, residuals, passed, stats = divergingRGRailsResults0
+    pdf.makeResidualPlotPage("Diverging RGRails Test 0V", "tempFigures/divergingRGRails0.jpg", data, residuals, pltRange = [-12,12])
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+    # RG Diverging Rails Test
+    data, residuals, passed, stats = divergingRGRailsResults3
+    pdf.makeResidualPlotPage("Diverging RGRails Test 3V", "tempFigures/divergingRGRails3.jpg", data, residuals, pltRange = [-12,12])
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+    # RG Diverging Rails Test
+    data, residuals, passed, stats = divergingRGRailsResultsm3
+    pdf.makeResidualPlotPage("Diverging RGRails Test -3V", "tempFigures/divergingRGRailsm3.jpg", data, residuals, pltRange = [-12,12])
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
     
-    data, residuals = RGRails(jy)
-    pdf.makeResidualImagePage("RGRails Test", "tempFigures/RGRails.jpg", data, residuals)
-    
-    data, residuals = OG(jy)
-    pdf.makeResidualImagePage("OG Test", "tempFigures/OG.jpg", data, residuals)
-    
-    data, residuals = OD(jy)
-    pdf.makeResidualImagePage("OD Test", "tempFigures/OD.jpg", data, residuals)
-    
-    data, residuals = GD(jy)
-    pdf.makeResidualImagePage("GD Test", "tempFigures/GD.jpg", data, residuals)
-    
-    data, residuals = RD(jy)
-    pdf.makeResidualImagePage("RD Test", "tempFigures/RD.jpg", data, residuals)
+    # OG Test
+    data, residuals, passed, stats = OGResults
+    pdf.makeResidualPlotPage("OG Test", "tempFigures/OG.jpg", data, residuals, imgSize = 0.75)
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+
+    # OD Test
+    data, residuals, passed, stats = ODResults
+    pdf.makeResidualPlotPage("OD Test", "tempFigures/OD.jpg", data, residuals, imgSize = 0.75)
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+
+    # GD Test
+    data, residuals, passed, stats = GDResults
+    pdf.makeResidualPlotPage("GD Test", "tempFigures/GD.jpg", data, residuals, imgSize = 0.75)
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
+
+    # RD Test
+    data, residuals, passed, stats = RDResults
+    pdf.makeResidualPlotPage("RD Test", "tempFigures/RD.jpg", data, residuals, imgSize = 0.75)
+    pdf.cell(epw, pdf.font_size, stats, align ='C', ln=1)
+    pdf.passFail(passed)
+    pdf.columnTable(data + residuals)
 
     if not args.noPDF: 
         print "Generating PDF report at " + dataDir + '/dacTest.pdf'
@@ -503,6 +895,8 @@ raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
 
 
  
+
+
 
 
 

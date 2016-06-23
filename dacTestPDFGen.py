@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import time
 
-def residualPlots(datas, residuals, saveAs, xdat = None):
+def residualPlots(datas, residuals, saveAs, xdat = None, pltRange = None):
     '''Generates a set of plots and residuals.
     xvals: zipped x value array and title
     datas: zipped data arrays and legend titles
@@ -22,7 +22,9 @@ def residualPlots(datas, residuals, saveAs, xdat = None):
     for data, legtitle in datas:
         plt.plot(xvals, data)
     legendtitles = [legtitle for data, legtitle in datas]
-    plt.legend(legendtitles, loc='upper left')
+    if pltRange != None:
+        plt.ylim(pltRange)
+    plt.legend(legendtitles, loc='upper left', prop={'size':8})
     frame1.set_xticklabels([]) #Remove x-tic labels for the first frame
     plt.grid()
 
@@ -31,7 +33,7 @@ def residualPlots(datas, residuals, saveAs, xdat = None):
     for data, legtitle in residuals:
         plt.plot(xvals, data,'o')
     legendtitles = [legtitle for data, legtitle in residuals]
-    plt.legend(legendtitles, loc='upper left')
+    plt.legend(legendtitles, loc='upper left', prop={'size':8})
     plt.xlabel(xlabel)
     plt.grid()
     # Render to image
@@ -91,39 +93,106 @@ class PDF(FPDF):
         # Line break
         self.ln(4)
 
-    def testBody(self, name):
-        # Read text file
-        with open(name, 'rb') as fh:
-            txt = fh.read().decode('latin-1')
-        # Times 12
-        self.set_font('Times', '', 12)
-        # Output justified text
-        self.multi_cell(0, 5, txt)
-        # Line break
-        self.ln()
-        # Mention in italics
-        self.set_font('', 'I')
-        self.cell(0, 5, '(end of excerpt)')
+    def summaryPage(self, boardID, testList, passList, statsList):
+        self.add_page()
+        # Logo
+        self.image('LSSTLogo.jpg', 10, 8, h=15) # For some reason, fpdf doesn't like png's, only jpgs.
+        # Move to the right
+        self.cell(110)
+        self.image('SLACLogo.jpg', 150, 8, h=15)
+        # Title
+        self.set_font('Arial', 'B', 18)
+        self.ln(5 * self.font_size)
+        epw = self.w - 2*self.l_margin
+        self.cell(epw, self.font_size, 'DAC Functional Test Report', align ='C', ln=1)
+        self.set_font('Arial', size = 14)
+        self.cell(epw, self.font_size, 'Board ID: '+boardID, align ='C', ln=1)
+        self.cell(epw, self.font_size, 'Performed: '+time.strftime("%Y-%m-%d %H:%M"), align ='C', ln=1)
+        self.ln(2*self.font_size)
+        # Summary table
+        self.columnTable([passList, testList, statsList], colHeaders = ["Status", "Test", "Results"], fontSize = 12, widthArray = [0.3,1.0,2.0])
 
-    def addImgTest(self, title, imgName):
+
+    def columnTable(self, colData, colHeaders = None, fontSize = 8, width = 1.0, widthArray = None, align = "L"):
+        '''Generates a table from a list of lists of column data. If colHeaders is
+        not specified, column data is expected as a tuple like ([data], header),
+        as in the plotting functions, else it is expected as a list of titles.
+        Width is in % page width the table should occupy. WidthArray is a non-
+        normalized list of relative column widths. By default, everything is equal width.'''
+        originalFontSize = self.font_size
+        self.set_font_size(fontSize) # Small font
+        epw         = self.w - 2*self.l_margin
+        cellHeight  = self.font_size # Height of cell is equal to font size
+        tableStartX = self.get_x()
+        tableStartY = self.get_y()  
+        if widthArray == None:
+            colWidths = width * epw * np.ones(len(colData))/len(colData)
+        else:
+            colWidths = width * epw * np.array(widthArray) / np.sum(widthArray)
+        for column, colWidth in zip(colData, colWidths):
+            # Reset the position
+            self.set_y(tableStartY)
+            self.set_x(tableStartX)
+            tableStartX += colWidth
+
+            if colHeaders == None:
+                data, title = column
+            else:
+                data  = column 
+                index = colData.index(column)
+                title = colHeaders[index]
+            # Draw title
+            self.set_fill_color(200, 220, 220)
+            self.cell(colWidth, cellHeight, str(title), align = align, ln = 2, fill = True)
+            for entry in data:
+                # Used for writing pass/fail data
+                if entry == "PASS":
+                    self.set_text_color(0, 255, 0)
+                    self.cell(colWidth, cellHeight, "PASS", align = align, ln=2)
+                    self.set_text_color(0, 0, 0)
+                elif entry == "FAIL":
+                    self.set_text_color(255, 0, 0)
+                    self.cell(colWidth, cellHeight, "FAIL", align = align, ln=2)
+                    self.set_text_color(0, 0, 0)
+                else:
+                    if type(entry) == float:
+                        entry = round(entry, 4)
+                    self.cell(colWidth, cellHeight, str(entry), align = align, ln = 2) 
+        self.set_font_size(originalFontSize)
+        self.ln(cellHeight)
+
+
+    def addPlotPage(self, title, imgName, imgSize = 1.0):
         '''Tests with outputs consisting only of an image/plot'''
         # Make title
         self.add_page()
         self.set_font('Arial', '', 12)
         self.set_fill_color(200, 220, 220)
         self.cell(0, 6, title, 0, 1, 'L', 1)
-        self.ln(4)
 
         # Make image
-        self.image(imgName, w=195)
+        width = imgSize * (self.w - 2*self.l_margin)
+        xpos = (self.w - 2*self.l_margin) * (1.0-imgSize)/2.0
+        self.image(imgName, x = xpos, w = width)
 
-    def makeResidualImagePage(self, title, imgName, datas, residuals, xdat = None):
-        residualPlots(datas, residuals, imgName, xdat)
-        self.addImgTest(title, imgName)
+    def makeResidualPlotPage(self, title, imgName, datas, residuals, imgSize = 1.0, xdat = None, pltRange = None):
+        residualPlots(datas, residuals, imgName, xdat, pltRange)
+        self.addPlotPage(title, imgName, imgSize)
 
-    def makeImagePage(self, title, imgName, datas, xdat = None):
+    def makePlotPage(self, title, imgName, datas, imgSize = 1.0, xdat = None):
         multiPlots(datas, imgName, xdat)
-        self.addImgTest(title, imgName)
+        self.addPlotPage(title, imgName, imgSize)
+
+    def passFail(self, passed):
+        epw = self.w - 2*self.l_margin
+        if passed == "PASS":
+            self.set_text_color(0, 255, 0)
+            self.cell(epw, self.font_size, "Test PASSED.", align ='C', ln=1)
+        else:
+            self.set_text_color(255, 0, 0)
+            self.cell(epw, self.font_size, "Test FAILED.", align ='C', ln=1)
+        self.set_text_color(0, 0, 0)
+        self.ln(2*self.font_size)
 
     def printTest(self, num, title, name):
         self.add_page()
@@ -142,6 +211,7 @@ if __name__ == "__main__":
     pdf.set_font('Arial', '', 12)
     title = "Sample test"
     pdf.set_title(title)
-    pdf.makeResidualImagePage(title, "asdf.jpg", [a,b],[a])
+    pdf.makeResidualPlotPage(title, "asdf.jpg", [a,b],[a])
 
     pdf.output('dacTest.pdf', 'F')
+
