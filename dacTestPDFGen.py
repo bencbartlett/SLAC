@@ -12,7 +12,7 @@ def residualPlots(datas, residuals, saveAs, xdat = None, pltRange = None):
     xvals: zipped x value array and title
     datas: zipped data arrays and legend titles
     residuals: zipped residual arrays and legend titles'''
-    if xdat == None:
+    if xdat is None:
         xvals = range(len(datas[0][0]))
         xlabel = "Iteration"
     else:
@@ -22,14 +22,14 @@ def residualPlots(datas, residuals, saveAs, xdat = None, pltRange = None):
     for data, legtitle in datas:
         plt.plot(xvals, data)
     legendtitles = [legtitle for data, legtitle in datas]
-    if pltRange != None:
+    if pltRange is not None:
         plt.ylim(pltRange)
     plt.legend(legendtitles, loc='upper left', prop={'size':8})
     frame1.set_xticklabels([]) #Remove x-tic labels for the first frame
     plt.grid()
 
     # Residual plot
-    frame2 = fig1.add_axes((.1,.1,.8,.2))   
+    frame2 = fig1.add_axes((.1,.1,.8,.2))
     for data, legtitle in residuals:
         plt.plot(xvals, data,'o')
     legendtitles = [legtitle for data, legtitle in residuals]
@@ -44,7 +44,7 @@ def multiPlots(datas, saveAs, xdat = None):
     '''Generates a set of plots and residuals.
     xvals: zipped x value array and title
     datas: zipped data arrays and legend titles'''
-    if xdat == None:
+    if xdat is None:
         xvals = range(len(datas[0][0]))
         xlabel = "Iteration"
     else:
@@ -110,7 +110,8 @@ class PDF(FPDF):
         self.cell(epw, self.font_size, 'Performed: '+time.strftime("%Y-%m-%d %H:%M"), align ='C', ln=1)
         self.ln(2*self.font_size)
         # Summary table
-        self.columnTable([passList, testList, statsList], colHeaders = ["Status", "Test", "Results"], fontSize = 12, widthArray = [0.3,1.0,2.0])
+        self.columnTable([passList, testList, statsList], colHeaders = ["Status", "Test", "Results"],
+                         fontSize = 12, widthArray = [0.3,1.0,2.0])
 
 
     def columnTable(self, colData, colHeaders = None, fontSize = 8, width = 1.0, widthArray = None, align = "L"):
@@ -125,7 +126,7 @@ class PDF(FPDF):
         cellHeight  = self.font_size # Height of cell is equal to font size
         tableStartX = self.get_x()
         tableStartY = self.get_y()  
-        if widthArray == None:
+        if widthArray is None:
             colWidths = width * epw * np.ones(len(colData))/len(colData)
         else:
             colWidths = width * epw * np.array(widthArray) / np.sum(widthArray)
@@ -135,10 +136,10 @@ class PDF(FPDF):
             self.set_x(tableStartX)
             tableStartX += colWidth
 
-            if colHeaders == None:
+            if colHeaders is None:
                 data, title = column
             else:
-                data  = column 
+                data  = column
                 index = colData.index(column)
                 title = colHeaders[index]
             # Draw title
@@ -175,6 +176,24 @@ class PDF(FPDF):
         xpos = (self.w - 2*self.l_margin) * (1.0-imgSize)/2.0
         self.image(imgName, x = xpos, w = width)
 
+    def idleCurrent(self, title, voltages, currents):
+        self.add_page()
+        self.set_font('Arial', '', 12)
+        self.set_fill_color(200, 220, 220)
+        self.cell(0, 6, title, 0, 1, 'L', 1)
+        Vtitles, V = zip(*voltages)
+        ITitles, I = zip(*currents)
+        self.columnTable([Vtitles, V, ITitles, I],
+                         colHeaders = ["Channel", "Voltage", "Channel", "Current"], fontSize = 14)
+
+    def residualTest(self, title, datas, residuals, passed, stats,
+                     imgSize = 1.0, xdat = None, pltRange = None):
+        epw = self.w - 2 * self.l_margin
+        self.makeResidualPlotPage(title, "tempFigures/"+title+".jpg", datas, residuals, imgSize, xdat, pltRange)
+        self.cell(epw, pdf.font_size, stats, align = 'C', ln = 1)
+        self.passFail(passed)
+        self.columnTable(datas + residuals)
+
     def makeResidualPlotPage(self, title, imgName, datas, residuals, imgSize = 1.0, xdat = None, pltRange = None):
         residualPlots(datas, residuals, imgName, xdat, pltRange)
         self.addPlotPage(title, imgName, imgSize)
@@ -193,11 +212,6 @@ class PDF(FPDF):
             self.cell(epw, self.font_size, "Test FAILED.", align ='C', ln=1)
         self.set_text_color(0, 0, 0)
         self.ln(2*self.font_size)
-
-    def printTest(self, num, title, name):
-        self.add_page()
-        self.testTitle(title)
-        self.chapter_body(name)
 
 if __name__ == "__main__":
     # Example output
