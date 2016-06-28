@@ -111,7 +111,7 @@ class PDF(FPDF):
         self.ln(2*self.font_size)
         # Summary table
         self.columnTable([passList, testList, statsList], colHeaders = ["Status", "Test", "Results"],
-                         fontSize = 12, widthArray = [0.3,1.0,2.0])
+                         fontSize = 12, widthArray = [0.3,0.8,2.0])
 
 
     def columnTable(self, colData, colHeaders = None, fontSize = 8, width = 1.0, widthArray = None, align = "L"):
@@ -187,10 +187,10 @@ class PDF(FPDF):
                          colHeaders = ["Channel", "Voltage", "Channel", "Current"], fontSize = 14)
 
     def residualTest(self, title, datas, residuals, passed, stats,
-                     imgSize = 1.0, xdat = None, pltRange = None):
+                     imgSize = 0.7, xdat = None, pltRange = None):
         epw = self.w - 2 * self.l_margin
         self.makeResidualPlotPage(title, "tempFigures/"+title+".jpg", datas, residuals, imgSize, xdat, pltRange)
-        self.cell(epw, pdf.font_size, stats, align = 'C', ln = 1)
+        self.cell(epw, self.font_size, stats, align = 'C', ln = 1)
         self.passFail(passed)
         self.columnTable(datas + residuals)
 

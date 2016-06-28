@@ -13,20 +13,20 @@ from __future__ import print_function
 import signal
 import os
 import shutil
+import textwrap
 from numpy import polyfit
 from PythonBinding import *
-
+from FastProgressBar import progressbar
 
 # Catch abort so previous settings can be restored
-signal.signal(signal.SIGINT, exit)
-def exit(jy):
+def exitScript():
     # Bring back the saved temp config
     print ("\nTests concluded or ^C raised. Restoring saved temp config and exiting...")
     jy.do('raftsub.synchCommandLine(1000,"loadCategories Rafts:WREB_temp_cfg")')
     jy.do('wreb.synchCommandLine(1000,"loadDacs true")')    
     jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')    
     jy.do('wreb.synchCommandLine(1000,"loadAspics true")')   
-
+signal.signal(signal.SIGINT, exitScript)
 
 # ---------- Helper functions ----------
 def step_range(start, end, step):
@@ -54,9 +54,13 @@ def convert(value, type_):
     except AttributeError:
         # if not, separate module and class
         module, type_ = type_.rsplit(".", 1)
-        module = importlib.import_module(module)
-        cls = getattr(module, type_)
+        module        = importlib.import_module(module)
+        cls           = getattr(module, type_)
     return cls(value)
+
+def printv(string):
+    if verbose:
+        print (string)
 
 class JythonInterface(CcsJythonInterpreter):
     '''Some hacky workarounds to communicate both ways with Jython.'''
@@ -76,36 +80,29 @@ class JythonInterface(CcsJythonInterpreter):
 
 # ------------ Tests ------------
 
-def idleCurrentConsumption(jy):
+def idleCurrentConsumption():
     # Idle Current Consumption
-    print ("\nIdle  current consumption")
-    DigPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DigPS_V").getResult()')
-    DigPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DigPS_I").getResult()')
-    print ("DigPS_V[V]:  %5.2f   DigPS_I[mA]:  %7.2f" % (DigPS_V, DigPS_I) )
-
-    AnaPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.AnaPS_V").getResult()')
-    AnaPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.AnaPS_I").getResult()')
-    print ("AnaPS_V[V]:  %5.2f   AnaPS_I[mA]:  %7.2f" % (AnaPS_V, AnaPS_I) )
-
-    ODPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OD_V").getResult()')
-    ODPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OD_I").getResult()')
-    print ("ODPS_V[V]:   %5.2f   ODPS_I[mA]:   %7.2f" % (ODPS_V, ODPS_I) )
-
+    print ("Running idle current test...")
+    DigPS_V  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DigPS_V").getResult()')
+    DigPS_I  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DigPS_I").getResult()')
+    AnaPS_V  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.AnaPS_V").getResult()')
+    AnaPS_I  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.AnaPS_I").getResult()')
+    ODPS_V   = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OD_V").getResult()')
+    ODPS_I   = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OD_I").getResult()')
     ClkHPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkHPS_V").getResult()')
     ClkHPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkHPS_I").getResult()')
-    print ("ClkHPS_V[V]: %5.2f   ClkHPS_I[mA]: %7.2f" % (ClkHPS_V, ClkHPS_I) )
-
-    # ClkLPS_V = raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkLPS_V").getResult()  
-    # ClkLPS_I = raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkLPS_I").getResult()  
-    # print ("ClkLPS_V[V]: %5.2f   ClkLPS_I[mA]: %7.2f" % (ClkLPS_V, ClkLPS_I) )
-
     DphiPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DphiPS_V").getResult()')
     DphiPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DphiPS_I").getResult()')
-    print ("DphiPS_V[V]: %5.2f   DphiPS_I[mA]: %7.2f" % (DphiPS_V, DphiPS_I) )
+    HtrPS_V  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.HtrPS_V").getResult()')
+    HtrPS_I  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.HtrPS_I").getResult()')
 
-    HtrPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.HtrPS_V").getResult()')
-    HtrPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.HtrPS_I").getResult()')
-    print ("HtrPS_V[V]:  %5.2f   HtrPS_I[mA]:  %7.2f" % (HtrPS_V, HtrPS_I) )
+    printv("Idle  current consumption test:")
+    printv("DigPS_V[V]:  %5.2f   DigPS_I[mA]:  %7.2f" % (DigPS_V, DigPS_I))
+    printv("AnaPS_V[V]:  %5.2f   AnaPS_I[mA]:  %7.2f" % (AnaPS_V, AnaPS_I))
+    printv("ODPS_V[V]:   %5.2f   ODPS_I[mA]:   %7.2f" % (ODPS_V, ODPS_I))
+    printv("ClkHPS_V[V]: %5.2f   ClkHPS_I[mA]: %7.2f" % (ClkHPS_V, ClkHPS_I))
+    printv("DphiPS_V[V]v: %5.2f   DphiPS_I[mA]: %7.2f" % (DphiPS_V, DphiPS_I) )
+    printv("HtrPS_V[V]:  %5.2f   HtrPS_I[mA]:  %7.2f" % (HtrPS_V, HtrPS_I) )
 
     voltages = [("DigPS_V", DigPS_V), ("AnaPS_V", AnaPS_V), ("ODPS_V", ODPS_V), 
                 ("ClkHPS_V", ClkHPS_V), ("DphiPS_V", DphiPS_V), ("HtrPS_V", HtrPS_V)]
@@ -114,45 +111,83 @@ def idleCurrentConsumption(jy):
     return voltages, currents
 
 
-def CSGate(jy):
+def channelTest():
+    # Full list of channels
+    fullChannels = ['WREB.Temp1', 'WREB.Temp2', 'WREB.Temp3', 'WREB.Temp4', 'WREB.Temp5', 'WREB.Temp6', 'WREB.CCDtemp',
+                    'WREB.DigPS_V', 'WREB.DigPS_I', 'WREB.AnaPS_V', 'WREB.AnaPS_I', 'WREB.ODPS_V', 'WREB.ODPS_I',
+                    'WREB.ClkHPS_V', 'WREB.ClkHPS_I', 'WREB.DphiPS_V', 'WREB.DphiPS_I', 'WREB.HtrPS_V', 'WREB.HtrPS_I',
+                    'WREB.VREF25', 'WREB.OD_V', 'WREB.OD_I', 'WREB.OG_V', 'WREB.RD_V', 'WREB.GD_V', 'WREB.CKP_V',
+                    'WREB.CKPSH_V', 'WREB.CKS_V', 'WREB.SCKU_V', 'WREB.SCKL_V', 'WREB.RG_V', 'WREB.RGU_V', 'WREB.RGL_V']
+    if not verbose: pbar = progressbar("Channel Comms Test, &count&: ", len(fullChannels)); pbar.start()
+
+    channels = jy.get('raftsub.synchCommandLine(1000,"getChannelNames").getResult()', dtype = 'str')
+    channels = channels.replace("[","").replace("]","").replace("\n","")
+    channels = channels.split(", ") # Channels is now a list of strings representing channel names
+
+    # Primitive pass metric: test if channel list has all channels in it
+    passed = "PASS"
+    if set(channels) != set(fullChannels):
+        passed = "FAIL"
+
+    # Attempt to get value from everything in channels
+    vals = []
+    for channel in channels:
+        val = jy.get('raftsub.synchCommandLine(1000,"getChannelValue '+channel+'").getResult()')
+        printv("Channel: {0:>10}  Value: {1:6.3f}".format(channel, val))
+        vals.append(val)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
+
+    stats = "%i/%i channels missing." % (len(fullChannels)-len(channels), len(fullChannels))
+
+    return channels, vals, passed, stats
+
+
+def CSGate():
     # CSGate
-    print ("\nCCD bias CSgate voltage test ")
-    print ("VCSG[V]   VCSG_DACval[ADU]   WREB.OD_I[mA]")
+    if not verbose:
+        pbar = progressbar("CS Gate Test, &count&: ", 21)
+        pbar.start()
     # Arrays for report
-    CSGV_arr = []
-    WREB_OD_I_arr = []
+    CSGV_arr        = []
+    WREB_OD_I_arr   = []
     WREB_ODPS_I_arr = []
     for CSGV in step_range(0, 5, 0.25):
         CSGdac = V2DAC(CSGV,0,1,1e6)
-        print ("%5.2f\t%4i" % (CSGV, CSGdac)),
+        printv("%5.2f\t%4i" % (CSGV, CSGdac)),
         jy.do('wrebBias.synchCommandLine(1000,"change csGate %d")' % CSGdac)
         jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')
         time.sleep(tsoak)
         WREB_OD_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OD_I").getResult()')
         WREB_ODPS_I = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ODPS_I").getResult()')
-        print ("\t%5.2f\t%5.2f" % (WREB_OD_I, WREB_ODPS_I))
+        printv("\t%5.2f\t%5.2f" % (WREB_OD_I, WREB_ODPS_I))
         # Add to arrays to make plots for report
         CSGV_arr.append(CSGV)
         WREB_OD_I_arr.append(WREB_OD_I)
         WREB_ODPS_I_arr.append(WREB_ODPS_I)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     # Return to report generator
     data = ((CSGV_arr, "CSGV (V)"), (WREB_OD_I_arr, "WREB.OD_I (mA)"), (WREB_ODPS_I_arr, "WREB.ODPS_I (mA)"))
     return data
 
 
-def PCKRails(jy):
+def PCKRails():
     # PCK rails
-    print ("\nrail voltage generation for PCLK test ")
+    if not verbose:
+        pbar = progressbar("PCK Rails Test, &count&: ", 25)
+        pbar.start()
+    printv("\nrail voltage generation for PCLK test ")
     PCLKDV     = 5 #delta voltage between lower and upper
     PCLKLshV   = -8.0 #sets the offset shift to -8V on the lower
     PCLKUshV   = -2 #PCLKLshV+PCLKDV    #sets the offset shift on the upper
     PCLKLshDAC = V2SHDAC(PCLKLshV,49.9,20)
     PCLKUshDAC = V2SHDAC(PCLKUshV,49.9,20)
-    print ("-8V and 5V amplitude set  ")
+    printv("-8V and 5V amplitude set  ")
     time.sleep(tsoak)
-    print ("PCLKLsh[V]: %5.2f   PCLKUsh[V]: %5.2f   PCLKLsh_DACval[ADU]: %4i   PCLKUsh_DACval[ADU]: %4i " %
+    printv("PCLKLsh[V]: %5.2f   PCLKUsh[V]: %5.2f   PCLKLsh_DACval[ADU]: %4i   PCLKUsh_DACval[ADU]: %4i " %
            (PCLKLshV, PCLKUshV, PCLKLshDAC, PCLKUshDAC) )
-    print ("PCLKLV[V]\tPCLKLV_DAC[ADU]\tPCLKUV[V]\tPCLKUV_DAC[ADU]\tWREB.PCLKL_V[V]\tWREB.PCLKU_V[V]")
+    printv("PCLKLV[V]\tPCLKLV_DAC[ADU]\tPCLKUV[V]\tPCLKUV_DAC[ADU]\tWREB.PCLKL_V[V]\tWREB.PCLKU_V[V]")
     # Report arrays
     PCLKLV_arr        = []
     PCLKLdac_arr      = []
@@ -166,7 +201,7 @@ def PCKRails(jy):
         PCLKLdac = V2DAC(PCLKLV,PCLKLshV,49.9,20)
         PCLKUV   = PCLKLV+PCLKDV
         PCLKUdac = V2DAC(PCLKUV,PCLKUshV,49.9,20)
-        print ("%5.2f\t%4i\t%5.2f\t%4i" % (PCLKLV, PCLKLdac, PCLKUV, PCLKUdac) ),
+        printv("%5.2f\t%4i\t%5.2f\t%4i" % (PCLKLV, PCLKLdac, PCLKUV, PCLKUdac) ),
         jy.do('wrebDAC.synchCommandLine(1000,"change pclkLowSh %d")' % PCLKLshDAC)
         jy.do('wrebDAC.synchCommandLine(1000,"change pclkLow %d")' % PCLKLdac)
         jy.do('wrebDAC.synchCommandLine(1000,"change pclkHighSh %d")' % PCLKUshDAC)
@@ -175,7 +210,7 @@ def PCKRails(jy):
         time.sleep(tsoak)
         WREB_CKPSH_V  = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.CKPSH_V").getResult()')
         WREB_DphiPS_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.DphiPS_V").getResult()')
-        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
+        printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                (WREB_CKPSH_V, WREB_DphiPS_V, (PCLKLV - WREB_CKPSH_V), (PCLKUV - WREB_DphiPS_V)) )
         # Append to arrays
         PCLKLV_arr        .append(PCLKLV)
@@ -186,6 +221,8 @@ def PCKRails(jy):
         WREB_DphiPS_V_arr .append(WREB_DphiPS_V)
         deltaPCLKLV_arr   .append(PCLKLV - WREB_CKPSH_V)
         deltaPCLKUV_arr   .append(PCLKUV - WREB_DphiPS_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((PCLKLV_arr, "PCLKLV (V)"),
             (PCLKUV_arr, "PCLKUV (V)"),
             (WREB_CKPSH_V_arr, "WREB.CKPSH_V (V)"),
@@ -196,19 +233,22 @@ def PCKRails(jy):
 
 
 # noinspection PyTupleAssignmentBalance
-def SCKRails(jy):
+def SCKRails():
     # SCK rails
-    print ("\nrail voltage generation for SCLK test ")
+    if not verbose:
+        pbar = progressbar("SCK Rails Test, &count&: ", 25)
+        pbar.start()
+    printv("\nrail voltage generation for SCLK test ")
     SCLKDV     = 5 #delta voltage between lower and upper
     SCLKLshV   = -8.5 #sets the offset shift to -8V on the lower
     SCLKUshV   = -2 # SCLKLshV+SCLKDV    #sets the offset shift on the upper
     SCLKLshDAC = V2SHDAC(SCLKLshV,49.9,20)
     SCLKUshDAC = V2SHDAC(SCLKUshV,49.9,20)
-    print ("-8V and 5V amplitude set  ")
+    printv("-8V and 5V amplitude set  ")
     time.sleep(tsoak)
-    print ("SCLKLsh[V]: %5.2f   SCLKUsh[V]: %5.2f   SCLKLsh_DACval[ADU]: %4i   SCLKUsh_DACval[ADU]: %4i " %
+    printv("SCLKLsh[V]: %5.2f   SCLKUsh[V]: %5.2f   SCLKLsh_DACval[ADU]: %4i   SCLKUsh_DACval[ADU]: %4i " %
            (SCLKLshV, SCLKUshV, SCLKLshDAC, SCLKUshDAC) )
-    print ("SCLKLV[V]\tSCLKLV_DAC[ADU]\tSCLKUV[V]\tSCLKUV_DAC[ADU]\tWREB.SCLKL_V[V]\tWREB.SCLKU_V[V]")
+    printv("SCLKLV[V]\tSCLKLV_DAC[ADU]\tSCLKUV[V]\tSCLKUV_DAC[ADU]\tWREB.SCLKL_V[V]\tWREB.SCLKU_V[V]")
     # Report arrays
     SCLKLV_arr      = []
     SCLKLdac_arr    = []
@@ -222,7 +262,7 @@ def SCKRails(jy):
         SCLKLdac = V2DAC(SCLKLV,SCLKLshV,49.9,20)
         SCLKUV   = SCLKLV+SCLKDV
         SCLKUdac = V2DAC(SCLKUV,SCLKUshV,49.9,20)
-        print ("%5.2f\t%4i\t%5.2f\t%4i" % (SCLKLV, SCLKLdac, SCLKUV, SCLKUdac) ),
+        printv("%5.2f\t%4i\t%5.2f\t%4i" % (SCLKLV, SCLKLdac, SCLKUV, SCLKUdac) ),
         jy.do('wrebDAC.synchCommandLine(1000,"change sclkLowSh %d")' % SCLKLshDAC)
         jy.do('wrebDAC.synchCommandLine(1000,"change sclkLow %d")' % SCLKLdac)
         jy.do('wrebDAC.synchCommandLine(1000,"change sclkHighSh %d")' % SCLKUshDAC)
@@ -231,7 +271,7 @@ def SCKRails(jy):
         time.sleep(tsoak)
         WREB_SCKL_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.SCKL_V").getResult()')
         WREB_SCKU_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.SCKU_V").getResult()')
-        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
+        printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                (WREB_SCKL_V, WREB_SCKU_V, (SCLKLV - WREB_SCKL_V), (SCLKUV - WREB_SCKU_V)) )
         # Append to arrays
         SCLKLV_arr        .append(SCLKLV)
@@ -242,6 +282,8 @@ def SCKRails(jy):
         WREB_SCKU_V_arr   .append(WREB_SCKU_V)
         deltaSCLKLV_arr   .append(SCLKLV - WREB_SCKL_V)
         deltaSCLKUV_arr   .append(SCLKUV - WREB_SCKU_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((SCLKLV_arr, "SCLKLV (V)"),
             (SCLKUV_arr, "SCLKUV (V)"),
             (WREB_SCKL_V_arr, "WREB.SCKL_V (V)"),
@@ -265,7 +307,7 @@ def SCKRails(jy):
     # Other information
     ml, bl = polyfit(SCLKLV_arr, WREB_SCKL_V_arr, 1)
     mu, bu = polyfit(SCLKUV_arr, WREB_SCKU_V_arr, 1)
-    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
         (ml, mu, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
@@ -274,20 +316,22 @@ def SCKRails(jy):
 
     return data, residuals, passed, stats
 
-def divergingSCKRails(jy, amplitude, startV):
+def divergingSCKRails(amplitude, startV):
     '''Diverging SCK Rails test. Amplitude is half-wave maximum divergence, 
     startV is initial voltage to start LV=UV diverging from.'''
-    print ("\nDiverging rail voltage generation for SCLK test ")
+    step = 0.5
+    if not verbose: pbar = progressbar("Diverging SCK Rails Test, &count&: ", amplitude/step + 1); pbar.start()
+    printv("\nDiverging rail voltage generation for SCLK test ")
     SCLKLshV   = startV - amplitude # Shift to minimum needed voltage, this is added back in later
     SCLKUshV   = startV
     SCLKLshDAC = V2SHDAC(SCLKLshV,49.9,20)
     SCLKUshDAC = V2SHDAC(SCLKUshV,49.9,20)
     jy.do('wrebDAC.synchCommandLine(1000,"change sclkLowSh %d")' % SCLKLshDAC)
     jy.do('wrebDAC.synchCommandLine(1000,"change sclkHighSh %d")' % SCLKUshDAC)
-    print ("-8V and 5V amplitude set  ")
+    printv("-8V and 5V amplitude set  ")
     time.sleep(tsoak)
-    # print ("SCLKLsh[V]: %5.2f   SCLKUsh[V]: %5.2f   SCLKLsh_DACval[ADU]: %4i   SCLKUsh_DACval[ADU]: %4i " % (SCLKLshV, SCLKUshV, SCLKLshDAC, SCLKUshDAC) )
-    print ("SCLKLV[V]\tSCLKLV_DAC[ADU]\tSCLKUV[V]\tSCLKUV_DAC[ADU]\tWREB.SCLKL_V[V]\tWREB.SCLKU_V[V]")
+    # printv("SCLKLsh[V]: %5.2f   SCLKUsh[V]: %5.2f   SCLKLsh_DACval[ADU]: %4i   SCLKUsh_DACval[ADU]: %4i " % (SCLKLshV, SCLKUshV, SCLKLshDAC, SCLKUshDAC) )
+    printv("SCLKLV[V]\tSCLKLV_DAC[ADU]\tSCLKUV[V]\tSCLKUV_DAC[ADU]\tWREB.SCLKL_V[V]\tWREB.SCLKU_V[V]")
     # Report arrays
     SCLKLV_arr      = []
     SCLKLdac_arr    = []
@@ -298,12 +342,12 @@ def divergingSCKRails(jy, amplitude, startV):
     deltaSCLKLV_arr = []
     deltaSCLKUV_arr = []
     ClkHPS_I_arr    = []
-    for SCLKDV in step_range(0, amplitude, 0.5):
+    for SCLKDV in step_range(0, amplitude, step):
         SCLKLV = startV - SCLKDV
         SCLKUV = startV + SCLKDV
         SCLKLdac = V2DAC(SCLKLV + amplitude,startV,49.9,20) # Add the amplitude back in
         SCLKUdac = V2DAC(SCLKUV,startV,49.9,20)
-        print ("%5.2f\t%4i\t%5.2f\t%4i" % (SCLKLV, SCLKLdac, SCLKUV, SCLKUdac) ),
+        printv("%5.2f\t%4i\t%5.2f\t%4i" % (SCLKLV, SCLKLdac, SCLKUV, SCLKUdac) ),
         jy.do('wrebDAC.synchCommandLine(1000,"change sclkLow %d")' % SCLKLdac)
         jy.do('wrebDAC.synchCommandLine(1000,"change sclkHigh %d")' % SCLKUdac)
         jy.do('wreb.synchCommandLine(1000,"loadDacs true")')
@@ -311,7 +355,7 @@ def divergingSCKRails(jy, amplitude, startV):
         WREB_SCKL_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.SCKL_V").getResult()')
         WREB_SCKU_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.SCKU_V").getResult()')
         ClkHPS_I = 0.1*jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkHPS_I").getResult()')
-        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
+        printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                (WREB_SCKL_V, WREB_SCKU_V, (SCLKLV - WREB_SCKL_V), (SCLKUV - WREB_SCKU_V)) )
         # Append to arrays
         SCLKLV_arr        .append(SCLKLV)
@@ -323,6 +367,8 @@ def divergingSCKRails(jy, amplitude, startV):
         deltaSCLKLV_arr   .append(SCLKLV - WREB_SCKL_V)
         deltaSCLKUV_arr   .append(SCLKUV - WREB_SCKU_V)
         ClkHPS_I_arr      .append(ClkHPS_I)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((SCLKLV_arr, "SCLKLV (V)"),
             (SCLKUV_arr, "SCLKUV (V)"),
             (WREB_SCKL_V_arr, "WREB.SCKL_V (V)"),
@@ -347,7 +393,7 @@ def divergingSCKRails(jy, amplitude, startV):
     # Other information
     ml, bl = polyfit(SCLKLV_arr, WREB_SCKL_V_arr, 1)
     mu, bu = polyfit(SCLKUV_arr, WREB_SCKU_V_arr, 1)
-    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
         (ml, mu, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
@@ -357,19 +403,20 @@ def divergingSCKRails(jy, amplitude, startV):
     return data, residuals, passed, stats
 
 
-def RGRails(jy):
+def RGRails():
     # RG rails
-    print ("\nrail voltage generation for RG test ")
+    if not verbose: pbar = progressbar("RG Rails Test, &count&: ", 25); pbar.start()
+    printv("\nrail voltage generation for RG test ")
     RGDV     = 5 #delta voltage between lower and upper
     RGLshV   = -8.5 #sets the offset shift to -8.5V on the lower
     RGUshV   = -2.5 # RGLshV+RGDV    #sets the offset shift on the upper
     RGLshDAC = V2SHDAC(RGLshV,49.9,20)
     RGUshDAC = V2SHDAC(RGUshV,49.9,20)
-    print ("-8V and 5V amplitude set  ")
+    printv("-8V and 5V amplitude set  ")
     time.sleep(tsoak)
-    print ("RGLsh[V]: %5.2f   RGUsh[V]: %5.2f   RGLsh_DACval[ADU]: %4i   RGUsh_DACval[ADU]: %4i " %
+    printv("RGLsh[V]: %5.2f   RGUsh[V]: %5.2f   RGLsh_DACval[ADU]: %4i   RGUsh_DACval[ADU]: %4i " %
            (RGLshV, RGUshV, RGLshDAC, RGUshDAC) )
-    print ("RGLV[V]\tRGLV_DAC[ADU]\tRGUV[V]\tRGUV_DAC[ADU]\tWREB.RGL_V[V]\tWREB.RGU_V[V]")
+    printv("RGLV[V]\tRGLV_DAC[ADU]\tRGUV[V]\tRGUV_DAC[ADU]\tWREB.RGL_V[V]\tWREB.RGU_V[V]")
     # Report arrays
     RGLV_arr       = []
     RGLdac_arr     = []
@@ -383,7 +430,7 @@ def RGRails(jy):
         RGLdac = V2DAC(RGLV,RGLshV,49.9,20)
         RGUV   = RGLV+RGDV #adds the delta voltage to the upper rail
         RGUdac = V2DAC(RGUV,RGUshV,49.9,20)
-        print ("%5.2f\t%4i\t%5.2f\t%4i" % (RGLV, RGLdac, RGUV, RGUdac) ),
+        printv("%5.2f\t%4i\t%5.2f\t%4i" % (RGLV, RGLdac, RGUV, RGUdac) ),
         jy.do('wrebDAC.synchCommandLine(1000,"change rgLowSh %d")' % RGLshDAC)
         jy.do('wrebDAC.synchCommandLine(1000,"change rgLow %d")' % RGLdac)
         jy.do('wrebDAC.synchCommandLine(1000,"change rgHighSh %d")' % RGUshDAC)
@@ -392,7 +439,7 @@ def RGRails(jy):
         time.sleep(tsoak)
         WREB_RGL_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RGL_V").getResult()')
         WREB_RGU_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RGU_V").getResult()')
-        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (WREB_RGL_V, WREB_RGU_V, (RGLV - WREB_RGL_V), (RGUV - WREB_RGU_V)) )
+        printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (WREB_RGL_V, WREB_RGU_V, (RGLV - WREB_RGL_V), (RGUV - WREB_RGU_V)) )
         # Append to arrays
         RGLV_arr        .append(RGLV)
         RGLdac_arr      .append(RGLdac)
@@ -402,6 +449,8 @@ def RGRails(jy):
         WREB_RGU_V_arr  .append(WREB_RGU_V)
         deltaRGLV_arr   .append(RGLV - WREB_RGL_V)
         deltaRGUV_arr   .append(RGUV - WREB_RGU_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((RGLV_arr, "RGLV (V)"),
             (RGUV_arr, "RGUV (V)"),
             (WREB_RGL_V_arr, "WREB.RGL_V (V)"),
@@ -425,7 +474,7 @@ def RGRails(jy):
     # Other information
     ml, bl = polyfit(RGLV_arr, WREB_RGL_V_arr, 1)
     mu, bu = polyfit(RGUV_arr, WREB_RGU_V_arr, 1)
-    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
         (ml, mu, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
@@ -434,20 +483,22 @@ def RGRails(jy):
 
     return data, residuals, passed, stats
 
-def divergingRGRails(jy, amplitude, startV):
+def divergingRGRails(amplitude, startV):
     '''Diverging RG Rails test. Amplitude is half-wave maximum divergence, 
     startV is initial voltage to start LV=UV diverging from.'''
-    print ("\nDiverging rail voltage generation for RG test ")
+    step = 0.5
+    if not verbose: pbar = progressbar("Diverging RG Rails Test, &count&: ", amplitude/step + 1); pbar.start()
+    printv("\nDiverging rail voltage generation for RG test ")
     RGLshV   = startV - amplitude # Shift to minimum needed voltage, this is added back in later
     RGUshV   = startV
     RGLshDAC = V2SHDAC(RGLshV,49.9,20)
     RGUshDAC = V2SHDAC(RGUshV,49.9,20)
     jy.do('wrebDAC.synchCommandLine(1000,"change rgLowSh %d")' % RGLshDAC)
     jy.do('wrebDAC.synchCommandLine(1000,"change rgHighSh %d")' % RGUshDAC)
-    print ("-8V and 5V amplitude set  ")
+    printv("-8V and 5V amplitude set  ")
     time.sleep(tsoak)
-    # print ("RGLsh[V]: %5.2f   RGUsh[V]: %5.2f   RGLsh_DACval[ADU]: %4i   RGUsh_DACval[ADU]: %4i " % (RGLshV, RGUshV, RGLshDAC, RGUshDAC) )
-    print ("RGLV[V]\tRGLV_DAC[ADU]\tRGUV[V]\tRGUV_DAC[ADU]\tWREB.RGL_V[V]\tWREB.RGU_V[V]")
+    # printv("RGLsh[V]: %5.2f   RGUsh[V]: %5.2f   RGLsh_DACval[ADU]: %4i   RGUsh_DACval[ADU]: %4i " % (RGLshV, RGUshV, RGLshDAC, RGUshDAC) )
+    printv("RGLV[V]\tRGLV_DAC[ADU]\tRGUV[V]\tRGUV_DAC[ADU]\tWREB.RGL_V[V]\tWREB.RGU_V[V]")
     # Report arrays
     RGLV_arr       = []
     RGLdac_arr     = []
@@ -458,12 +509,12 @@ def divergingRGRails(jy, amplitude, startV):
     deltaRGLV_arr  = []
     deltaRGUV_arr  = []
     ClkHPS_I_arr   = []
-    for RGDV in step_range(0, amplitude, 0.5):
+    for RGDV in step_range(0, amplitude, step):
         RGLV = startV - RGDV
         RGUV = startV + RGDV
         RGLdac = V2DAC(RGLV + amplitude,startV,49.9,20) # Add the amplitude back in
         RGUdac = V2DAC(RGUV,startV,49.9,20)
-        print ("%5.2f\t%4i\t%5.2f\t%4i" % (RGLV, RGLdac, RGUV, RGUdac) ),
+        printv("%5.2f\t%4i\t%5.2f\t%4i" % (RGLV, RGLdac, RGUV, RGUdac) ),
         jy.do('wrebDAC.synchCommandLine(1000,"change rgLow %d")' % RGLdac)
         jy.do('wrebDAC.synchCommandLine(1000,"change rgHigh %d")' % RGUdac)
         jy.do('wreb.synchCommandLine(1000,"loadDacs true")')
@@ -471,7 +522,7 @@ def divergingRGRails(jy, amplitude, startV):
         WREB_RGL_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RGL_V").getResult()')
         WREB_RGU_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RGU_V").getResult()')
         ClkHPS_I = 0.1 * jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.ClkHPS_I").getResult()')
-        print ("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (WREB_RGL_V, WREB_RGU_V, (RGLV - WREB_RGL_V), (RGUV - WREB_RGU_V)) )
+        printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (WREB_RGL_V, WREB_RGU_V, (RGLV - WREB_RGL_V), (RGUV - WREB_RGU_V)) )
         # Append to arrays
         RGLV_arr       . append(RGLV)
         RGLdac_arr     . append(RGLdac)
@@ -482,6 +533,8 @@ def divergingRGRails(jy, amplitude, startV):
         deltaRGLV_arr  . append(RGLV - WREB_RGL_V)
         deltaRGUV_arr  . append(RGUV - WREB_RGU_V)
         ClkHPS_I_arr   . append(ClkHPS_I)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((RGLV_arr, "RGLV (V)"),
             (RGUV_arr, "RGUV (V)"),
             (WREB_RGL_V_arr, "WREB.RGL_V (V)"),
@@ -506,7 +559,7 @@ def divergingRGRails(jy, amplitude, startV):
     # Other information
     ml, bl = polyfit(RGLV_arr, WREB_RGL_V_arr, 1)
     mu, bu = polyfit(RGUV_arr, WREB_RGU_V_arr, 1)
-    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i points within tolerance." % \
+    stats  = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
         (ml, mu, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
@@ -515,31 +568,34 @@ def divergingRGRails(jy, amplitude, startV):
 
     return data, residuals, passed, stats
 
-def OG(jy):
+def OG():
     # OG
-    print ("\nCCD bias OG voltage test ")
+    if not verbose: pbar = progressbar("OG Bias Test, &count&: ", 21); pbar.start()
+    printv("\nCCD bias OG voltage test ")
     OGshV = -5.0 # #sets the offset shift to -5V
     OGshDAC = V2SHDAC(OGshV,10,10)
     jy.do('wrebBias.synchCommandLine(1000,"change ogSh %d")' % OGshDAC)
     jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')
-    print ("VOGsh[V]: %5.2f   VOGsh_DACval[ADU]: %4i" % (OGshV, OGshDAC) )
-    print ("VOG[V]   VOG_DACval[ADU]   WREB.OG[V]")
+    printv("VOGsh[V]: %5.2f   VOGsh_DACval[ADU]: %4i" % (OGshV, OGshDAC) )
+    printv("VOG[V]   VOG_DACval[ADU]   WREB.OG[V]")
     OGV_arr       = []
     OGdac_arr     = []
     WREB_OG_V_arr = []
-    deltaOGV_arr = []
+    deltaOGV_arr  = []
     for OGV in step_range(OGshV, OGshV+10, 0.5):
         OGdac = V2DAC(OGV,OGshV,10,10)
-        print ("%5.2f\t%4i" % (OGV, OGdac) ),
+        printv("%5.2f\t%4i" % (OGV, OGdac) ),
         jy.do('wrebBias.synchCommandLine(1000,"change og %d")' % OGdac)
         jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')
         time.sleep(tsoak)
         WREB_OG_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OG_V").getResult()')
-        print ("\t%5.2f\t\t%5.2f" % (WREB_OG_V, (OGV - WREB_OG_V)) )
+        printv("\t%5.2f\t\t%5.2f" % (WREB_OG_V, (OGV - WREB_OG_V)) )
         OGV_arr.append(OGV)
         OGdac_arr.append(OGdac)
         WREB_OG_V_arr.append(WREB_OG_V)
         deltaOGV_arr.append(OGV - WREB_OG_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((OGV_arr, "VOG (V)"),
             (WREB_OG_V_arr, "WREB.OG_V (V)"))
     residuals = ((deltaOGV_arr, "deltaVOG (V)"),)
@@ -556,7 +612,7 @@ def OG(jy):
 
     # Other information
     m, b  = polyfit(OGV_arr, WREB_OG_V_arr, 1)
-    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+    stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
     if numErrors > maxFails or abs(m - 1.0) > 0.05:
@@ -564,26 +620,29 @@ def OG(jy):
 
     return data, residuals, passed, stats
 
-def OD(jy):
+def OD():
     # OD
-    print ("\nCCD bias OD voltage test ")
-    print ("VOD[V]   VOD_DACval[ADU]   WREB.OD[V]")
+    if not verbose: pbar = progressbar("OD Bias Test, &count&: ", 21); pbar.start()
+    printv("\nCCD bias OD voltage test ")
+    printv("VOD[V]   VOD_DACval[ADU]   WREB.OD[V]")
     ODV_arr       = []
     ODdac_arr     = []
     WREB_OD_V_arr = []
-    deltaODV_arr = []
-    for ODV in step_range(0, 30, 1):
+    deltaODV_arr  = []
+    for ODV in step_range(0, 30, 2):
         ODdac = V2DAC(ODV,0,49.9,10)
-        print ("%5.2f\t%4i" % (ODV, ODdac)),
+        printv("%5.2f\t%4i" % (ODV, ODdac)),
         jy.do('wrebBias.synchCommandLine(1000,"change od %d")' % ODdac)
         jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')
         time.sleep(tsoak)
         WREB_OD_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.OD_V").getResult()')
-        print ("\t%5.2f\t\t%5.2f" % (WREB_OD_V,(ODV - WREB_OD_V)) )
+        printv("\t%5.2f\t\t%5.2f" % (WREB_OD_V,(ODV - WREB_OD_V)) )
         ODV_arr.append(ODV)
         ODdac_arr.append(ODdac)
         WREB_OD_V_arr.append(WREB_OD_V)
         deltaODV_arr.append(ODV - WREB_OD_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((ODV_arr, "VOD (V)"),
             (WREB_OD_V_arr, "WREB.OD_V (V)"))
     residuals = ((deltaODV_arr, "deltaVOD (V)"),)
@@ -600,7 +659,7 @@ def OD(jy):
 
     # Other information
     m, b  = polyfit(ODV_arr, WREB_OD_V_arr, 1)
-    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+    stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
     if numErrors > maxFails or abs(m - 1.0) > 0.05:
@@ -608,26 +667,29 @@ def OD(jy):
 
     return data, residuals, passed, stats
 
-def GD(jy):
+def GD():
     # GD
-    print ("\nCCD bias GD voltage test ")
-    print ("VGD[V]   VGD_DACval[ADU]   WREB.GD[V]")
+    if not verbose: pbar = progressbar("GD Bias Test, &count&: ", 21); pbar.start()
+    printv("\nCCD bias GD voltage test ")
+    printv("VGD[V]   VGD_DACval[ADU]   WREB.GD[V]")
     GDV_arr       = []
     GDdac_arr     = []
     WREB_GD_V_arr = []
-    deltaGDV_arr = []
-    for GDV in step_range(0, 30, 1):
+    deltaGDV_arr  = []
+    for GDV in step_range(0, 30, 2):
         GDdac = V2DAC(GDV,0,49.9,10)
-        print ("%5.2f\t%4i" % (GDV, GDdac)),
+        printv("%5.2f\t%4i" % (GDV, GDdac)),
         jy.do('wrebBias.synchCommandLine(1000,"change gd %d")' % GDdac)
         jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')
         time.sleep(tsoak)
         WREB_GD_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.GD_V").getResult()')
-        print ("\t%5.2f\t\t%5.2f" % (WREB_GD_V,(GDV - WREB_GD_V)) )
+        printv("\t%5.2f\t\t%5.2f" % (WREB_GD_V,(GDV - WREB_GD_V)) )
         GDV_arr.append(GDV)
         GDdac_arr.append(GDdac)
         WREB_GD_V_arr.append(WREB_GD_V)
         deltaGDV_arr.append(GDV - WREB_GD_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((GDV_arr, "VGD (V)"),
             (WREB_GD_V_arr, "WREB.GD_V (V)"))
     residuals = ((deltaGDV_arr, "deltaVGD (V)"),)
@@ -644,7 +706,7 @@ def GD(jy):
 
     # Other information
     m, b  = polyfit(GDV_arr, WREB_GD_V_arr, 1)
-    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+    stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
     if numErrors > maxFails or abs(m - 1.0) > 0.05:
@@ -652,26 +714,29 @@ def GD(jy):
 
     return data, residuals, passed, stats
 
-def RD(jy):
+def RD():
     # RD
-    print ("\nCCD bias RD voltage test ")
-    print ("VRD[V]   VRD_DACval[ADU]   WREB.RD[V]")
+    if not verbose: pbar = progressbar("RD Bias Test, &count&: ", 21); pbar.start()
+    printv("\nCCD bias RD voltage test ")
+    printv("VRD[V]   VRD_DACval[ADU]   WREB.RD[V]")
     RDV_arr       = []
     RDdac_arr     = []
     WREB_RD_V_arr = []
-    deltaRDV_arr = []
-    for RDV in step_range(0, 30, 1):
+    deltaRDV_arr  = []
+    for RDV in step_range(0, 30, 2):
         RDdac = V2DAC(RDV,0,49.9,10)
-        print ("%5.2f\t%4i" % (RDV, RDdac)),
+        printv("%5.2f\t%4i" % (RDV, RDdac)),
         jy.do('wrebBias.synchCommandLine(1000,"change rd %d")' % RDdac)
         jy.do('wreb.synchCommandLine(1000,"loadBiasDacs true")')
         time.sleep(tsoak)
         WREB_RD_V = jy.get('raftsub.synchCommandLine(1000,"readChannelValue WREB.RD_V").getResult()')
-        print ("\t%5.2f\t\t%5.2f" % (WREB_RD_V, (RDV - WREB_RD_V)) )
+        printv("\t%5.2f\t\t%5.2f" % (WREB_RD_V, (RDV - WREB_RD_V)) )
         RDV_arr.append(RDV)
         RDdac_arr.append(RDdac)
         WREB_RD_V_arr.append(WREB_RD_V)
         deltaRDV_arr.append(RDV - WREB_RD_V)
+        if not verbose: pbar.inc()
+    if not verbose: pbar.finish()
     data = ((RDV_arr, "VRD (V)"),
             (WREB_RD_V_arr, "WREB.RD_V (V)"))
     residuals = ((deltaRDV_arr, "deltaVRD (V)"),)
@@ -688,7 +753,7 @@ def RD(jy):
 
     # Other information
     m, b  = polyfit(RDV_arr, WREB_RD_V_arr, 1)
-    stats = "Gain: %f.  %i/%i points within tolerance." % (m, totalPoints-numErrors, totalPoints)
+    stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints-numErrors, totalPoints)
 
     # Pass criterion:
     if numErrors > maxFails or abs(m - 1.0) > 0.05:
@@ -705,56 +770,58 @@ if __name__ == "__main__":
                                      epilog = '''>> Example: python dacTest.py ~/u1/u/wreb/data -q''')
     parser.add_argument("writeDirectory", nargs = '?', default = "/u1/u/wreb/data/scratch",
                         help="Directory to save outputs to. Defaults to /u1/u/wreb/data/scratch.", action="store")
-    parser.add_argument("-q", "--quiet",
-                        help="Suppress text output.", action="store_true")
+    parser.add_argument("-v", "--verbose",
+                        help="Print test results in the terminal.", action="store_true")
     parser.add_argument("-n", "--noPDF",
                         help="Do not render a PDF report for the tests.", action="store_true")
     args = parser.parse_args()
 
 
-    tsoak = 0.5
+    tsoak   = 0.5
     dataDir = args.writeDirectory
+    verbose = args.verbose
 
     jy = JythonInterface()
     jy.do('dataDir = %s'%args.writeDirectory)
 
-    jy.do('''
-from org.lsst.ccs.scripting import *
-import time
-import sys
+    commands = '''
+    from org.lsst.ccs.scripting import *
+    import time
+    import sys
 
-serno   = "WREBx"
+    serno   = "WREBx"
 
-raftsub  = CCS.attachSubsystem("ccs-cr");
-wreb     = CCS.attachSubsystem("ccs-cr/WREB")
-wrebDAC  = CCS.attachSubsystem("ccs-cr/WREB.DAC")
-wrebBias = CCS.attachSubsystem("ccs-cr/WREB.Bias0")
+    raftsub  = CCS.attachSubsystem("ccs-cr");
+    wreb     = CCS.attachSubsystem("ccs-cr/WREB")
+    wrebDAC  = CCS.attachSubsystem("ccs-cr/WREB.DAC")
+    wrebBias = CCS.attachSubsystem("ccs-cr/WREB.Bias0")
 
 
-tsoak = 0.5
-# save config inside the board to temp_cfg and load the test_base_cfg
-print ("saving board configuration and set up test configuration and sequence")
-raftsub.synchCommandLine(1000,"saveChangesForCategoriesAs Rafts:WREB_temp_cfg")
-raftsub.synchCommandLine(1000,"loadCategories Rafts:WREB_test_base_cfg")
-wreb.synchCommandLine(1000,"loadDacs true")
-wreb.synchCommandLine(1000,"loadBiasDacs true")
-wreb.synchCommandLine(1000,"loadAspics true")
-# load a sequence and run it with 0s exposure time
-raftsub.synchCommandLine(1000,"loadSequencer  /u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq")
-raftsub.synchCommandLine(1000,"setParameter Exptime 0");  # sets exposure time to 0ms
-time.sleep(tsoak)
-raftsub.synchCommandLine(1000,"startSequencer")
-time.sleep(2.5) #takes 2 sec to read out
-# save the bias image under this:
-fbase = "%s_test" % (serno)
-fname = fbase + "_${timestamp}.fits"
-raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
-# result = raftsub.synchCommand(1000,"saveFitsImage " + dataDir)
-# print ("save fits file under: %s" % (dataDir))
-# print result.getResult()
-    ''')
+    tsoak = 0.5
+    # save config inside the board to temp_cfg and load the test_base_cfg
+    print ("saving board configuration and set up test configuration and sequence")
+    raftsub.synchCommandLine(1000,"saveChangesForCategoriesAs Rafts:WREB_temp_cfg")
+    raftsub.synchCommandLine(1000,"loadCategories Rafts:WREB_test_base_cfg")
+    wreb.synchCommandLine(1000,"loadDacs true")
+    wreb.synchCommandLine(1000,"loadBiasDacs true")
+    wreb.synchCommandLine(1000,"loadAspics true")
+    # load a sequence and run it with 0s exposure time
+    raftsub.synchCommandLine(1000,"loadSequencer  /u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq")
+    raftsub.synchCommandLine(1000,"setParameter Exptime 0");  # sets exposure time to 0ms
+    time.sleep(tsoak)
+    raftsub.synchCommandLine(1000,"startSequencer")
+    time.sleep(2.5) #takes 2 sec to read out
+    # save the bias image under this:
+    fbase = "%s_test" % (serno)
+    fname = fbase + "_${timestamp}.fits"
+    raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
+    # result = raftsub.synchCommand(1000,"saveFitsImage " + dataDir)
+    # print ("save fits file under: %s" % (dataDir))
+    # print result.getResult()'''
+    jy.do(textwrap.dedent(commands))
 
-    boardID = "TEST"  # hex(jy.get('wreb.synchCommandLine getSerialNumber', dtype = 'int')) # Get hex board ID
+    boardID = str(hex(int(
+        jy.get('wreb.synchCommandLine(1000,"getSerialNumber").getResult()', dtype="str").replace("L","")))) # Get hex board ID
 
     if not os.path.exists("tempFigures"):
         os.makedirs("tempFigures")
@@ -768,34 +835,52 @@ raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
     epw = pdf.w - 2 * pdf.l_margin
 
     # Execute desired tests
-    idleCurrentConsumption(jy)
+    os.system("clear")
 
-    testList = ["SCK Rails", "CCD Bias OG Voltage", "CCD Bias OD Voltage", "CCD Bias GR Voltage",
-                "CCD Bias RD Voltage"]
+    testList = ["Channel Comms", "SCK Rails", "RG Rails", 
+                "Diverging SCK 0V", "Diverging SCK 3V", "Diverging SCK -3V",
+                "Diverging RG 0V", "Diverging RG 3V", "Diverging RG -3V",
+                "CCD Bias OG Voltage", "CCD Bias OD Voltage", "CCD Bias GR Voltage", "CCD Bias RD Voltage"]
     passList = []
     statsList = []
 
-    _, _, passed, stats = divergingSCKRailsResults0 = divergingSCKRails(jy, 9.0, 0.0)
-    _, _, passed, stats = divergingSCKRailsResults3 = divergingSCKRails(jy, 9.0, 3.0)
-    _, _, passed, stats = divergingSCKRailsResultsm3 = divergingSCKRails(jy, 9.0, -3.0)
+    CSGateResults = CSGate()
+    PCKRailsResults = PCKRails()
 
-    _, _, passed, stats = divergingRGRailsResults0 = divergingRGRails(jy, 9.0, 0.0)
-    _, _, passed, stats = divergingRGRailsResults3 = divergingRGRails(jy, 9.0, 3.0)
-    _, _, passed, stats = divergingRGRailsResultsm3 = divergingRGRails(jy, 9.0, -3.0)
-
-    CSGateResults = CSGate(jy)
-    PCKRailsResults = PCKRails(jy)
+    # Run tests and store results to container variables (tests must be run before summary page is generated)
+    _, _, passed, stats = ChannelTestResults = channelTest(); passList.append(passed) ; statsList.append(stats)
     # _,_,passed,stats = CSGateResults   = CSGate(jy);   passList.append(passed); statsList.append(stats)
     # _,_,passed,stats = PCKRailsResults = PCKRails(jy); passList.append(passed); statsList.append(stats)
-    _, _, passed, stats = SCKRailsResults = SCKRails(jy) ; passList.append(passed) ; statsList.append(stats)
-    _, _, passed, stats = RGRailsResults = RGRails(jy)   ; passList.append(passed) ; statsList.append(stats)
-    _, _, passed, stats = OGResults = OG(jy)             ; passList.append(passed) ; statsList.append(stats)
-    _, _, passed, stats = ODResults = OD(jy)             ; passList.append(passed) ; statsList.append(stats)
-    _, _, passed, stats = GDResults = GD(jy)             ; passList.append(passed) ; statsList.append(stats)
-    _, _, passed, stats = RDResults = RD(jy)             ; passList.append(passed) ; statsList.append(stats)
+    # Rails test
+    _, _, passed, stats = SCKRailsResults = SCKRails(); passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = RGRailsResults  = RGRails() ; passList.append(passed) ; statsList.append(stats)
+    # Diverging rails tests
+    _, _, passed, stats = divergingSCKRailsResults0  = divergingSCKRails(9.0, 0.0) ; passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = divergingSCKRailsResults3  = divergingSCKRails(9.0, 3.0) ; passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = divergingSCKRailsResultsm3 = divergingSCKRails(9.0, -3.0); passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = divergingRGRailsResults0   = divergingRGRails(9.0, 0.0)  ; passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = divergingRGRailsResults3   = divergingRGRails(9.0, 3.0)  ; passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = divergingRGRailsResultsm3  = divergingRGRails(9.0, -3.0) ; passList.append(passed) ; statsList.append(stats)
+    # Bias tests
+    _, _, passed, stats = OGResults = OG(); passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = ODResults = OD(); passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = GDResults = GD(); passList.append(passed) ; statsList.append(stats)
+    _, _, passed, stats = RDResults = RD(); passList.append(passed) ; statsList.append(stats)
+
+    print ("Generating pdf report...")
 
     # Generate summary page
     pdf.summaryPage(boardID, testList, passList, statsList)
+
+    # Idle Current Test
+    voltages, currents = idleCurrentConsumption()
+    pdf.idleCurrent("Idle Current Test", voltages, currents)
+
+    # Channel test
+    channels, values, passed, stats = ChannelTestResults
+    pdf.add_page()
+    pdf.cell(0, 6, "Channel Communications Test", 0, 1, 'L', 1)
+    pdf.columnTable([channels, values], colHeaders = ["Channel", "Value"], fontSize = 12)
 
     # CS Gate Test
     data = CSGateResults
@@ -849,7 +934,7 @@ raftsub.synchCommandLine(1000, "setFitsFileNamePattern " + fname)
     shutil.rmtree("tempFigures")
 
     # Restore previous settings and exit
-    exit(jy)
+    exitScript()
 
 
 
