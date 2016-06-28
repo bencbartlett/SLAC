@@ -14,9 +14,13 @@ import signal
 import os
 import shutil
 import textwrap
+import time
+import glob
 from numpy import polyfit
 from PythonBinding import *
 from FastProgressBar import progressbar
+
+start = int(1000*time.time())
 
 # Catch abort so previous settings can be restored
 def exitScript():
@@ -761,6 +765,15 @@ def RD():
 
     return data, residuals, passed, stats
 
+def temperatureTest(startTime):
+    print ("Fetching temperature data...")
+    now = int(time.time()*1000)
+    os.system('cd TempPlot/ && python refrigPlot.py . "prod" ccs-cr '+str(startTime)+' '+str(now))
+    time.sleep(5)
+    os.system("cd ..")
+
+
+
 # --------- Execution ---------
 if __name__ == "__main__":
     # Argument parser
@@ -927,11 +940,35 @@ if __name__ == "__main__":
     # RD Test
     pdf.residualTest(*(("RD Bias Test",) + RDResults))
 
+    # Temperature test
+    temperatureTest(start)
+    pdf.add_page()
+    pdf.set_font('Arial', '', 12)
+    pdf.set_fill_color(200, 220, 220)
+    pdf.cell(0, 6, "Temperature test", 0, 1, 'L', 1)
+
+    # Make image
+    width = .5 * (pdf.w - 2 * pdf.l_margin)
+    height = pdf.h - 2 * pdf.t_margin
+    imgList = glob.glob("TempPlot/*.jpg")
+    xhalf = (pdf.w - 2 * pdf.l_margin)/2.0
+    y0 = pdf.get_y()
+    pdf.image(imgList[0], x = pdf.l_margin, y = y0, w = width)
+    pdf.image(imgList[1], x = pdf.l_margin+xhalf, y = y0, w = width)
+    pdf.image(imgList[2], x = pdf.l_margin, y = y0 + height/4, w = width)
+    pdf.image(imgList[3], x = pdf.l_margin+xhalf, y = y0 + height/4, w = width)
+    pdf.image(imgList[4], x = pdf.l_margin, y = y0 + height/2, w = width)
+    pdf.image(imgList[5], x = pdf.l_margin+xhalf, y = y0 + height/2, w = width)
+
+
+
     if not args.noPDF:
         print("Generating PDF report at " + dataDir + '/dacTest.pdf')
         pdf.output(dataDir + '/dacTest.pdf', 'F')
 
     shutil.rmtree("tempFigures")
+    for img in imgList:
+        os.remove(img)
 
     # Restore previous settings and exit
     exitScript()
