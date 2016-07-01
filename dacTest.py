@@ -10,15 +10,17 @@
 
 
 from __future__ import print_function
-import signal
+
+import glob
 import os
 import shutil
+import signal
 import textwrap
-import time
-import glob
+
 from numpy import polyfit
+
+from Libraries.FastProgressBar import progressbar
 from PythonBinding import *
-from FastProgressBar import progressbar
 
 start = int(1000*time.time())
 
@@ -768,7 +770,7 @@ def RD():
 def temperatureTest(startTime):
     print ("Fetching temperature data...")
     now = int(time.time()*1000)
-    os.system('cd TempPlot/ && python refrigPlot.py . "prod" ccs-cr '+str(startTime)+' '+str(now))
+    os.system('cd TemperaturePlot/ && python refrigPlot.py . "prod" ccs-cr '+str(startTime)+' '+str(now))
     time.sleep(5)
     os.system("cd ..")
 
@@ -848,7 +850,7 @@ if __name__ == "__main__":
     epw = pdf.w - 2 * pdf.l_margin
 
     # Execute desired tests
-    os.system("clear")
+    print ("\n\n\nWREB Functional Test:")
 
     testList = ["Channel Comms", "SCK Rails", "RG Rails", 
                 "Diverging SCK 0V", "Diverging SCK 3V", "Diverging SCK -3V",
@@ -879,8 +881,6 @@ if __name__ == "__main__":
     _, _, passed, stats = ODResults = OD(); passList.append(passed) ; statsList.append(stats)
     _, _, passed, stats = GDResults = GD(); passList.append(passed) ; statsList.append(stats)
     _, _, passed, stats = RDResults = RD(); passList.append(passed) ; statsList.append(stats)
-
-    print ("Generating pdf report...")
 
     # Generate summary page
     pdf.summaryPage(boardID, testList, passList, statsList)
@@ -941,24 +941,26 @@ if __name__ == "__main__":
     pdf.residualTest(*(("RD Bias Test",) + RDResults))
 
     # Temperature test
-    temperatureTest(start)
+    temperatureTest(start) # Gets board and CCD temperature data
     pdf.add_page()
     pdf.set_font('Arial', '', 12)
     pdf.set_fill_color(200, 220, 220)
-    pdf.cell(0, 6, "Temperature test", 0, 1, 'L', 1)
-
+    pdf.cell(0, 6, "Board temperature test", 0, 1, 'L', 1)
     # Make image
     width = .5 * (pdf.w - 2 * pdf.l_margin)
     height = pdf.h - 2 * pdf.t_margin
-    imgList = glob.glob("TempPlot/*.jpg")
+    imgListTemp = glob.glob("TemperaturePlot/WREB.Temp*.jpg")
     xhalf = (pdf.w - 2 * pdf.l_margin)/2.0
     y0 = pdf.get_y()
-    pdf.image(imgList[0], x = pdf.l_margin, y = y0, w = width)
-    pdf.image(imgList[1], x = pdf.l_margin+xhalf, y = y0, w = width)
-    pdf.image(imgList[2], x = pdf.l_margin, y = y0 + height/4, w = width)
-    pdf.image(imgList[3], x = pdf.l_margin+xhalf, y = y0 + height/4, w = width)
-    pdf.image(imgList[4], x = pdf.l_margin, y = y0 + height/2, w = width)
-    pdf.image(imgList[5], x = pdf.l_margin+xhalf, y = y0 + height/2, w = width)
+    pdf.image(imgListTemp[0], x = pdf.l_margin, y = y0, w = width)
+    pdf.image(imgListTemp[1], x = pdf.l_margin+xhalf, y = y0, w = width)
+    pdf.image(imgListTemp[2], x = pdf.l_margin, y = y0 + height/4, w = width)
+    pdf.image(imgListTemp[3], x = pdf.l_margin+xhalf, y = y0 + height/4, w = width)
+    pdf.image(imgListTemp[4], x = pdf.l_margin, y = y0 + height/2, w = width)
+    pdf.image(imgListTemp[5], x = pdf.l_margin+xhalf, y = y0 + height/2, w = width)
+    # CCD Temperature test
+    imgListCCDTemp = glob.glob("TemperaturePlot/WREB.CCDtemp*.jpg")
+    pdf.addPlotPage("CCD Temperature Test", imgListCCDTemp[0])
 
 
 
@@ -966,11 +968,14 @@ if __name__ == "__main__":
         print("Generating PDF report at " + dataDir + '/dacTest.pdf')
         pdf.output(dataDir + '/dacTest.pdf', 'F')
 
+    # Clean up figures
     shutil.rmtree("tempFigures")
-    for img in imgList:
+    for img in imgListTemp:
         os.remove(img)
-
+    for img in imgListCCDTemp:
+        os.remove(img)
     # Restore previous settings and exit
+    print ("WREB test completed.\n\n\n")
     exitScript()
 
 

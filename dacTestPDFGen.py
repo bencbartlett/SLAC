@@ -2,10 +2,13 @@
 # Ben Bartlett
 # 15 June 2016
 
-from fpdf.fpdf import FPDF
-import numpy as np
-import matplotlib.pyplot as plt 
 import time
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+from Libraries.fpdf.fpdf import FPDF
+
 
 def residualPlots(datas, residuals, saveAs, xdat = None, pltRange = None):
     '''Generates a set of plots and residuals.
@@ -63,14 +66,14 @@ def multiPlots(datas, saveAs, xdat = None):
 class PDF(FPDF):
     def header(self):
         # Logo
-        self.image('LSSTLogo.jpg', 10, 8, h=15) # For some reason, fpdf doesn't like png's, only jpgs.
+        self.image('Media/LSSTLogo.jpg', 10, 8, h=15) # For some reason, fpdf doesn't like png's, only jpgs.
         # Arial bold 15
         self.set_font('Arial', 'B', 15)
         # Move to the right
         self.cell(80)
         # Title
         self.cell(30, 10, 'DAC Test: '+time.strftime("%Y-%m-%d %H:%M"), align ='C')
-        self.image('SLACLogo.jpg', 150, 8, h=15)
+        self.image('Media/SLACLogo.jpg', 150, 8, h=15)
         # Line break
         self.ln(20)
 
