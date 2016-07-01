@@ -1,4 +1,4 @@
-# DAC Testing Script
+# WREB Testing Script
 # Originally written by Sven Herrmann
 # Restructured/augmented by Ben Bartlett (bcb@slac.stanford.edu)
 
@@ -6,7 +6,7 @@
 # Ensure Jython console is running (./JythonConsole or the bootstrapper program)
 # Ensure crRun.sh is running
 # Ensure DACs are loaded in the CCS console
-# "python dacTest.py [options]"
+# "python WREBTest.py [options]"
 
 
 from __future__ import print_function
@@ -781,8 +781,8 @@ if __name__ == "__main__":
     # Argument parser
     import argparse
     parser = argparse.ArgumentParser(description =
-        '''Test script for DAC on CCD controller boards to generate a pdf status report.''',
-                                     epilog = '''>> Example: python dacTest.py ~/u1/u/wreb/data -q''')
+        '''Test script for WREB controller boards to generate a pdf status report.''',
+                                     epilog = '''>> Example: python WREBTest.py ~/u1/u/wreb/data -q''')
     parser.add_argument("writeDirectory", nargs = '?', default = "/u1/u/wreb/data/scratch",
                         help="Directory to save outputs to. Defaults to /u1/u/wreb/data/scratch.", action="store")
     parser.add_argument("-v", "--verbose",
@@ -842,7 +842,7 @@ if __name__ == "__main__":
         os.makedirs("tempFigures")
 
     # Instantiation of inherited class
-    from dacTestPDFGen import *
+    from WREBTestPDFGen import *
 
     pdf = PDF()
     pdf.alias_nb_pages()
@@ -965,8 +965,8 @@ if __name__ == "__main__":
 
 
     if not args.noPDF:
-        print("Generating PDF report at " + dataDir + '/dacTest.pdf')
-        pdf.output(dataDir + '/dacTest.pdf', 'F')
+        print("Generating PDF report at " + dataDir + '/WREBTest.pdf')
+        pdf.output(dataDir + '/WREBTest.pdf', 'F')
 
     # Clean up figures
     shutil.rmtree("tempFigures")

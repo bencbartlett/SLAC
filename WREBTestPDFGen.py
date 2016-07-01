@@ -230,5 +230,5 @@ if __name__ == "__main__":
     pdf.set_title(title)
     pdf.makeResidualPlotPage(title, "asdf.jpg", [a,b],[a])
 
-    pdf.output('dacTest.pdf', 'F')
+    pdf.output('WREBTest.pdf', 'F')
 
