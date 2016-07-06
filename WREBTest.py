@@ -20,7 +20,7 @@ import textwrap
 from numpy import polyfit
 
 from Libraries.FastProgressBar import progressbar
-from PythonBinding import *
+from Libraries.PythonBinding import *
 
 start = int(1000*time.time())
 
@@ -124,11 +124,11 @@ def channelTest():
                     'WREB.ClkHPS_V', 'WREB.ClkHPS_I', 'WREB.DphiPS_V', 'WREB.DphiPS_I', 'WREB.HtrPS_V', 'WREB.HtrPS_I',
                     'WREB.VREF25', 'WREB.OD_V', 'WREB.OD_I', 'WREB.OG_V', 'WREB.RD_V', 'WREB.GD_V', 'WREB.CKP_V',
                     'WREB.CKPSH_V', 'WREB.CKS_V', 'WREB.SCKU_V', 'WREB.SCKL_V', 'WREB.RG_V', 'WREB.RGU_V', 'WREB.RGL_V']
-    if not verbose: pbar = progressbar("Channel Comms Test, &count&: ", len(fullChannels)); pbar.start()
 
     channels = jy.get('raftsub.synchCommandLine(1000,"getChannelNames").getResult()', dtype = 'str')
     channels = channels.replace("[","").replace("]","").replace("\n","")
     channels = channels.split(", ") # Channels is now a list of strings representing channel names
+    if not verbose: pbar = progressbar("Channel Comms Test, &count&: ", len(channels)); pbar.start()
 
     # Primitive pass metric: test if channel list has all channels in it
     passed = "PASS"
@@ -147,6 +147,24 @@ def channelTest():
     stats = "%i/%i channels missing." % (len(fullChannels)-len(channels), len(fullChannels))
 
     return channels, vals, passed, stats
+
+def ASPICcommsTest():
+    aspicstr = jy.get('raftsub.synchCommandLine(1000,"checkAspics").getResult()', dtype = 'str')
+    aspics = aspicstr.replace("[", "").replace("]", "").replace("\n", "")
+    aspics = aspics.split(", ")  # Channels is now a list of strings representing channel names
+
+    # Primitive pass metric: test if channel list has all channels in it
+    numAspics = 0
+    passed = "PASS"
+    for aspic in aspics:
+        if aspic != "0":
+            passed = "FAIL"
+        else:
+            numAspics += 1
+
+    stats = "%i/%i ASPICS communicating." % (numAspics, len(aspics))
+
+    return aspicstr, passed, stats
 
 
 def CSGate():
@@ -783,8 +801,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description =
         '''Test script for WREB controller boards to generate a pdf status report.''',
                                      epilog = '''>> Example: python WREBTest.py ~/u1/u/wreb/data -q''')
-    parser.add_argument("writeDirectory", nargs = '?', default = "/u1/u/wreb/data/scratch",
-                        help="Directory to save outputs to. Defaults to /u1/u/wreb/data/scratch.", action="store")
+    parser.add_argument("writeDirectory", nargs = '?', default = "./Reports",
+                        help="Directory to save outputs to. Defaults to ./Reports.", action="store")
     parser.add_argument("-v", "--verbose",
                         help="Print test results in the terminal.", action="store_true")
     parser.add_argument("-n", "--noPDF",
@@ -835,8 +853,11 @@ if __name__ == "__main__":
     # print result.getResult()'''
     jy.do(textwrap.dedent(commands))
 
+    # Get hex board ID
     boardID = str(hex(int(
-        jy.get('wreb.synchCommandLine(1000,"getSerialNumber").getResult()', dtype="str").replace("L","")))) # Get hex board ID
+        jy.get('wreb.synchCommandLine(1000,"getSerialNumber").getResult()', dtype="str").replace("L",""))))
+    # FPGA info in register 1
+    FPGAInfo = jy.get('wreb.synchCommandLine(1000,"getRegister 1 1").getResult()', dtype="str").split(": ")[1]
 
     if not os.path.exists("tempFigures"):
         os.makedirs("tempFigures")
@@ -852,10 +873,20 @@ if __name__ == "__main__":
     # Execute desired tests
     print ("\n\n\nWREB Functional Test:")
 
-    testList = ["Channel Comms", "SCK Rails", "RG Rails", 
-                "Diverging SCK 0V", "Diverging SCK 3V", "Diverging SCK -3V",
-                "Diverging RG 0V", "Diverging RG 3V", "Diverging RG -3V",
-                "CCD Bias OG Voltage", "CCD Bias OD Voltage", "CCD Bias GR Voltage", "CCD Bias RD Voltage"]
+    testList = ["Channel Comms",
+                "ASPIC Comms",
+                "SCK Rails",
+                "RG Rails",
+                "Diverging SCK 0V",
+                "Diverging SCK 3V",
+                "Diverging SCK -3V",
+                "Diverging RG 0V",
+                "Diverging RG 3V",
+                "Diverging RG -3V",
+                "CCD Bias OG Voltage",
+                "CCD Bias OD Voltage",
+                "CCD Bias GR Voltage",
+                "CCD Bias RD Voltage"]
     passList = []
     statsList = []
 
@@ -864,6 +895,7 @@ if __name__ == "__main__":
 
     # Run tests and store results to container variables (tests must be run before summary page is generated)
     _, _, passed, stats = ChannelTestResults = channelTest(); passList.append(passed) ; statsList.append(stats)
+    _,    passed, stats = ASPICcommsTestResults = ASPICcommsTest(); passList.append(passed) ; statsList.append(stats)
     # _,_,passed,stats = CSGateResults   = CSGate(jy);   passList.append(passed); statsList.append(stats)
     # _,_,passed,stats = PCKRailsResults = PCKRails(jy); passList.append(passed); statsList.append(stats)
     # Rails test
@@ -883,7 +915,7 @@ if __name__ == "__main__":
     _, _, passed, stats = RDResults = RD(); passList.append(passed) ; statsList.append(stats)
 
     # Generate summary page
-    pdf.summaryPage(boardID, testList, passList, statsList)
+    pdf.summaryPage(boardID, FPGAInfo, testList, passList, statsList)
 
     # Idle Current Test
     voltages, currents = idleCurrentConsumption()
@@ -892,8 +924,18 @@ if __name__ == "__main__":
     # Channel test
     channels, values, passed, stats = ChannelTestResults
     pdf.add_page()
+    pdf.set_font('Arial', '', 12)
     pdf.cell(0, 6, "Channel Communications Test", 0, 1, 'L', 1)
     pdf.columnTable([channels, values], colHeaders = ["Channel", "Value"], fontSize = 12)
+
+    # ASPIC Comms test
+    aspicstr, passed, stats = ASPICcommsTestResults
+    pdf.add_page()
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(0, 6, "Channel Communications Test", 0, 1, 'L', 1)
+    pdf.cell(0, 6, "Test "+passed+". "+stats, 0, 1, 'L')
+    pdf.cell(0, 6, "ccs-cr.checkAsics result: "+aspicstr, 0, 1, 'L')
+
 
     # CS Gate Test
     data = CSGateResults
@@ -958,9 +1000,16 @@ if __name__ == "__main__":
     pdf.image(imgListTemp[3], x = pdf.l_margin+xhalf, y = y0 + height/4, w = width)
     pdf.image(imgListTemp[4], x = pdf.l_margin, y = y0 + height/2, w = width)
     pdf.image(imgListTemp[5], x = pdf.l_margin+xhalf, y = y0 + height/2, w = width)
+
     # CCD Temperature test
     imgListCCDTemp = glob.glob("TemperaturePlot/WREB.CCDtemp*.jpg")
-    pdf.addPlotPage("CCD Temperature Test", imgListCCDTemp[0])
+    imgListRTDTemp = glob.glob("TemperaturePlot/WREB.RTDtemp*.jpg")
+    pdf.add_page()
+    pdf.set_fill_color(200, 220, 220)
+    pdf.cell(0, 6, "CCD temperature test", 0, 1, 'L', 1)
+    y0 = pdf.get_y()
+    pdf.image(imgListCCDTemp[0], x = pdf.l_margin, y = y0, w = width)
+    pdf.image(imgListRTDTemp[0], x = pdf.l_margin + xhalf, y = y0, w = width)
 
 
 
@@ -977,7 +1026,5 @@ if __name__ == "__main__":
     # Restore previous settings and exit
     print ("WREB test completed.\n\n\n")
     exitScript()
-
-
 
 

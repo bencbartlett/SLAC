@@ -1,4 +1,4 @@
-# PDF Report Generator for dacTest.py
+# PDF Report Generator for WREBTest.py
 # Ben Bartlett
 # 15 June 2016
 
@@ -72,7 +72,7 @@ class PDF(FPDF):
         # Move to the right
         self.cell(80)
         # Title
-        self.cell(30, 10, 'DAC Test: '+time.strftime("%Y-%m-%d %H:%M"), align ='C')
+        self.cell(30, 10, 'WREB Test: '+time.strftime("%Y-%m-%d %H:%M"), align ='C')
         self.image('Media/SLACLogo.jpg', 150, 8, h=15)
         # Line break
         self.ln(20)
@@ -96,21 +96,25 @@ class PDF(FPDF):
         # Line break
         self.ln(4)
 
-    def summaryPage(self, boardID, testList, passList, statsList):
+    def summaryPage(self, boardID, FPGAInfo, testList, passList, statsList):
         self.add_page()
         # Logo
-        self.image('LSSTLogo.jpg', 10, 8, h=15) # For some reason, fpdf doesn't like png's, only jpgs.
+        self.image('Media/LSSTLogo.jpg', 10, 8, h=15) # For some reason, fpdf doesn't like png's, only jpgs.
         # Move to the right
         self.cell(110)
-        self.image('SLACLogo.jpg', 150, 8, h=15)
+        self.image('Media/SLACLogo.jpg', 150, 8, h=15)
         # Title
         self.set_font('Arial', 'B', 18)
         self.ln(5 * self.font_size)
         epw = self.w - 2*self.l_margin
-        self.cell(epw, self.font_size, 'DAC Functional Test Report', align ='C', ln=1)
+        self.cell(epw, self.font_size, 'WREB Functional Test Report', align ='C', ln=1)
         self.set_font('Arial', size = 14)
         self.cell(epw, self.font_size, 'Board ID: '+boardID, align ='C', ln=1)
-        self.cell(epw, self.font_size, 'Performed: '+time.strftime("%Y-%m-%d %H:%M"), align ='C', ln=1)
+        boardType, linkVersion, FPGAVersion = FPGAInfo[0], FPGAInfo[1:4], FPGAInfo[4:]
+        self.cell(epw, self.font_size, 'Board Type: ' + boardType, align = 'C', ln = 1)
+        self.cell(epw, self.font_size, 'Link Version: ' + linkVersion, align = 'C', ln = 1)
+        self.cell(epw, self.font_size, 'Front-end FPGA Code Version: ' + FPGAVersion, align = 'C', ln = 1)
+        self.cell(epw, self.font_size, 'Test Performed: '+time.strftime("%Y-%m-%d %H:%M:%S"), align ='C', ln=1)
         self.ln(2*self.font_size)
         # Summary table
         self.columnTable([passList, testList, statsList], colHeaders = ["Status", "Test", "Results"],
