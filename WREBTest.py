@@ -1011,8 +1011,6 @@ if __name__ == "__main__":
     pdf.image(imgListCCDTemp[0], x = pdf.l_margin, y = y0, w = width)
     pdf.image(imgListRTDTemp[0], x = pdf.l_margin + xhalf, y = y0, w = width)
 
-
-
     if not args.noPDF:
         print("Generating PDF report at " + dataDir + '/WREBTest.pdf')
         pdf.output(dataDir + '/WREBTest.pdf', 'F')
