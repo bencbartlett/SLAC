@@ -1,0 +1,37 @@
+\hypertarget{class_libraries_1_1dialog_1_1_python_dialog_error_before_exec_in_child_process}{}\section{Libraries.\+dialog.\+Python\+Dialog\+Error\+Before\+Exec\+In\+Child\+Process Class Reference}
+\label{class_libraries_1_1dialog_1_1_python_dialog_error_before_exec_in_child_process}\index{Libraries.\+dialog.\+Python\+Dialog\+Error\+Before\+Exec\+In\+Child\+Process@{Libraries.\+dialog.\+Python\+Dialog\+Error\+Before\+Exec\+In\+Child\+Process}}
+Inheritance diagram for Libraries.\+dialog.\+Python\+Dialog\+Error\+Before\+Exec\+In\+Child\+Process\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{class_libraries_1_1dialog_1_1_python_dialog_error_before_exec_in_child_process}
+\end{center}
+\end{figure}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string {\bfseries Exception\+Short\+Description} = \char`\"{}Error in a child process before the exec \char`\"{}\hypertarget{class_libraries_1_1dialog_1_1_python_dialog_error_before_exec_in_child_process_a8e54ddef45bfe2aab1f81d1fcb3a4618}{}\label{class_libraries_1_1dialog_1_1_python_dialog_error_before_exec_in_child_process_a8e54ddef45bfe2aab1f81d1fcb3a4618}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Exception raised when an exception is caught in a child process \
+before the exec sytem call (included).
+
+This can happen in uncomfortable situations such as:
+
+  - the system being out of memory;
+  - the maximum number of open file descriptors being reached;
+  - the :program:`dialog`-like program being removed (or made
+    non-executable) between the time we found it with
+    :func:`_find_in_path` and the time the exec system call
+    attempted to execute it;
+  - the Python program trying to call the :program:`dialog`-like
+    program with arguments that cannot be represented in the user's
+    locale (:envvar:`LC_CTYPE`).\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Libraries/dialog.\+py\end{DoxyCompactItemize}

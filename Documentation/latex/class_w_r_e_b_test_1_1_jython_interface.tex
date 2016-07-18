@@ -1,0 +1,73 @@
+\hypertarget{class_w_r_e_b_test_1_1_jython_interface}{}\section{W\+R\+E\+B\+Test.\+Jython\+Interface Class Reference}
+\label{class_w_r_e_b_test_1_1_jython_interface}\index{W\+R\+E\+B\+Test.\+Jython\+Interface@{W\+R\+E\+B\+Test.\+Jython\+Interface}}
+
+
+Some hacky workarounds to clean up the limited communication with the Jython interface.  
+
+
+Inheritance diagram for W\+R\+E\+B\+Test.\+Jython\+Interface\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_w_r_e_b_test_1_1_jython_interface}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{class_w_r_e_b_test_1_1_jython_interface_aaff9cae5e3c5367b1c79f8be5f087181}{do} (self, code)
+\begin{DoxyCompactList}\small\item\em Execute a command on the C\+CS Jython interpreter. \end{DoxyCompactList}\item 
+def \hyperlink{class_w_r_e_b_test_1_1_jython_interface_a0c3b2841fae79791193be63ac323b46a}{get} (self, code, dtype=\char`\"{}float\char`\"{})
+\begin{DoxyCompactList}\small\item\em Executes a piece of code and returns the value through get\+Output(). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Some hacky workarounds to clean up the limited communication with the Jython interface. 
+
+
+
+\subsection{Member Function Documentation}
+\index{W\+R\+E\+B\+Test\+::\+Jython\+Interface@{W\+R\+E\+B\+Test\+::\+Jython\+Interface}!do@{do}}
+\index{do@{do}!W\+R\+E\+B\+Test\+::\+Jython\+Interface@{W\+R\+E\+B\+Test\+::\+Jython\+Interface}}
+\subsubsection[{\texorpdfstring{do(self, code)}{do(self, code)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+Jython\+Interface.\+do (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{code}
+\end{DoxyParamCaption}
+)}\hypertarget{class_w_r_e_b_test_1_1_jython_interface_aaff9cae5e3c5367b1c79f8be5f087181}{}\label{class_w_r_e_b_test_1_1_jython_interface_aaff9cae5e3c5367b1c79f8be5f087181}
+
+
+Execute a command on the C\+CS Jython interpreter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & Code as a literal to be executed. \\
+\hline
+\end{DoxyParams}
+\index{W\+R\+E\+B\+Test\+::\+Jython\+Interface@{W\+R\+E\+B\+Test\+::\+Jython\+Interface}!get@{get}}
+\index{get@{get}!W\+R\+E\+B\+Test\+::\+Jython\+Interface@{W\+R\+E\+B\+Test\+::\+Jython\+Interface}}
+\subsubsection[{\texorpdfstring{get(self, code, dtype=""float"")}{get(self, code, dtype="float")}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+Jython\+Interface.\+get (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{code, }
+\item[{}]{dtype = {\ttfamily \char`\"{}float\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_w_r_e_b_test_1_1_jython_interface_a0c3b2841fae79791193be63ac323b46a}{}\label{class_w_r_e_b_test_1_1_jython_interface_a0c3b2841fae79791193be63ac323b46a}
+
+
+Executes a piece of code and returns the value through get\+Output(). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & Code as a literal to be executed. \\
+\hline
+{\em dtype} & Optional data type, defaults to float. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Converted value received through printed output from get\+Output(). get\+Output() normally only returns the results of cout, so the result is automatically typecasted to type dtype. This should be used only with a single command at a time. Like I said, hacky work around, this should be fixed in the future. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_w_r_e_b_test_8py}{W\+R\+E\+B\+Test.\+py}\end{DoxyCompactItemize}

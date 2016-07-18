@@ -1,0 +1,36 @@
+\hypertarget{class_libraries_1_1dialog_1_1_python_dialog_system_error}{}\section{Libraries.\+dialog.\+Python\+Dialog\+System\+Error Class Reference}
+\label{class_libraries_1_1dialog_1_1_python_dialog_system_error}\index{Libraries.\+dialog.\+Python\+Dialog\+System\+Error@{Libraries.\+dialog.\+Python\+Dialog\+System\+Error}}
+Inheritance diagram for Libraries.\+dialog.\+Python\+Dialog\+System\+Error\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.536232cm]{class_libraries_1_1dialog_1_1_python_dialog_system_error}
+\end{center}
+\end{figure}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string {\bfseries Exception\+Short\+Description} = \char`\"{}System \hyperlink{class_libraries_1_1dialog_1_1error}{error}\char`\"{}\hypertarget{class_libraries_1_1dialog_1_1_python_dialog_system_error_a8ab830e86f9360a4cde751849994924c}{}\label{class_libraries_1_1dialog_1_1_python_dialog_system_error_a8ab830e86f9360a4cde751849994924c}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Exception raised when pythondialog cannot perform a "system \
+operation" (e.g., a system call) that should work in "normal" situations.
+
+This is a convenience exception: :exc:`PythonDialogIOError`,
+:exc:`PythonDialogOSError` and
+:exc:`PythonDialogErrorBeforeExecInChildProcess` all derive from
+this exception. As a consequence, watching for
+:exc:`PythonDialogSystemError` instead of the aformentioned
+exceptions is enough if you don't need precise details about these
+kinds of errors.
+
+Don't confuse this exception with Python's builtin
+:exc:`SystemError` exception.\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Libraries/dialog.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,28 @@
+This is the testing suite for the W\+R\+EB C\+CD interface, designed to verify that the W\+R\+EB boards are defect-\/free and operating as expected. Note that this program communicates directly with the Jython interpreter to manipulate the board, so it does not need to be loaded into the Jython exectuor and can be run directly from the terminal with python.
+
+Tests are structured as classes with four required methods\+:
+\begin{DoxyItemize}
+\item {\bfseries init} sets initial variables; minimum required variables are self.\+title and self.\+status.
+\item run\+Test is the body of the tests, running the code to execute the tests and storing the results to state variables.
+\item summarize writes summary information to the summary object passed to it; this is used in generating the cover page.
+\item report writes the portion of the pdf report that the test is responsible for.
+\end{DoxyItemize}
+
+\subsection*{External dependencies}
+
+All external dependencies are contained within Anaconda\+:
+\begin{DoxyItemize}
+\item astropy
+\item numpy
+\item matplotlib
+\end{DoxyItemize}
+
+\subsection*{Running the testing suite}
+
+
+\begin{DoxyItemize}
+\item Ensure Jython console is running (./\+Jython\+Console or the bootstrapper program)
+\item Ensure cr\+Run.\+sh is running
+\item Ensure D\+A\+Cs are loaded in the C\+CS console
+\item \char`\"{}python W\+R\+E\+B\+Test.\+py \mbox{[}options\mbox{]}\char`\"{} Initial crashing yielding a Value\+Error is likely due to a cr\+Run or Jython\+Console crashing or not being loaded. 
+\end{DoxyItemize}
