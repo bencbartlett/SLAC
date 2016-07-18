@@ -428,7 +428,7 @@ def getData(id, start, end):
 def genData(ix):
     global gFirstTimes, gLastTimes
     data = getData(gPlotIds[ix], gStartTime, gEndTime)
-    print len(data), "values found for", gPlotNames[ix]
+    # print len(data), "values found for", gPlotNames[ix]
     if len(data) == 0:
         return False
     try:
