@@ -1,5 +1,5 @@
 '''
-@file WREBTestPDFGen.py
+@file pdfGenWREB.py
 @brief Contains common PDF generation routines for the WREB test report.
 
 External dependencies:
@@ -124,10 +124,13 @@ class PDF(FPDF):
         # Line break
         self.ln(4)
 
-    def summaryPage(self, boardID, FPGAInfo, scriptVersion, testList, passList, statsList):
+    def summaryPage(self, boardID, boardType, linkVersion, FPGAVersion, scriptVersion, startTime, testList, passList, statsList):
         '''@brief Generate a summary page for the tests that were run.
         @param boardID Serial number of the board that is tested
-        @param FPGAInfo FPGA front-end software version
+        @param boardType Type of phsyical board model
+        @param linkVersion Version of link software
+        @param FPGAVersion Front-end FPGA code version
+        @param scriptVersion Version of the script, given by the last modified date YY.MM.DD.hh.mm.ss
         @param testList List of test titles that were run
         @param passList List of test results
         @param statsList List of relevant statistics returned from the tests'''
@@ -141,16 +144,16 @@ class PDF(FPDF):
         self.set_font('Courier', 'B', 18)
         self.ln(4 * self.font_size)
         epw = self.w - 2 * self.l_margin
+        # Board info
         self.cell(epw, self.font_size, 'WREB Functional Test Report', align = 'C', ln = 1)
         self.ln(2 * self.font_size)
         self.set_font('Courier', size = 14)
-        self.cell(epw, self.font_size, 'Board ID: ' + boardID, align = 'L', ln = 1)
-        boardType, linkVersion, FPGAVersion = FPGAInfo[0], FPGAInfo[1:4], FPGAInfo[4:]
+        self.cell(epw, self.font_size, 'Board ID......................' + boardID, align = 'L', ln = 1)
         self.cell(epw, self.font_size, 'Board Type....................' + boardType, align = 'L', ln = 1)
         self.cell(epw, self.font_size, 'Link Version..................' + linkVersion, align = 'L', ln = 1)
         self.cell(epw, self.font_size, 'Front-end FPGA Code Version...' + FPGAVersion, align = 'L', ln = 1)
         self.cell(epw, self.font_size, 'Script Version................' + scriptVersion, align = 'L', ln = 1)
-        self.cell(epw, self.font_size, 'Test Performed................' + time.strftime("%Y-%m-%d %H:%M:%S"),
+        self.cell(epw, self.font_size, 'Test Performed................' + time.strftime("%Y-%m-%d %H:%M:%S", startTime),
                   align = 'L', ln = 1)
         self.ln(2 * self.font_size)
         # Summary table
@@ -198,6 +201,7 @@ class PDF(FPDF):
             self.set_fill_color(200, 220, 220)
             self.cell(colWidth, cellHeight, str(title), align = align, ln = 2, fill = True)
             for count, entry in enumerate(data):
+                self.set_fill_color(200, 200, 200)
                 if low <= count <= high:
                     filled = True
                 else:
@@ -297,12 +301,13 @@ class PDF(FPDF):
         '''@brief Return color-coded pass/fail result.
         @param passed String of either "PASS" or "FAIL"'''
         epw = self.w - 2 * self.l_margin
+        self.set_fill_color(200, 220, 220)
         if passed == "PASS":
             self.set_text_color(0, 255, 0)
-            self.cell(epw, self.font_size, "Test PASSED.", align = 'C', ln = 1)
+            self.cell(epw, self.font_size, "Test PASSED.", align = 'C', ln = 1, fill = True)
         elif passed == "FAIL":
             self.set_text_color(255, 0, 0)
-            self.cell(epw, self.font_size, "Test FAILED.", align = 'C', ln = 1)
+            self.cell(epw, self.font_size, "Test FAILED.", align = 'C', ln = 1, fill = True)
         self.set_text_color(0, 0, 0)
         self.ln(2 * self.font_size)
 

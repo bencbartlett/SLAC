@@ -26,7 +26,7 @@ Tests are executed from a list of test objects defined in FunctionalTest().
 from __future__ import print_function
 
 import glob
-import os
+import os, sys
 import shutil
 import signal
 import textwrap
@@ -36,17 +36,37 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 from pdfGenWREB import *
 from threading import Thread
+from datetime import datetime
 
 from Libraries.FastProgressBar import progressbar
 from Libraries.PythonBinding import *
 from Libraries.dialog import Dialog
 
-start = int(1000 * time.time())
-startSec = time.time()
-lastModified = time.ctime(os.path.getmtime("WREBTest.py"))
-
 
 # Catch abort so previous settings can be restored
+def initialize():
+    # Some initialization commands for the CCS
+    jy.do('dataDir = %s' % args.writeDirectory)
+    commands = '''
+    from org.lsst.ccs.scripting import *
+    import time
+    import sys
+    raftsub  = CCS.attachSubsystem("ccs-cr");
+    wreb     = CCS.attachSubsystem("ccs-cr/WREB")
+    wrebDAC  = CCS.attachSubsystem("ccs-cr/WREB.DAC")
+    wrebBias = CCS.attachSubsystem("ccs-cr/WREB.Bias0")
+    tsoak = 0.5
+    # save config inside the board to temp_cfg and load the test_base_cfg
+    raftsub.synchCommandLine(1000,"saveChangesForCategoriesAs Rafts:WREB_temp_cfg")
+    raftsub.synchCommandLine(1000,"loadCategories Rafts:WREB_test_base_cfg")
+    wreb.synchCommandLine(1000,"loadDacs true")
+    wreb.synchCommandLine(1000,"loadBiasDacs true")
+    wreb.synchCommandLine(1000,"loadAspics true")
+    '''
+    jy.do(textwrap.dedent(commands))
+    time.sleep(2)
+
+
 def resetSettings():
     '''@brief Reset the board settings for use in between tests.'''
     jy.do('raftsub.synchCommandLine(1000,"loadCategories Rafts:WREB_test_base_cfg")')
@@ -60,6 +80,7 @@ def exitScript():
     '''@brief Reset settings and exit. Usually catches ^C.'''
     resetSettings()
     print("\nTests concluded or ^C raised. Restoring saved temp config and exiting...")
+    sys.exit()
 
 
 signal.signal(signal.SIGINT, exitScript)
@@ -84,6 +105,10 @@ def voltsToShiftedDAC(volt, shvolt, Rfb, Rin):
     if dac > 4095: dac = 4095
     if dac < 0: dac = 0
     return dac
+
+
+def rejectOutliers(data, sigma = 2.0):
+    return data[abs(data - np.mean(data)) < sigma * np.std(data)]
 
 
 def voltsToRailDAC(V, rf, ri):
@@ -244,7 +269,6 @@ class ChannelTest(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        # TODO: Fix list of channels, add better pass metric
         numChannels = 36  # There should be this many channels
         self.channels = jy.get('raftsub.synchCommandLine(1000,"getChannelNames").getResult()', dtype = 'str')
         self.channels = self.channels.replace("[", "").replace("]", "").replace("\n", "")
@@ -360,7 +384,7 @@ class CSGate(object):
         if not verbose and noGUI: pbar.finish()
         # Return to report generator
         self.data = ((CSGV_arr, "CSGV (V)"), (WREB_OD_I_arr, "WREB.OD_I (mA)"), (WREB_ODPS_I_arr, "WREB.ODPS_I (mA)"))
-        # TODO: Implement pass/stats metrics
+        # TODO: Implement pass/stats metric: linear scaling of currents with increased voltage
         self.passed = "N/A"
         self.stats = "N/A"
         self.status = "DONE"
@@ -434,8 +458,8 @@ class PCKRails(object):
                      (PCLKUV_arr, "PCLKUV (V)"),
                      (WREB_CKPSH_V_arr, "WREB.CKPSH_V (V)"),
                      (WREB_DphiPS_V_arr, "WREB.DphiPS_V (V)"))
-        self.residuals = ((deltaPCLKLV_arr, "deltaPCLKLV_arr (V)"),
-                          (deltaPCLKUV_arr, "deltaPCLKUV_arr (V)"))
+        self.residuals = ((deltaPCLKLV_arr, "deltaPCLKLV (V)"),
+                          (deltaPCLKUV_arr, "deltaPCLKUV (V)"))
 
         # Give pass/fail result
         self.passed = "PASS"
@@ -443,7 +467,7 @@ class PCKRails(object):
         maxFails = 0  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        self.ROI = [7, 30]  # TODO: Hard-coded x values for ROI's isn't super pretty...
+        self.ROI = [7, 30]
         for x, residual in enumerate(deltaPCLKLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -452,8 +476,9 @@ class PCKRails(object):
             totalPoints += 1
 
         # Other information
-        ml, bl = np.polyfit(PCLKLV_arr, WREB_CKPSH_V_arr, 1)
-        mu, bu = np.polyfit(PCLKUV_arr, WREB_DphiPS_V_arr, 1)
+        l, h = self.ROI
+        ml, bl = np.polyfit(PCLKLV_arr[l:h], WREB_CKPSH_V_arr[l:h], 1)
+        mu, bu = np.polyfit(PCLKUV_arr[l:h], WREB_DphiPS_V_arr[l:h], 1)
         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
                      (ml, mu, totalPoints - numErrors, totalPoints)
 
@@ -472,7 +497,7 @@ class PCKRails(object):
     def report(self, pdf):
         '''@brief generate this test's page in the PDF report.
         @param pdf pyfpdf-compatible PDF object.'''
-        pdf.residualTest("PCK Rails Test", self.data, self.residuals, self.passed, self.stats)
+        pdf.residualTest("PCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
 
 
 class SCKRails(object):
@@ -529,7 +554,7 @@ class SCKRails(object):
         maxFails = 0  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        self.ROI = [6, 23]  # TODO: Hard-coded x values for ROI's isn't super pretty...
+        self.ROI = [6, 21]
         for x, residual in enumerate(deltasclkLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -538,8 +563,9 @@ class SCKRails(object):
             totalPoints += 1
 
         # Other information
-        ml, bl = np.polyfit(sclkLV_arr, WREB_SCKL_V_arr, 1)
-        mu, bu = np.polyfit(sclkUV_arr, WREB_SCKU_V_arr, 1)
+        l, h = self.ROI
+        ml, bl = np.polyfit(sclkLV_arr[l:h], WREB_SCKL_V_arr[l:h], 1)
+        mu, bu = np.polyfit(sclkUV_arr[l:h], WREB_SCKU_V_arr[l:h], 1)
         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
                      (ml, mu, totalPoints - numErrors, totalPoints)
 
@@ -627,8 +653,15 @@ class SCKRailsDiverging(object):
         numErrors = 0
         totalPoints = 0
         currents = np.array(ClkHPS_I_arr)
+        U, L = np.array(WREB_SCKU_V_arr), np.array(WREB_SCKL_V_arr)
         iterationValues = np.arange(self.amplitude / step + 1)
-        self.ROI = np.take(iterationValues[currents < 3.95], [0, -1])  # Select range where current is less than 39.5mA
+        # Select range where current is less than 40mA and voltages are within +/-(-0.5 to +7.5V)
+        self.ROI = np.take(iterationValues[  # (currents < 4.0 ) &
+                               (-0.0 < U) &
+                               (U < 7.0) &
+                               (-7.0 < L) &
+                               (L < 0.0)], [1, -1])
+        self.ROI = map(int, self.ROI)
         for x, residual in enumerate(deltasclkLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -637,10 +670,10 @@ class SCKRailsDiverging(object):
             totalPoints += 1
 
         # Other information
-        ml, bl = np.polyfit(sclkLV_arr, WREB_SCKL_V_arr, 1)
-        mu, bu = np.polyfit(sclkUV_arr, WREB_SCKU_V_arr, 1)
-        self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
-                     (ml, mu, totalPoints - numErrors, totalPoints)
+        l, h = self.ROI
+        ml, bl = np.polyfit(sclkLV_arr[l:h], WREB_SCKL_V_arr[l:h], 1)
+        mu, bu = np.polyfit(sclkUV_arr[l:h], WREB_SCKU_V_arr[l:h], 1)
+        self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % (ml, mu, totalPoints - numErrors, totalPoints)
 
         # Pass criterion:
         if numErrors > maxFails:
@@ -733,8 +766,9 @@ class RGRails(object):
             totalPoints += 1
 
         # Other information
-        ml, bl = np.polyfit(RGLV_arr, WREB_RGL_V_arr, 1)  # TODO: Fix gain so only calculated using ROI
-        mu, bu = np.polyfit(RGUV_arr, WREB_RGU_V_arr, 1)
+        l, h = self.ROI
+        ml, bl = np.polyfit(RGLV_arr[l:h], WREB_RGL_V_arr[l:h], 1)
+        mu, bu = np.polyfit(RGUV_arr[l:h], WREB_RGU_V_arr[l:h], 1)
         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
                      (ml, mu, totalPoints - numErrors, totalPoints)
 
@@ -818,9 +852,10 @@ class RGRailsDiverging(object):
         totalPoints = 0
         UV, LV = np.array(WREB_RGU_V_arr), np.array(WREB_RGL_V_arr)
         iterationValues = np.arange(self.amplitude / step + 1)
-        ROILow = iterationValues[1:][(LV[1:] < 0.0) & (UV[1:] > 0.0)][0]  # Start where values begin to be accurate
-        ROIHigh = iterationValues[UV - LV < 10.0][-1]  # End at maximum separation
-        self.ROI = [ROILow, ROIHigh]
+        # Start where values begin to be accurate
+        ROI = iterationValues[1:][(-7.0 < LV[1:]) & (LV[1:] < 0.0) & (-0.0 < UV[1:]) & (UV[1:] < 7.0)]
+        self.ROI = [ROI[0], ROI[-1]]
+        self.ROI = map(int, self.ROI)
         for x, residual in enumerate(deltaRGLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -829,8 +864,9 @@ class RGRailsDiverging(object):
             totalPoints += 1
 
         # Other information
-        ml, bl = np.polyfit(RGLV_arr, WREB_RGL_V_arr, 1)
-        mu, bu = np.polyfit(RGUV_arr, WREB_RGU_V_arr, 1)
+        l, h = self.ROI
+        ml, bl = np.polyfit(RGLV_arr[l:h], WREB_RGL_V_arr[l:h], 1)
+        mu, bu = np.polyfit(RGUV_arr[l:h], WREB_RGU_V_arr[l:h], 1)
         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
                      (ml, mu, totalPoints - numErrors, totalPoints)
 
@@ -904,7 +940,7 @@ class OGBias(object):
 
         # Give pass/fail result
         self.passed = "PASS"
-        allowedError = 0.1  # 100mV
+        allowedError = 0.15  # 150mV
         maxFails = 0  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
@@ -974,17 +1010,18 @@ class ODBias(object):
 
         # Give pass/fail result
         self.passed = "PASS"
-        allowedError = 0.1  # 100 mV
+        allowedError = 0.15  # 150 mV
         maxFails = 2  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        self.ROI = [1, 13]
+        self.ROI = [1, 14]
         for x, residual in enumerate(deltaODV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
 
         # Other information
-        m, b = np.polyfit(ODV_arr, WREB_OD_V_arr, 1)
+        l, h = self.ROI
+        m, b = np.polyfit(ODV_arr[l:h], WREB_OD_V_arr[l:h], 1)
         self.stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints - numErrors, totalPoints)
 
         # Pass criterion:
@@ -1044,16 +1081,18 @@ class GDBias(object):
 
         # Give pass/fail result
         self.passed = "PASS"
-        allowedError = 0.1
+        allowedError = 0.15
         maxFails = 2  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        for residual in deltaGDV_arr:
-            if abs(residual) > allowedError: numErrors += 1
+        self.ROI = [0, 13]
+        for x, residual in enumerate(deltaGDV_arr):
+            if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
 
         # Other information
-        m, b = np.polyfit(GDV_arr, WREB_GD_V_arr, 1)
+        l, h = self.ROI
+        m, b = np.polyfit(GDV_arr[l:h], WREB_GD_V_arr[l:h], 1)
         self.stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints - numErrors, totalPoints)
 
         # Pass criterion:
@@ -1071,7 +1110,7 @@ class GDBias(object):
     def report(self, pdf):
         '''@brief generate this test's page in the PDF report.
         @param pdf pyfpdf-compatible PDF object.'''
-        pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats)
+        pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
 
 
 class RDBias(object):
@@ -1113,16 +1152,18 @@ class RDBias(object):
 
         # Give pass/fail result
         self.passed = "PASS"
-        allowedError = 0.1
+        allowedError = 0.15
         maxFails = 2  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        for residual in deltaRDV_arr:
-            if abs(residual) > allowedError: numErrors += 1
+        self.ROI = [0, 13]
+        for x, residual in enumerate(deltaRDV_arr):
+            if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
 
         # Other information
-        m, b = np.polyfit(RDV_arr, WREB_RD_V_arr, 1)
+        l, h = self.ROI
+        m, b = np.polyfit(RDV_arr[l:h], WREB_RD_V_arr[l:h], 1)
         self.stats = "Gain: %f.  %i/%i values okay." % (m, totalPoints - numErrors, totalPoints)
 
         # Pass criterion:
@@ -1140,7 +1181,7 @@ class RDBias(object):
     def report(self, pdf):
         '''@brief generate this test's page in the PDF report.
         @param pdf pyfpdf-compatible PDF object.'''
-        pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats)
+        pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
 
 
 class TemperatureLogging(object):
@@ -1160,7 +1201,8 @@ class TemperatureLogging(object):
         self.stats = "N/A"
         print("Fetching temperature data...")
         now = int(time.time() * 1000)
-        os.system('cd TemperaturePlot/ && python refrigPlot.py . "prod" ccs-cr ' + str(self.startTime) + ' ' + str(now))
+        os.system('cd TemperaturePlot/ && python refrigPlot.py . "prod" ccs-cr ' +
+                  str(1000.0 * self.startTime) + ' ' + str(now))
         time.sleep(5)
         os.system("cd ..")
         self.status = "DONE"
@@ -1218,10 +1260,14 @@ class ASPICNoise(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        self.status = "Running..."
+        self.status = -1
         errorLevel = 5.5  # Max allowable standard deviation
-        # Generate .fits image file
-        if not os.path.exists("ASPICNoise"): os.makedirs("ASPICNoise")
+        # Delete directory containing old files, if it exists
+        if os.path.exists("/u1/u/wreb/rafts/ASPICNoise/"):
+            shutil.rmtree("/u1/u/wreb/rafts/ASPICNoise/")
+        os.makedirs("/u1/u/wreb/rafts/ASPICNoise/")
+        if not os.path.exists("ASPICNoise"):
+            os.makedirs("ASPICNoise")
         self.fnames = ["unclamped.fits", "clamped.fits", "reset.fits"]
         categories = ["WREB_test_base_cfg",
                       "WREB_test_aspic_clamped_cfg",
@@ -1229,6 +1275,9 @@ class ASPICNoise(object):
         sequencers = ["/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
                       "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
                       "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
+        # sequencers = ["/u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq",
+        #               "/u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq",
+        #               "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_aspic_reset.seq"]
         self.passed = "PASS"
         errCount = 0
         totalCount = 0
@@ -1237,19 +1286,19 @@ class ASPICNoise(object):
             commands = '''
             # Load standard sequencer and run it with 0s exposure time
             raftsub.synchCommandLine(1000,"loadCategories Rafts:{}")
-            raftsub.synchCommandLine(1000, "loadSequencer {}")
+            raftsub.synchCommandLine(1000,"loadSequencer {}")
             wreb.synchCommandLine(1000,"loadDacs true")
             wreb.synchCommandLine(1000,"loadBiasDacs true")
             wreb.synchCommandLine(1000,"loadAspics true")
             raftsub.synchCommandLine(1000, "setParameter Exptime 0");  # sets exposure time to 0ms
             time.sleep(tsoak)
             raftsub.synchCommandLine(1000, "startSequencer")
-            time.sleep(2.5)  # takes 2 sec to read out
+            time.sleep(5)
             raftsub.synchCommandLine(1000, "setFitsFileNamePattern {}")
             result = raftsub.synchCommand(1000,"saveFitsImage ASPICNoise")
             '''.format(cat, seq, fname)
             jy.do(textwrap.dedent(commands))
-            print("Generating test for %s..." % fname)
+            printv("Generating test for %s..." % fname)
             time.sleep(5)
             # Read the data the plot
             f = fits.open("/u1/u/wreb/rafts/ASPICNoise/" + fname)
@@ -1270,11 +1319,12 @@ class ASPICNoise(object):
                     self.passed = "FAIL"
                     errCount += 1
                 # Generate histogram
-                n, bins, patches = subPlot.hist(imgData, 50, range = [mu - 50, mu + 50], normed = 1,
+                imgData = rejectOutliers(imgData, 4.0)  # Chop off the extreme outliers, improving the fit
+                n, bins, patches = subPlot.hist(imgData, 40, range = [mu - 20, mu + 20], normed = 1,
                                                 facecolor = 'blue', alpha = 0.75)
                 # Add a 'best fit' line
                 y = matplotlib.mlab.normpdf(bins, mu, sigma)
-                l = subPlot.plot(bins, y, 'r--', linewidth = 1)
+                subPlot.plot(bins, y, 'r--', linewidth = 1)
                 # Labeling
                 subPlot.set_yticklabels([])
                 subPlot.set_title('Channel {}\n$\mu={:.2}, \sigma={:.2} $'.format(i + 1, mu, sigma))
@@ -1282,8 +1332,8 @@ class ASPICNoise(object):
             plt.tight_layout()
             plt.savefig("ASPICNoise/" + fname + ".jpg")
             plt.close()
-        self.passed = "N/A"
-        self.stats = "{}/{} channels within sigma<{}.".format(errCount, totalCount, errorLevel)
+            self.status -= 33  # Update the display
+        self.stats = "{}/{} channels within sigma<{}.".format(totalCount - errCount, totalCount, errorLevel)
         self.status = self.passed
 
     def summarize(self, summary):
@@ -1304,7 +1354,24 @@ class ASPICNoise(object):
         pdf.passFail(self.passed)
 
 
-#
+def getBoardInfo():
+    try:
+        # Get hex board ID
+        boardID = str(hex(int(
+                jy.get('wreb.synchCommandLine(1000,"getSerialNumber").getResult()', dtype = "str").replace("L", ""))))
+        # FPGA info in register 1
+        response = jy.get('wreb.synchCommandLine(1000,"getRegister 1 1").getResult()', dtype = "str")
+        # Response is something like "000001: b0200020" with length 17. If it's longer, it's a traceback probably
+        if len(response) != 17 or boardID == "0x0":
+            return -1, -1, -1, -1
+        FPGAInfo = response.split(": ")[1]
+        boardType, linkVersion, FPGAVersion = FPGAInfo[0], FPGAInfo[1:4], FPGAInfo[4:]
+        if boardType == "0" or linkVersion == "000":
+            return -1, -1, -1, -1
+        return boardID, boardType, linkVersion, FPGAVersion
+    except ValueError:
+        return -1, -1, -1, -1
+
 
 class Summary(object):
     '''@brief Summary object containing the needed information for the cover page.'''
@@ -1317,24 +1384,20 @@ class Summary(object):
 
 
 class FunctionalTest(object):
-    '''@brief Runs the functional testing suite.'''
+    '''@brief Runs the functional testing suite. Tests are provided as a list of class initializations.'''
 
     def __init__(self):
+        self.boardID, self.boardType, self.linkVersion, self.FPGAVersion = getBoardInfo()
+        self.scriptVersion = time.strftime("%y.%m.%d.%H.%M", time.localtime(os.path.getmtime("WREBTest.py")))
         '''@brief Initializes the board information and list of tests to be run.'''
         self.summary = Summary()
-        # Get hex board ID
-        self.boardID = str(hex(int(
-                jy.get('wreb.synchCommandLine(1000,"getSerialNumber").getResult()', dtype = "str").replace("L", ""))))
-        # FPGA info in register 1
-        self.FPGAInfo = jy.get('wreb.synchCommandLine(1000,"getRegister 1 1").getResult()', dtype = "str").split(": ")[
-            1]
-        self.boardType, self.linkVersion, self.FPGAVersion = self.FPGAInfo[0], self.FPGAInfo[1:4], self.FPGAInfo[4:]
         # Make temporary figure directory
         if not os.path.exists("tempFigures"): os.makedirs("tempFigures")
         # Initiate desired tests
         print("\n\n\nWREB Functional Test:")
         self.progress = 0
-        # Comment out tests you don't want to run.
+        self.startTime = time.time()
+        # You can comment out tests you don't want to run or select them to not run in the main menu of the GUI
         self.tests = [IdleCurrentConsumption(),
                       ChannelTest(),
                       ASPICcommsTest(),
@@ -1343,27 +1406,34 @@ class FunctionalTest(object):
                       SCKRails(),
                       RGRails(),
                       SCKRailsDiverging(9.0, 0.0),
-                      SCKRailsDiverging(9.0, 3.0),
-                      SCKRailsDiverging(9.0, -3.0),
+                      SCKRailsDiverging(9.0, 2.0),
+                      SCKRailsDiverging(9.0, -2.0),
                       RGRailsDiverging(9.0, 0.0),
-                      RGRailsDiverging(9.0, 3.0),
-                      RGRailsDiverging(9.0, -3.0),
+                      RGRailsDiverging(9.0, 2.0),
+                      RGRailsDiverging(9.0, -2.0),
                       OGBias(),
                       ODBias(),
                       GDBias(),
                       RDBias(),
-                      TemperatureLogging(start),
+                      TemperatureLogging(self.startTime),
                       ASPICNoise()
                       ]
+        self.testsMask = [True for _ in self.tests]
+        self.reportName = "WREB Test " + str(self.boardID) + " " + \
+                          time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + ".pdf"
 
     def runTests(self):
         '''@brief Run the tests.'''
-        for count, test in enumerate(self.tests):
+        # Run the tests
+        testList = []
+        for test, doTest in zip(self.tests, self.testsMask):
+            if doTest:
+                testList.append(test)
+        for count, test in enumerate(testList):
             test.runTest()
-            self.progress = int(100 * count / float(len(self.tests)))
+            self.progress = int(100 * (count + 1) / float(len(testList)))
             resetSettings()
         self.progress = 100
-        # self.tests = [idleCurrentConsumption(), ASPICNoise()]
 
     def generateReport(self):
         '''@brief Generate a pyfpdf-compatible PDF report from the test data.'''
@@ -1374,15 +1444,15 @@ class FunctionalTest(object):
         global epw  # Constant: effective page width
         epw = pdf.w - 2 * pdf.l_margin
         # Generate summary page
-        for test in self.tests:
-            test.summarize(self.summary)
-        pdf.summaryPage(self.boardID, self.FPGAInfo, lastModified, self.summary.testList,
-                        self.summary.passList, self.summary.statsList)
+        for test, doTest in zip(self.tests, self.testsMask):
+            if doTest: test.summarize(self.summary)
+        pdf.summaryPage(self.boardID, self.boardType, self.linkVersion, self.FPGAVersion, self.scriptVersion,
+                        time.localtime(self.startTime), self.summary.testList, self.summary.passList,
+                        self.summary.statsList)
         # Generate individual test reports
-        for test in self.tests:
-            test.report(pdf)
-        # print("Generating PDF report at " + dataDir + '/WREBTest.pdf')
-        pdf.output(dataDir + '/WREBTest.pdf', 'F')
+        for test, doTest in zip(self.tests, self.testsMask):
+            if doTest: test.report(pdf)
+        pdf.output(dataDir + "/"+ self.reportName, 'F')
         # Clean up
         shutil.rmtree("tempFigures")
         # shutil.rmtree("ASPICNoise")
@@ -1393,42 +1463,116 @@ class GUI(object):
 
     def __init__(self):
         '''@brief Start the dialog.'''
+        self.scriptVersion = time.strftime("%y.%m.%d.%H.%M", time.localtime(os.path.getmtime("WREBTest.py")))
+        self.tsleep = 1.0  # Time to sleep in between refreshes of progress dialog
         self.d = Dialog(autowidgetsize = True)
 
-    def update(self, fnTest, generatingPDF = False):
+    def update(self):
         '''@brief Update the GUI to display current testing progress.'''
         elems = []
-        for test in fnTest.tests:  # Stupid issue: 0 is hard-coded as "SUCCESS" in this package...
-            if test.status == 0:
-                elems.append((test.title, -1))
-            else:
-                elems.append((test.title, test.status))
-        infostring = ["WREB Functional Test:",
-                      "Elapsed time..." + str(int(time.time() - startSec)) + "s",
-                      "Board ID......." + fnTest.boardID,
-                      "Board type....." + fnTest.boardType,
-                      "Link version..." + fnTest.linkVersion,
-                      "FPGA version..." + fnTest.FPGAVersion]
-        infostring = "\n".join(infostring)
+        # Stupid issue: 0 is hard-coded as "SUCCESS" in this package...
+        for test, doTest in zip(self.fnTest.tests, self.fnTest.testsMask):
+            if doTest:
+                if test.status == 0:
+                    elems.append((test.title, -1))
+                else:
+                    elems.append((test.title, test.status))
+        infoString = ["WREB Functional Test:",
+                      "Elapsed time....." + str(int(time.time() - self.fnTest.startTime)) + "s",
+                      "Script version..." + str(self.scriptVersion),
+                      "Board ID........." + str(self.fnTest.boardID),
+                      "Board type......." + str(self.fnTest.boardType),
+                      "Link version....." + str(self.fnTest.linkVersion),
+                      "FPGA version....." + str(self.fnTest.FPGAVersion)]
+        infoString = "\n".join(infoString)
+        self.d.mixedgauge(infoString, title = "WREB Functional Test", backtitle = "Running functional test...",
+                          percent = self.fnTest.progress, elements = elems)
 
-        if generatingPDF:
-            self.d.mixedgauge("Generating PDF report at " + dataDir + "/WREBTest.pdf...",
-                              title = "WREB Functional Test", percent = fnTest.progress, elements = elems)
-        else:
-            self.d.mixedgauge(infostring, title = "WREB Functional Test", percent = fnTest.progress, elements = elems)
-
-    def updateContinuously(self, fnTest):
+    def updateContinuously(self):
         '''@brief Continuously update the display every _ seconds.'''
-        tsleep = 1.0
-        while fnTest.progress < 100:
-            self.update(fnTest)
-            time.sleep(tsleep)
-        self.update(fnTest, generatingPDF = True)
+        while self.fnTest.progress < 100:
+            self.update()
+            time.sleep(self.tsleep)
 
-    def startUpdateContinuously(self, fnTest):
-        thread = Thread(target = self.updateContinuously, args = (fnTest,))
+    def startUpdateContinuously(self):
+        '''@brief Start the self.updateContinuously() procedure in a separate daemon thread.'''
+        thread = Thread(target = self.updateContinuously)
         thread.daemon = True  # Daemon thread allows for graceful exiting and crashing
         thread.start()
+
+    def startMenu(self):
+        '''@brief Initial navigation menu. Checks that board is connected and presents the user with various options.'''
+        notConnected = any([v == -1 for v in getBoardInfo()])
+        while notConnected:
+            infoString = "No board connected. Please connect a WREB to continue."
+            self.d.infobox(infoString, title = "WREB Functional Test")
+            time.sleep(1)
+            boardInfo = getBoardInfo()
+            notConnected = any([v == -1 for v in boardInfo])
+            print ("Board Info: ", boardInfo)
+        self.boardID, self.boardType, self.linkVersion, self.FPGAVersion = getBoardInfo()
+        infoString = ["WREB Functional Test Version " + str(self.scriptVersion) + ":",
+                      "Board ID........." + str(self.boardID),
+                      "Board type......." + str(self.boardType),
+                      "Link version....." + str(self.linkVersion),
+                      "FPGA version....." + str(self.FPGAVersion),
+                      "",
+                      "Select an option:"]
+        infoString = "\n".join(infoString)
+        ret, tag = self.d.menu(infoString, title = "WREB Functional Test",
+                               choices = [("1", "Run functional test suite"),
+                                          ("2", "Run custom test list"),
+                                          ("3", "Exit")])
+
+        if ret == self.d.CANCEL or ret == self.d.ESC or tag == "3":
+            self.d.infobox("Exiting WREB Functional Test.")
+            print("WREB test aborted.\n")
+            sys.exit()
+        if tag == "1":
+            # Run test
+            return self.runFunctionalTest()
+        elif tag == "2":
+            return self.runCustomTests()
+
+
+    def runFunctionalTest(self):
+        '''@brief Runs the full suite of tests from the GUI.'''
+        self.d.infobox("Initializing WREB Functional Test...")
+        initialize()
+        self.fnTest = FunctionalTest()
+        self.startUpdateContinuously()
+        self.fnTest.runTests()
+        self.d.infobox("Writing PDF report to:\n" + dataDir + "/"+self.fnTest.reportName+"...")
+        self.fnTest.generateReport()
+        return (self.d.yesno("WREB functional test complete.\n" +
+                             "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
+                             "Test another board?") == self.d.OK)
+
+    def runCustomTests(self):
+        '''@brief Allows the user to configure which tests should be run, and runs only those tests.'''
+        # Initialize functional test to get an initial test list
+        self.fnTest = FunctionalTest()
+        testList = [test.title for test in self.fnTest.tests]
+        code, selectedTests = self.d.checklist(text = "Use the arrow keys and spacebar to\n" +
+                                                      "select the tests you wish to run:",
+                                               width = 64,
+                                               list_height = len(testList),
+                                               choices = [(title, "", False) for title in testList],
+                                               title = "WREB Functional Test")
+        if code == self.d.OK:
+            testList = [(test in selectedTests) for test in testList]
+            self.fnTest.testsMask = testList
+            self.d.infobox("Initializing WREB Functional Test...")
+            initialize()
+            self.startUpdateContinuously()
+            self.fnTest.runTests()
+            self.fnTest.generateReport()
+            return (self.d.yesno("WREB custom functional test complete.\n" +
+                                 "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
+                                 "Test another board?") == self.d.OK)
+        else:
+            self.fnTest = None
+            return self.startMenu()
 
 
 # --------- Execution ---------
@@ -1451,37 +1595,34 @@ if __name__ == "__main__":
     dataDir = args.writeDirectory
     verbose = args.verbose
     noGUI = args.noGUI
-
+    # Create the Jython interface
     jy = JythonInterface()
-    jy.do('dataDir = %s' % args.writeDirectory)
+    initialize()
 
-    commands = '''
-    from org.lsst.ccs.scripting import *
-    import time
-    import sys
-    raftsub  = CCS.attachSubsystem("ccs-cr");
-    wreb     = CCS.attachSubsystem("ccs-cr/WREB")
-    wrebDAC  = CCS.attachSubsystem("ccs-cr/WREB.DAC")
-    wrebBias = CCS.attachSubsystem("ccs-cr/WREB.Bias0")
-    tsoak = 0.5
-    # save config inside the board to temp_cfg and load the test_base_cfg
-    raftsub.synchCommandLine(1000,"saveChangesForCategoriesAs Rafts:WREB_temp_cfg")
-    raftsub.synchCommandLine(1000,"loadCategories Rafts:WREB_test_base_cfg")
-    wreb.synchCommandLine(1000,"loadDacs true")
-    wreb.synchCommandLine(1000,"loadBiasDacs true")
-    wreb.synchCommandLine(1000,"loadAspics true")
-    '''
-    jy.do(textwrap.dedent(commands))
-
-    # Functional test object
-    functionalTest = FunctionalTest()
     # Start the GUI
     if not noGUI:
-        gui = GUI()
-        gui.startUpdateContinuously(functionalTest)
-    # Run tests and generate report
-    functionalTest.runTests()
-    functionalTest.generateReport()
+        while True:
+            gui = GUI()
+            time.sleep(1)
+            testAgain = gui.startMenu()
+            if not testAgain:
+                break
+            gui.d.msgbox("Please disconnect the board now. Select OK when the board is disconnected to continue.")
+    else:
+        scriptVersion = time.strftime("%y.%m.%d.%H.%M", time.localtime(os.path.getmtime("WREBTest.py")))
+        boardID, boardType, linkVersion, FPGAVersion = getBoardInfo()
+        infoString = ["WREB Functional Test:",
+                      "Script version..." + str(scriptVersion),
+                      "Board ID........." + str(boardID),
+                      "Board type......." + str(boardType),
+                      "Link version....." + str(linkVersion),
+                      "FPGA version....." + str(FPGAVersion)]
+        infoString = "\n".join(infoString)
+        # Functional test object
+        functionalTest = FunctionalTest()
+        # Run tests and generate report
+        functionalTest.runTests()
+        functionalTest.generateReport()
 
     # Restore previous settings and exit
     print("WREB test completed.\n\n\n")
