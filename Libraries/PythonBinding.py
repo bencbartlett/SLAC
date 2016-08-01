@@ -52,7 +52,7 @@ class CcsJythonInterpreter:
     def __establishSocketConnectionToCcsJythonInterpreter__():
          s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
          s.connect((CcsJythonInterpreter.host, CcsJythonInterpreter.port))
-         connectionResult = s.recv(1024);
+         connectionResult = s.recv(4096);
          if "ConnectionRefused" in connectionResult:
             raise CcsException("Connection Refused ");
          return s;
@@ -127,7 +127,7 @@ class _CcsPythonExecutorThread:
         self.executionOutput = "";
         while self.running:
             try:
-                output = self.s.recv(1024)
+                output = self.s.recv(4096)
             except:
                 raise CcsException("Communication Problem with Socket");
             if "doneExecution:"+self.threadId not in output:

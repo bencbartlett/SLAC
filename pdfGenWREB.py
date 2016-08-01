@@ -217,7 +217,7 @@ class PDF(FPDF):
                     self.set_text_color(0, 0, 0)
                 else:
                     if type(entry) == float:
-                        entry = round(entry, 4)
+                        entry = round(entry, 3)
                     self.cell(colWidth, cellHeight, str(entry), align = align, ln = 2, fill = filled)
         self.set_font_size(originalFontSize)
         self.ln(cellHeight)

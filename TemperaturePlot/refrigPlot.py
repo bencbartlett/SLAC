@@ -25,7 +25,7 @@ import ConfigParser
 #
 #****************************************************************************
 
-# Usage: python refrigPlot.py . "prod" ccs-cr start stopTime 
+# Usage: python refrigPlot.py . "prod" ccs-cr start stopTime [properties]
 
 if len(sys.argv) < 4:
     print "Too few parameters"
@@ -36,6 +36,10 @@ database = sys.argv[2]
 subsys = sys.argv[3]
 start = int(sys.argv[4])
 stop = int(sys.argv[5])
+if len(sys.argv) > 6:
+    params = sys.argv[6]
+else:
+    params = None
 initFiles = [initDir + "refrigPlot.ini"] + [initDir + subsys + ".ini"]
 # if len(sys.argv) > 4:
 #     initFiles += [initDir + sys.argv[4] + ".ini"]
@@ -775,8 +779,10 @@ if __name__ == '__main__':
     #reply = getInput("Item numbers (or ?, q, p, g): ")
     getItems()
 
-    reply = "WREB.Temp1 WREB.Temp2 WREB.Temp3 WREB.Temp4 WREB.Temp5 WREB.Temp6 WREB.CCDtemp WREB.RTDtemp"
-    getPlots(reply, start, stop)
+    if params is None:
+        params = "WREB.Temp1 WREB.Temp2 WREB.Temp3 WREB.Temp4 WREB.Temp5 WREB.Temp6 WREB.CCDtemp WREB.RTDtemp"
+
+    getPlots(params, start, stop)
 
     gFirstTimes = []
     gLastTimes = []
