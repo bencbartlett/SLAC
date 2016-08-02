@@ -32,6 +32,7 @@ import signal
 import textwrap
 import numpy as np
 import matplotlib
+matplotlib.use('Agg') # Fixes "RuntimeError: Invalid DISPLAY variable" error
 import matplotlib.pyplot as plt
 from astropy.io import fits
 from pdfGenWREB import *
@@ -289,6 +290,7 @@ class ChannelTest(object):
             if not verbose and noGUI: pbar.inc()
         if not verbose and noGUI: pbar.finish()
         self.stats = "%i/%i channels missing." % (numChannels - len(self.channels), numChannels)
+        self.passed = "PASS" # TODO: Temporary fix
         self.status = self.passed
 
     def summarize(self, summary):
@@ -406,6 +408,7 @@ class CSGate(object):
 
 class PCKRails(object):
     '''@brief Test the parallel clock rail performance.'''
+
     # TODO: Need PCK functionality
 
     def __init__(self):
@@ -504,6 +507,7 @@ class PCKRails(object):
 
 class SCKRails(object):
     '''@brief Tests the serial clock rail performance.'''
+
     # TODO: Need rail functionality
     def __init__(self):
         '''@brief Initialize minimum required variables for test list.'''
@@ -1278,34 +1282,40 @@ class TemperatureLogging(object):
         pdf.add_page()
         pdf.set_font('Courier', '', 12)
         pdf.set_fill_color(200, 220, 220)
-        pdf.cell(0, 6, "Board temperature test", 0, 1, 'L', 1)
+        pdf.cell(0, 6, "Board temperature test", 0, 1, 'L', 0)
         # Make image
         width = .5 * (pdf.w - 2 * pdf.l_margin)
         height = pdf.h - 2 * pdf.t_margin
         # Board Temperatures
-        imgListTemp = glob.glob("TemperaturePlot/REB0.Temp*.jpg")
-        xhalf = (pdf.w - 2 * pdf.l_margin) / 2.0
-        y0 = pdf.get_y()
-        pdf.image(imgListTemp[0], x = pdf.l_margin, y = y0, w = width)
-        pdf.image(imgListTemp[1], x = pdf.l_margin + xhalf, y = y0, w = width)
-        pdf.image(imgListTemp[2], x = pdf.l_margin, y = y0 + height / 4, w = width)
-        pdf.image(imgListTemp[3], x = pdf.l_margin + xhalf, y = y0 + height / 4, w = width)
-        pdf.image(imgListTemp[4], x = pdf.l_margin, y = y0 + height / 2, w = width)
-        pdf.image(imgListTemp[5], x = pdf.l_margin + xhalf, y = y0 + height / 2, w = width)
-        # CCD Temperatures
-        imgListCCDTemp = glob.glob("TemperaturePlot/REB0.CCDtemp*.jpg")
-        imgListRTDTemp = glob.glob("TemperaturePlot/REB0.RTDtemp*.jpg")
-        pdf.add_page()
-        pdf.set_fill_color(200, 220, 220)
-        pdf.cell(0, 6, "CCD temperature test", 0, 1, 'L', 1)
-        y0 = pdf.get_y()
-        pdf.image(imgListCCDTemp[0], x = pdf.l_margin, y = y0, w = width)
-        pdf.image(imgListRTDTemp[0], x = pdf.l_margin + xhalf, y = y0, w = width)
-        # Clean up
-        for img in imgListTemp:
-            os.remove(img)
-        for img in imgListCCDTemp:
-            os.remove(img)
+        try:
+            imgListTemp = glob.glob("TemperaturePlot/REB0.Temp*.jpg")
+            xhalf = (pdf.w - 2 * pdf.l_margin) / 2.0
+            y0 = pdf.get_y()
+            pdf.image(imgListTemp[0], x = pdf.l_margin, y = y0, w = width)
+            pdf.image(imgListTemp[1], x = pdf.l_margin + xhalf, y = y0, w = width)
+            pdf.image(imgListTemp[2], x = pdf.l_margin, y = y0 + height / 4, w = width)
+            pdf.image(imgListTemp[3], x = pdf.l_margin + xhalf, y = y0 + height / 4, w = width)
+            pdf.image(imgListTemp[4], x = pdf.l_margin, y = y0 + height / 2, w = width)
+            pdf.image(imgListTemp[5], x = pdf.l_margin + xhalf, y = y0 + height / 2, w = width)
+            # CCD Temperatures
+            #imgListCCDTemp = glob.glob("TemperaturePlot/REB0.CCDtemp*.jpg")
+            #imgListRTDTemp = glob.glob("TemperaturePlot/REB0.RTDtemp*.jpg")
+            pdf.add_page()
+            pdf.set_fill_color(200, 220, 220)
+            #pdf.cell(0, 6, "CCD temperature test", 0, 1, 'L', 1)
+            y0 = pdf.get_y()
+            pdf.image(imgListTemp[6], x = pdf.l_margin, y = y0, w = width)
+            pdf.image(imgListTemp[7], x = pdf.l_margin + xhalf, y = y0, w = width)
+            #pdf.image(imgListCCDTemp[0], x = pdf.l_margin, y = y0 + height / 4, w = width)
+            #pdf.image(imgListRTDTemp[0], x = pdf.l_margin + xhalf, y = y0 + height / 4, w = width)
+            # Clean up
+            for img in imgListTemp:
+                os.remove(img)
+            for img in imgListCCDTemp:
+                os.remove(img)
+        except IndexError:
+            pdf.cell(0, 10, "", 0, 1)
+            pdf.cell(0, 6, "Error: could not retreive all requested temperature data.", 0, 1)
 
 
 class ASPICNoise(object):
@@ -1327,7 +1337,7 @@ class ASPICNoise(object):
         os.makedirs("/u1/u/wreb/rafts/ASPICNoise/")
         if not os.path.exists("ASPICNoise"):
             os.makedirs("ASPICNoise")
-        self.fnames = ["unclamped.fits", "clamped.fits", "reset.fits"]
+        self.fnames = ["unclamped_${sensorId}.fits", "clamped_${sensorId}.fits", "reset_${sensorId}.fits"]
         categories = ["REB4_test_base_cfg",
                       "REB4_test_aspic_clamped_cfg",
                       "REB4_test_aspic_clamped_cfg"]
@@ -1354,48 +1364,45 @@ class ASPICNoise(object):
             time.sleep(tsoak)
             vst.synchCommandLine(1000, "startSequencer")
             time.sleep(5)
-            vst.synchCommandLine(1000, "setFitsFileNamePattern {}_${sensorId}")
+            vst.synchCommandLine(1000, "setFitsFileNamePattern {}")
             result = vst.synchCommand(1000,"saveFitsImage ASPICNoise")
             '''.format(cat, seq, fname)
             jy.do(textwrap.dedent(commands))
-            printv("Generating test for %s..." % fname)
             time.sleep(5)
-            # Read the data the plot
-            f = fits.open("/u1/u/wreb/rafts/ASPICNoise/" + fname)
             # Set fonts
             font = {'family': 'normal',
                     'weight': 'bold',
                     'size'  : 8}
             matplotlib.rc('font', **font)
-            #for stripe in range(3):
-            # Generate the multiplot
-            stripe = 0 # temporary
-            fig, axArr = plt.subplots(4, 4)
-            fig.set_size_inches(8, 8)
-            for i in range(16): # TODO: Different image size
-                totalCount += 1
-                print (stripe, i)
-                imgData = f[16*stripe + i + 1].data.flatten()
-                subPlot = axArr[i / 4, i % 4]
-                mu, sigma = np.mean(imgData), np.std(imgData)
-                if sigma > errorLevel:
-                    self.passed = "FAIL"
-                    errCount += 1
-                # Generate histogram
-                imgData = rejectOutliers(imgData, 4.0)  # Chop off the extreme outliers, improving the fit
-                n, bins, patches = subPlot.hist(imgData, 40, range = [mu - 20, mu + 20], normed = 1,
-                                                facecolor = 'blue', alpha = 0.75)
-                # Add a 'best fit' line
-                y = matplotlib.mlab.normpdf(bins, mu, sigma)
-                subPlot.plot(bins, y, 'r--', linewidth = 1)
-                # Labeling
-                subPlot.set_yticklabels([])
-                subPlot.set_title('Channel {}\n$\mu={:.2}, \sigma={:.2} $'.format(i + 1, mu, sigma))
-                subPlot.grid(True)
-            plt.tight_layout()
-            plt.savefig("ASPICNoise/" + fname + "stripe" + str(stripe + 1) + ".jpg")
-            plt.close()
-            self.status -= 33  # Update the display
+            for stripe in range(3):
+                # Read the data the plot
+                f = fits.open("/u1/u/wreb/rafts/ASPICNoise/" + fname.replace("${sensorId}", str(stripe)))
+                # Generate the multiplot
+                fig, axArr = plt.subplots(4, 4)
+                fig.set_size_inches(8, 8)
+                for i in range(16):  # TODO: Different image size
+                    totalCount += 1
+                    imgData = f[i + 1].data.flatten()
+                    subPlot = axArr[i / 4, i % 4]
+                    mu, sigma = np.mean(imgData), np.std(imgData)
+                    if sigma > errorLevel:
+                        self.passed = "FAIL"
+                        errCount += 1
+                    # Generate histogram
+                    imgData = rejectOutliers(imgData, 4.0)  # Chop off the extreme outliers, improving the fit
+                    n, bins, patches = subPlot.hist(imgData, 40, range = [mu - 20, mu + 20], normed = 1,
+                                                    facecolor = 'blue', alpha = 0.75)
+                    # Add a 'best fit' line
+                    y = matplotlib.mlab.normpdf(bins, mu, sigma)
+                    subPlot.plot(bins, y, 'r--', linewidth = 1)
+                    # Labeling
+                    subPlot.set_yticklabels([])
+                    subPlot.set_title('Channel {}\n$\mu={:.2}, \sigma={:.2} $'.format(i + 1, mu, sigma))
+                    subPlot.grid(True)
+                plt.tight_layout()
+                plt.savefig("ASPICNoise/" + fname.replace("${sensorId}", str(stripe)) + ".jpg")
+                plt.close()
+                self.status -= 11  # Update the display
         self.stats = "{}/{} channels within sigma<{}.".format(totalCount - errCount, totalCount, errorLevel)
         self.status = self.passed
 
@@ -1409,18 +1416,20 @@ class ASPICNoise(object):
     def report(self, pdf):
         '''@brief generate this test's page in the PDF report.
         @param pdf pyfpdf-compatible PDF object.'''
-        pdf.addPlotPage("Unclamped ASPIC Noise Test - Stripe A", "ASPICNoise/" + self.fnames[0] + "stripe1.jpg")
-        #pdf.addPlotPage("Unclamped ASPIC Noise Test - Stripe B", "ASPICNoise/" + self.fnames[0] + "stripe2.jpg")
-        #pdf.addPlotPage("Unclamped ASPIC Noise Test - Stripe C", "ASPICNoise/" + self.fnames[0] + "stripe3.jpg")
-        pdf.passFail(self.passed)
-        pdf.addPlotPage("Clamped ASPIC Noise Test - Stripe A", "ASPICNoise/" + self.fnames[1] + "stripe1.jpg")
-        #pdf.addPlotPage("Clamped ASPIC Noise Test - Stripe B", "ASPICNoise/" + self.fnames[1] + "stripe2.jpg")
-        #pdf.addPlotPage("Clamped ASPIC Noise Test - Stripe C", "ASPICNoise/" + self.fnames[1] + "stripe3.jpg")
-        pdf.passFail(self.passed)
-        pdf.addPlotPage("Reset ASPIC Noise Test - Stripe A", "ASPICNoise/" + self.fnames[2] + "stripe1.jpg")
-        #pdf.addPlotPage("Reset ASPIC Noise Test - Stripe B", "ASPICNoise/" + self.fnames[2] + "stripe2.jpg")
-        #pdf.addPlotPage("Reset ASPIC Noise Test - Stripe C", "ASPICNoise/" + self.fnames[2] + "stripe3.jpg")
-        pdf.passFail(self.passed)
+        for stripe, letter in zip(range(3), ["A", "B", "C"]):
+            pdf.addPlotPage("Unclamped ASPIC Noise Test - Stripe %s" % letter,
+                            "ASPICNoise/" + self.fnames[0].replace("${sensorId}", str(stripe)) + ".jpg")
+            pdf.passFail(self.passed)
+
+        for stripe, letter in zip(range(3), ["A", "B", "C"]):
+            pdf.addPlotPage("Clamped ASPIC Noise Test - Stripe %s" % letter,
+                            "ASPICNoise/" + self.fnames[1].replace("${sensorId}", str(stripe)) + ".jpg")
+            pdf.passFail(self.passed)
+
+        for stripe, letter in zip(range(3), ["A", "B", "C"]):
+            pdf.addPlotPage("Reset ASPIC Noise Test - Stripe %s" % letter,
+                            "ASPICNoise/" + self.fnames[2].replace("${sensorId}", str(stripe)) + ".jpg")
+            pdf.passFail(self.passed)
 
 
 def getBoardInfo():
@@ -1488,8 +1497,8 @@ class FunctionalTest(object):
                       ASPICNoise()
                       ]
         self.testsMask = [True for _ in self.tests]
-        self.reportName = "WREB Test " + str(self.boardID) + " " + \
-                          time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + ".pdf"
+        self.reportName = "SR_REB_Test_" + time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + "_" + \
+                          str(self.boardID) + ".pdf"
 
     def runTests(self):
         '''@brief Run the tests.'''
@@ -1521,7 +1530,7 @@ class FunctionalTest(object):
         # Generate individual test reports
         for test, doTest in zip(self.tests, self.testsMask):
             if doTest: test.report(pdf)
-        pdf.output(dataDir + "/"+ self.reportName, 'F')
+        pdf.output(dataDir + "/" + self.reportName, 'F')
         # Clean up
         shutil.rmtree("tempFigures")
         # shutil.rmtree("ASPICNoise")
@@ -1578,7 +1587,7 @@ class GUI(object):
             time.sleep(1)
             boardInfo = getBoardInfo()
             notConnected = any([v == -1 for v in boardInfo])
-            print ("Board Info: ", boardInfo)
+            print("Board Info: ", boardInfo)
         self.boardID, self.boardType, self.linkVersion, self.FPGAVersion = getBoardInfo()
         infoString = ["WREB Functional Test Version " + str(self.scriptVersion) + ":",
                       "Board ID........." + str(self.boardID),
@@ -1603,7 +1612,6 @@ class GUI(object):
         elif tag == "2":
             return self.runCustomTests()
 
-
     def runFunctionalTest(self):
         '''@brief Runs the full suite of tests from the GUI.'''
         self.d.infobox("Initializing WREB Functional Test...")
@@ -1611,7 +1619,7 @@ class GUI(object):
         self.fnTest = FunctionalTest()
         self.startUpdateContinuously()
         self.fnTest.runTests()
-        self.d.infobox("Writing PDF report to:\n" + dataDir + "/"+self.fnTest.reportName+"...")
+        self.d.infobox("Writing PDF report to:\n" + dataDir + "/" + self.fnTest.reportName + "...")
         self.fnTest.generateReport()
         return (self.d.yesno("WREB functional test complete.\n" +
                              "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +

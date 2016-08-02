@@ -445,7 +445,7 @@ class SequencerToggling(object):
                          self.ckp_arr,
                          self.rgv_arr],
                         colHeaders = ["Seq. State", "Description", "sckL", "sckU",
-                                      "rgL", "rgU", "pckL", "pckU", "cks", "ckp", "rgv"],
+                                      "pckL", "pckU", "rgL", "rgU", "cks", "ckp", "rgv"],
                         fontSize = 10, widthArray = [1.75, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 
 
