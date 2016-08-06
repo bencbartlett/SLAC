@@ -39,15 +39,15 @@ from pdfGenWREB import *
 from threading import Thread
 from datetime import datetime
 
-from Libraries.FastProgressBar import progressbar
+# from Libraries.FastProgressBar import progressbar # Don't use for now
 from Libraries.PythonBinding import *
 from Libraries.dialog import Dialog
 
 
 # Catch abort so previous settings can be restored
-def initialize():
+def initialize(jythonIF):
     # Some initialization commands for the CCS
-    jy.do('dataDir = %s' % args.writeDirectory)
+    jythonIF.do('dataDir = %s' % args.writeDirectory)
     commands = '''
     from org.lsst.ccs.scripting import *
     import time
@@ -66,7 +66,7 @@ def initialize():
     reb0.synchCommandLine(1000,"loadBiasDacs true")
     reb0.synchCommandLine(1000,"loadAspics true")
     '''
-    jy.do(textwrap.dedent(commands))
+    jythonIF.do(textwrap.dedent(commands))
     time.sleep(5)
 
 
@@ -1775,7 +1775,9 @@ if __name__ == "__main__":
     logIndefinitely = args.logValues
     # Create the Jython interface
     jy = JythonInterface()
-    initialize()
+    jy2 = JythonInterface()
+    initialize(jy)
+    initialize(jy2)
 
     # Start the GUI
     if not noGUI:
