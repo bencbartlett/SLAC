@@ -32,7 +32,7 @@ import signal
 import textwrap
 import numpy as np
 import matplotlib
-matplotlib.use('Agg') # Fixes "RuntimeError: Invalid DISPLAY variable" error
+matplotlib.use('Agg')  # Fixes "RuntimeError: Invalid DISPLAY variable" error
 import matplotlib.pyplot as plt
 from astropy.io import fits
 from pdfGenWREB import *
@@ -290,7 +290,7 @@ class ChannelTest(object):
             if not verbose and noGUI: pbar.inc()
         if not verbose and noGUI: pbar.finish()
         self.stats = "%i/%i channels missing." % (numChannels - len(self.channels), numChannels)
-        self.passed = "PASS" # TODO: Temporary fix
+        self.passed = "PASS"  # TODO: Temporary fix
         self.status = self.passed
 
     def summarize(self, summary):
@@ -737,9 +737,6 @@ class RGRails(object):
             time.sleep(tsoak)
             WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL_V").getResult()')
             WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU_V").getResult()')
-            printv(
-                    "\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" % (
-                        WREB_RGL_V, WREB_RGU_V, (RGLV - WREB_RGL_V), (RGUV - WREB_RGU_V)))
             # Append to arrays
             RGLV_arr.append(RGLV)
             RGUV_arr.append(RGUV)
@@ -1298,16 +1295,16 @@ class TemperatureLogging(object):
             pdf.image(imgListTemp[4], x = pdf.l_margin, y = y0 + height / 2, w = width)
             pdf.image(imgListTemp[5], x = pdf.l_margin + xhalf, y = y0 + height / 2, w = width)
             # CCD Temperatures
-            #imgListCCDTemp = glob.glob("TemperaturePlot/REB0.CCDtemp*.jpg")
-            #imgListRTDTemp = glob.glob("TemperaturePlot/REB0.RTDtemp*.jpg")
+            # imgListCCDTemp = glob.glob("TemperaturePlot/REB0.CCDtemp*.jpg")
+            # imgListRTDTemp = glob.glob("TemperaturePlot/REB0.RTDtemp*.jpg")
             pdf.add_page()
             pdf.set_fill_color(200, 220, 220)
-            #pdf.cell(0, 6, "CCD temperature test", 0, 1, 'L', 1)
+            # pdf.cell(0, 6, "CCD temperature test", 0, 1, 'L', 1)
             y0 = pdf.get_y()
             pdf.image(imgListTemp[6], x = pdf.l_margin, y = y0, w = width)
             pdf.image(imgListTemp[7], x = pdf.l_margin + xhalf, y = y0, w = width)
-            #pdf.image(imgListCCDTemp[0], x = pdf.l_margin, y = y0 + height / 4, w = width)
-            #pdf.image(imgListRTDTemp[0], x = pdf.l_margin + xhalf, y = y0 + height / 4, w = width)
+            # pdf.image(imgListCCDTemp[0], x = pdf.l_margin, y = y0 + height / 4, w = width)
+            # pdf.image(imgListRTDTemp[0], x = pdf.l_margin + xhalf, y = y0 + height / 4, w = width)
             # Clean up
             for img in imgListTemp:
                 os.remove(img)
@@ -1317,6 +1314,95 @@ class TemperatureLogging(object):
             pdf.cell(0, 10, "", 0, 1)
             pdf.cell(0, 6, "Error: could not retreive all requested temperature data.", 0, 1)
 
+
+class ParameterLogging(object):
+    '''@brief Periodically records specified values over the course of the testing sequence.'''
+
+    def __init__(self, valuesToRead, delay = 5, fnTest = None, backup = 0):
+        '''@brief Initializes the test.
+        @param valuesToRead A list of ("subsystem", "value to read") tuples
+        @param delay Time to sleep between periodic queries
+        @param fnTest The FunctionalTest() object, allowing this test to track progress/terminate
+        @param backup Backup data every n cycles. If zero, do not back up.'''
+        self.start = time.time()
+        self.stop = None
+        self.title = "Parameter Logging"
+        self.status = "Waiting..."
+        self.delay = delay
+        self.backup = backup
+        self.fnTest = fnTest
+        self.valuesToRead = valuesToRead
+        self.names = [subsystem + "." + value for (subsystem, value) in self.valuesToRead]
+        self.data = dict.fromkeys(self.names)  # Initialize data dictionary, stored as lists with named keys
+        for key in self.data:  # Avoid identical lists problem
+            self.data[key] = []
+        self.recording = False
+
+    def runTest(self):
+        '''@brief Starts the logging in a separate thread, moves to the next test.'''
+        self.status = "Working..."
+        self.recording = True
+        if not logIndefinitely:
+            thread = Thread(target = self.recordContinuously)
+            thread.daemon = True  # Daemon thread allows for graceful exiting and crashing
+            thread.start()
+        else:
+            self.recordContinuously()
+
+    def stopTest(self):
+        '''@brief Sets the recording option to false, allowing the test to stop.'''
+        self.stop = time.time()
+        self.status = "DONE"
+        self.recording = False
+
+    def recordContinuously(self):
+        '''@brief Continuously records the requested parameters while self.recording is set to true.'''
+        count = 0
+        while self.recording:
+            if self.fnTest is not None:
+                prog = self.fnTest.progress
+                if prog >= 100:
+                    self.stopTest()
+                self.status = -prog if prog > 0 else "Working..."
+            else:
+                self.status = "Working..."
+            count += 1
+            for (subsystem, value), name in zip(self.valuesToRead, self.names):
+                command = '{}.synchCommandLine(1000,"readChannelValue {}").getResult()'.format(subsystem, value)
+                result = jy2.get(command)
+                self.data[name].append(result)
+            if count == self.backup > 0:
+                count = 0
+                pickle.dump(self.data, open("ParameterLogging.dat", "wb"))
+            time.sleep(self.delay)
+
+    def passFail(self):
+        '''@brief Determine if the value logging passed - this is done in a separate function, unlike other tests.'''
+        if self.stop is not None:
+            self.passed = "PASS"
+            self.stats = "Recorded {} parameters for {} seconds.".format(len(self.names), self.stop - self.start)
+        else:
+            self.passed = "FAIL"
+            self.stats = "Parameter logging terminated early."
+
+    def summarize(self, summary):
+        self.passFail()
+        summary.testList.append(self.title)
+        summary.passList.append(self.passed)
+        summary.statsList.append(self.stats)
+
+    def report(self, pdf):
+        '''@brief generate this test's page in the PDF report.
+        @param pdf pyfpdf-compatible PDF object.'''
+        onePage = False
+        if onePage:
+            pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg",
+                             [(self.data[name], name) for name in self.names])
+            pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
+        else:
+            for name in self.names:
+                pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg", [(self.data[name], name)])
+                pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
 
 class ASPICNoise(object):
     '''@brief Measure noise distribution in ASPICs for the unclamped, clamped, and reset cases.'''
@@ -1475,8 +1561,18 @@ class FunctionalTest(object):
         print("\n\n\nWREB Functional Test:")
         self.progress = 0
         self.startTime = time.time()
+        # Logging option
+        self.parameterLogger = ParameterLogging([("vst", "REB0.Temp1"),
+                                                 ("vst", "REB0.Temp2"),
+                                                 ("vst", "REB0.Temp3"),
+                                                 ("vst", "REB0.Temp4"),
+                                                 ("vst", "REB0.Temp5"),
+                                                 ("vst", "REB0.Temp6"),
+                                                 ("vst", "REB0.Temp7"),
+                                                 ("vst", "REB0.Temp8")], fnTest = self, backup = 5)
         # You can comment out tests you don't want to run or select them to not run in the main menu of the GUI
-        self.tests = [IdleCurrentConsumption(),
+        self.tests = [self.parameterLogger,
+                      IdleCurrentConsumption(),
                       ChannelTest(),
                       ASPICcommsTest(),
                       CSGate(),
@@ -1512,6 +1608,8 @@ class FunctionalTest(object):
             self.progress = int(100 * (count + 1) / float(len(testList)))
             resetSettings()
         self.progress = 100
+        if self.parameterLogger is not None:
+            self.parameterLogger.stopTest()
 
     def generateReport(self):
         '''@brief Generate a pyfpdf-compatible PDF report from the test data.'''
@@ -1666,12 +1764,15 @@ if __name__ == "__main__":
                         help = "Print test results in the terminal.", action = "store_true")
     parser.add_argument("-n", "--noGUI",
                         help = "Do not use the pythonDialogs GUI.", action = "store_true")
+    parser.add_argument("-l", "--logValues",
+                        help = "Log values indefinitely.", action = "store_true")
     args = parser.parse_args()
 
     tsoak = 0.5
     dataDir = args.writeDirectory
     verbose = args.verbose
     noGUI = args.noGUI
+    logIndefinitely = args.logValues
     # Create the Jython interface
     jy = JythonInterface()
     initialize()

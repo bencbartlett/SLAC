@@ -12,10 +12,8 @@ External dependencies:
 # 15 June 2016
 
 import time
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 from Libraries.fpdf.fpdf import FPDF
 
 

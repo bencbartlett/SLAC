@@ -28,10 +28,13 @@ from __future__ import print_function
 import glob
 import os, sys
 import shutil
+import pickle
 import signal
 import textwrap
 import numpy as np
 import matplotlib
+
+matplotlib.use('Agg')  # Fixes "RuntimeError: Invalid DISPLAY variable" error
 import matplotlib.pyplot as plt
 from astropy.io import fits
 from pdfGenWREB import *
@@ -44,9 +47,9 @@ from Libraries.dialog import Dialog
 
 
 # Catch abort so previous settings can be restored
-def initialize():
+def initialize(jythonIF):
     # Some initialization commands for the CCS
-    jy.do('dataDir = %s' % args.writeDirectory)
+    jythonIF.do('dataDir = %s' % args.writeDirectory)
     commands = '''
     from org.lsst.ccs.scripting import *
     import time
@@ -63,7 +66,7 @@ def initialize():
     wreb.synchCommandLine(1000,"loadBiasDacs true")
     wreb.synchCommandLine(1000,"loadAspics true")
     '''
-    jy.do(textwrap.dedent(commands))
+    jythonIF.do(textwrap.dedent(commands))
     time.sleep(2)
 
 
@@ -1358,6 +1361,97 @@ class TemperatureLogging(object):
             pdf.cell(0, 6, "Error: could not retreive all requested temperature data.", 0, 1)
 
 
+class ParameterLogging(object):
+    '''@brief Periodically records specified values over the course of the testing sequence.'''
+
+    def __init__(self, valuesToRead, delay = 5, fnTest = None, backup = 0):
+        '''@brief Initializes the test.
+        @param valuesToRead A list of ("subsystem", "value to read") tuples
+        @param delay Time to sleep between periodic queries
+        @param fnTest The FunctionalTest() object, allowing this test to track progress/terminate
+        @param backup Backup data every n cycles. If zero, do not back up.'''
+        self.start = time.time()
+        self.stop = None
+        self.title = "Parameter Logging"
+        self.status = "Waiting..."
+        self.delay = delay
+        self.backup = backup
+        self.fnTest = fnTest
+        self.valuesToRead = valuesToRead
+        self.names = [subsystem + "." + value for (subsystem, value) in self.valuesToRead]
+        self.data = dict.fromkeys(self.names)  # Initialize data dictionary, stored as lists with named keys
+        for key in self.data: # Avoid identical lists problem
+            self.data[key] = []
+        self.recording = False
+
+    def runTest(self):
+        '''@brief Starts the logging in a separate thread, moves to the next test.'''
+        self.status = "Working..."
+        self.recording = True
+        if not logIndefinitely:
+            thread = Thread(target = self.recordContinuously)
+            thread.daemon = True  # Daemon thread allows for graceful exiting and crashing
+            thread.start()
+        else:
+            self.recordContinuously()
+
+
+    def stopTest(self):
+        '''@brief Sets the recording option to false, allowing the test to stop.'''
+        self.stop = time.time()
+        self.status = "DONE"
+        self.recording = False
+
+    def recordContinuously(self):
+        '''@brief Continuously records the requested parameters while self.recording is set to true.'''
+        count = 0
+        while self.recording:
+            if self.fnTest is not None:
+                prog = self.fnTest.progress
+                if prog >= 100:
+                    self.stopTest()
+                self.status = -prog if prog > 0 else "Working..."
+            else:
+                self.status = "Working..."
+            count += 1
+            for (subsystem, value), name in zip(self.valuesToRead, self.names):
+                command = '{}.synchCommandLine(1000,"readChannelValue {}").getResult()'.format(subsystem, value)
+                result = jy2.get(command)
+                self.data[name].append(result)
+            if count == self.backup > 0:
+                count = 0
+                pickle.dump(self.data, open("ParameterLogging.dat", "wb"))
+            time.sleep(self.delay)
+
+    def passFail(self):
+        '''@brief Determine if the value logging passed - this is done in a separate function, unlike other tests.'''
+        if self.stop is not None:
+            self.passed = "PASS"
+            self.stats = "Recorded {} parameters for {} seconds.".format(len(self.names), self.stop - self.start)
+        else:
+            self.passed = "FAIL"
+            self.stats = "Parameter logging terminated early."
+
+    def summarize(self, summary):
+        self.passFail()
+        summary.testList.append(self.title)
+        summary.passList.append(self.passed)
+        summary.statsList.append(self.stats)
+
+    def report(self, pdf):
+        '''@brief generate this test's page in the PDF report.
+        @param pdf pyfpdf-compatible PDF object.'''
+        onePage = False
+        if onePage:
+            pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg",
+                             [(self.data[name], name) for name in self.names])
+            pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
+        else:
+            for name in self.names:
+                pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg", [(self.data[name], name)])
+                pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
+
+
 class ASPICNoise(object):
     '''@brief Measure noise distribution in ASPICs for the unclamped, clamped, and reset cases.'''
 
@@ -1505,8 +1599,19 @@ class FunctionalTest(object):
         print("\n\n\nWREB Functional Test:")
         self.progress = 0
         self.startTime = time.time()
+        # self.parameterLogger = None
+        # Logging option
+        self.parameterLogger = ParameterLogging([("raftsub", "WREB.Temp1"),
+                                                 ("raftsub", "WREB.Temp2"),
+                                                 ("raftsub", "WREB.Temp3"),
+                                                 ("raftsub", "WREB.Temp4"),
+                                                 ("raftsub", "WREB.Temp5"),
+                                                 ("raftsub", "WREB.Temp6"),
+                                                 ("raftsub", "WREB.CCDtemp"),
+                                                 ("raftsub", "WREB.RTDtemp")], fnTest = self, backup = 5)
         # You can comment out tests you don't want to run or select them to not run in the main menu of the GUI
-        self.tests = [IdleCurrentConsumption(),
+        self.tests = [self.parameterLogger,
+                      IdleCurrentConsumption(),
                       ChannelTest(),
                       ASPICcommsTest(),
                       SequencerToggling(),
@@ -1525,8 +1630,7 @@ class FunctionalTest(object):
                       GDBias(),
                       RDBias(),
                       TemperatureLogging(self.startTime),
-                      ASPICNoise()
-                      ]
+                      ASPICNoise()]
         self.testsMask = [True for _ in self.tests]
         self.reportName = "WREB_Test_" + time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + "_" + \
                           str(self.boardID) + ".pdf"
@@ -1543,6 +1647,8 @@ class FunctionalTest(object):
             self.progress = int(100 * (count + 1) / float(len(testList)))
             resetSettings()
         self.progress = 100
+        if self.parameterLogger is not None:
+            self.parameterLogger.stopTest()
 
     def generateReport(self):
         '''@brief Generate a pyfpdf-compatible PDF report from the test data.'''
@@ -1646,7 +1752,7 @@ class GUI(object):
     def runFunctionalTest(self):
         '''@brief Runs the full suite of tests from the GUI.'''
         self.d.infobox("Initializing WREB Functional Test...")
-        initialize()
+        initialize(jy)
         self.fnTest = FunctionalTest()
         self.startUpdateContinuously()
         self.fnTest.runTests()
@@ -1671,7 +1777,7 @@ class GUI(object):
             testList = [(test in selectedTests) for test in testList]
             self.fnTest.testsMask = testList
             self.d.infobox("Initializing WREB Functional Test...")
-            initialize()
+            initialize(jy)
             self.startUpdateContinuously()
             self.fnTest.runTests()
             self.fnTest.generateReport()
@@ -1697,15 +1803,20 @@ if __name__ == "__main__":
                         help = "Print test results in the terminal.", action = "store_true")
     parser.add_argument("-n", "--noGUI",
                         help = "Do not use the pythonDialogs GUI.", action = "store_true")
+    parser.add_argument("-l", "--logValues",
+                        help = "Log values indefinitely.", action = "store_true")
     args = parser.parse_args()
 
     tsoak = 0.5
     dataDir = args.writeDirectory
     verbose = args.verbose
     noGUI = args.noGUI
+    logIndefinitely = args.logValues
     # Create the Jython interface
     jy = JythonInterface()
-    initialize()
+    jy2 = JythonInterface()
+    initialize(jy)
+    initialize(jy2)
 
     # Start the GUI
     if not noGUI:
