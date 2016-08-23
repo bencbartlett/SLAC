@@ -122,7 +122,8 @@ class PDF(FPDF):
         # Line break
         self.ln(4)
 
-    def summaryPage(self, boardID, boardType, linkVersion, FPGAVersion, scriptVersion, startTime, testList, passList, statsList):
+    def summaryPage(self, boardID, boardType, linkVersion, FPGAVersion, scriptVersion,
+                    startTime, testList, passList, statsList):
         '''@brief Generate a summary page for the tests that were run.
         @param boardID Serial number of the board that is tested
         @param boardType Type of phsyical board model

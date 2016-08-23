@@ -31,7 +31,9 @@ import shutil
 import signal
 import textwrap
 import numpy as np
+import pickle
 import matplotlib
+
 matplotlib.use('Agg')  # Fixes "RuntimeError: Invalid DISPLAY variable" error
 import matplotlib.pyplot as plt
 from astropy.io import fits
@@ -39,7 +41,7 @@ from pdfGenWREB import *
 from threading import Thread
 from datetime import datetime
 
-# from Libraries.FastProgressBar import progressbar # Don't use for now
+from Libraries.FastProgressBar import progressbar  # Don't use for now
 from Libraries.PythonBinding import *
 from Libraries.dialog import Dialog
 
@@ -158,6 +160,22 @@ def setSCKRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
     jy.do('reb0DAC.synchCommandLine(1000,"change sclkLow %d")' % LV)
     jy.do('reb0DAC.synchCommandLine(1000,"change sclkHighSh %d")' % shUV)
     jy.do('reb0DAC.synchCommandLine(1000,"change sclkHigh %d")' % UV)
+    jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
+    time.sleep(tsoak)
+
+
+def setPCKRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
+    '''@brief Set the voltage for the SCK rail system.
+    @param lowV Desired lower rail voltage.
+    @param highV Desired upper rail voltage
+    @param rf Optional op-amp Rf, defaults to 49.9 Ohm.
+    @param ri Optional op-amp Ri, defaults to 20.0 Ohm.'''
+    LV, shLV = voltsToRailDAC(lowV, rf, ri)
+    UV, shUV = voltsToRailDAC(highV, rf, ri)
+    jy.do('reb0DAC.synchCommandLine(1000,"change pclkLowSh %d")' % shLV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change pclkLow %d")' % LV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change pclkHighSh %d")' % shUV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change pclkHigh %d")' % UV)
     jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
     time.sleep(tsoak)
 
@@ -349,7 +367,7 @@ class ASPICcommsTest(object):
         pdf.set_font('Courier', '', 12)
         pdf.cell(0, 6, "ASPIC Communications Test", 0, 1, 'L', 1)
         pdf.cell(0, 6, "Test " + self.passed + ". " + self.stats, 0, 1, 'L')
-        pdf.cell(0, 6, "ccs-cr.checkAsics result: " + self.aspicstr, 0, 1, 'L')
+        pdf.cell(0, 6, "ccs-vst.checkAspics result: " + self.aspicstr, 0, 1, 'L')
 
 
 class CSGate(object):
@@ -406,11 +424,107 @@ class CSGate(object):
         pdf.columnTable(self.data)
 
 
+# class PCKRails(object):
+#     '''@brief Test the parallel clock rail performance.'''
+# 
+#     # TODO: Need PCK functionality
+# 
+#     def __init__(self):
+#         '''@brief Initialize minimum required variables for test list.'''
+#         self.title = "PCK Rails"
+#         self.status = "Waiting..."
+# 
+#     def runTest(self):
+#         '''@brief Run the test, save output to state variables.'''
+#         pbar = progressbar("PCK Rails Test, &count&: ", 31)
+#         if not verbose and noGUI: pbar.start()
+#         printv("\nrail voltage generation for PCLK test ")
+#         PCLKDV = 5  # delta voltage between lower and upper
+#         PCLKLshV = -8.0  # sets the offset shift to -8V on the lower
+#         PCLKUshV = -2  # PCLKLshV+PCLKDV    #sets the offset shift on the upper
+#         PCLKLshDAC = voltsToDAC(PCLKLshV, 49.9, 20)
+#         PCLKUshDAC = voltsToDAC(PCLKUshV, 49.9, 20)
+#         time.sleep(tsoak)
+#         # Report arrays
+#         PCLKLV_arr = []
+#         PCLKUV_arr = []
+#         WREB_CKPSH_V_arr = []
+#         WREB_DphiPS_V_arr = []
+#         deltaPCLKLV_arr = []
+#         deltaPCLKUV_arr = []
+#         jy.do('reb0DAC.synchCommandLine(1000,"change pclkLowSh %d")' % PCLKLshDAC)
+#         jy.do('reb0DAC.synchCommandLine(1000,"change pclkHighSh %d")' % PCLKUshDAC)
+#         for PCLKLV in stepRange(PCLKLshV, PCLKLshV + 15, 0.5):
+#             PCLKLdac = voltsToShiftedDAC(PCLKLV, PCLKLshV, 49.9, 20)
+#             PCLKUV = PCLKLV + PCLKDV
+#             PCLKUdac = voltsToShiftedDAC(PCLKUV, PCLKUshV, 49.9, 20)
+#             printv("%5.2f\t%4i\t%5.2f\t%4i" % (PCLKLV, PCLKLdac, PCLKUV, PCLKUdac)),
+#             jy.do('reb0DAC.synchCommandLine(1000,"change pclkLow %d")' % PCLKLdac)
+#             jy.do('reb0DAC.synchCommandLine(1000,"change pclkHigh %d")' % PCLKUdac)
+#             jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
+#             time.sleep(tsoak)
+#             WREB_CKPSH_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.CKPSH_V").getResult()')
+#             WREB_DphiPS_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.DphiPS_V").getResult()')
+#             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
+#                    (WREB_CKPSH_V, WREB_DphiPS_V, (PCLKLV - WREB_CKPSH_V), (PCLKUV - WREB_DphiPS_V)))
+#             # Append to arrays
+#             PCLKLV_arr.append(PCLKLV)
+#             PCLKUV_arr.append(PCLKUV)
+#             WREB_CKPSH_V_arr.append(WREB_CKPSH_V)
+#             WREB_DphiPS_V_arr.append(WREB_DphiPS_V)
+#             deltaPCLKLV_arr.append(PCLKLV - WREB_CKPSH_V)
+#             deltaPCLKUV_arr.append(PCLKUV - WREB_DphiPS_V)
+#             self.status = int(-100 * float(PCLKLV - PCLKLshV) / 15.0)
+#             if not verbose and noGUI: pbar.inc()
+#         if not verbose and noGUI: pbar.finish()
+#         self.data = ((PCLKLV_arr, "PCLKLV (V)"),
+#                      (PCLKUV_arr, "PCLKUV (V)"),
+#                      (WREB_CKPSH_V_arr, "REB0.CKPSH_V (V)"),
+#                      (WREB_DphiPS_V_arr, "REB0.DphiPS_V (V)"))
+#         self.residuals = ((deltaPCLKLV_arr, "deltaPCLKLV (V)"),
+#                           (deltaPCLKUV_arr, "deltaPCLKUV (V)"))
+# 
+#         # Give pass/fail result
+#         self.passed = "PASS"
+#         allowedError = 0.1  # 100mV
+#         maxFails = 0  # Some value giving the maximum number of allowed failures
+#         numErrors = 0
+#         totalPoints = 0
+#         self.ROI = [7, 30]
+#         for x, residual in enumerate(deltaPCLKLV_arr):
+#             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
+#             totalPoints += 1
+#         for x, residual in enumerate(deltaPCLKUV_arr):
+#             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
+#             totalPoints += 1
+# 
+#         # Other information
+#         l, h = self.ROI
+#         ml, bl = np.polyfit(PCLKLV_arr[l:h], WREB_CKPSH_V_arr[l:h], 1)
+#         mu, bu = np.polyfit(PCLKUV_arr[l:h], WREB_DphiPS_V_arr[l:h], 1)
+#         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
+#                      (ml, mu, totalPoints - numErrors, totalPoints)
+# 
+#         # Pass criterion:
+#         if numErrors > maxFails:
+#             self.passed = "FAIL"
+#         self.status = self.passed
+# 
+#     def summarize(self, summary):
+#         '''@brief Summarize the test results for the cover page of the report.
+#         @param summary Summary obejct passed from FunctionalTest()'''
+#         summary.testList.append(self.title)
+#         summary.passList.append(self.passed)
+#         summary.statsList.append(self.stats)
+# 
+#     def report(self, pdf):
+#         '''@brief generate this test's page in the PDF report.
+#         @param pdf pyfpdf-compatible PDF object.'''
+#         pdf.residualTest("PCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
 class PCKRails(object):
-    '''@brief Test the parallel clock rail performance.'''
+    '''@brief Tests the parallel clock rail performance.'''
 
-    # TODO: Need PCK functionality
-
+    # TODO: Need rail functionality
     def __init__(self):
         '''@brief Initialize minimum required variables for test list.'''
         self.title = "PCK Rails"
@@ -418,53 +532,43 @@ class PCKRails(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("PCK Rails Test, &count&: ", 31)
+        pbar = progressbar("PCK Rails Test, &count&: ", 25)
         if not verbose and noGUI: pbar.start()
         printv("\nrail voltage generation for PCLK test ")
-        PCLKDV = 5  # delta voltage between lower and upper
+        pclkDV = 5  # delta voltage between lower and upper
         PCLKLshV = -8.0  # sets the offset shift to -8V on the lower
-        PCLKUshV = -2  # PCLKLshV+PCLKDV    #sets the offset shift on the upper
-        PCLKLshDAC = voltsToDAC(PCLKLshV, 49.9, 20)
-        PCLKUshDAC = voltsToDAC(PCLKUshV, 49.9, 20)
-        time.sleep(tsoak)
         # Report arrays
-        PCLKLV_arr = []
-        PCLKUV_arr = []
-        WREB_CKPSH_V_arr = []
-        WREB_DphiPS_V_arr = []
-        deltaPCLKLV_arr = []
-        deltaPCLKUV_arr = []
-        jy.do('reb0DAC.synchCommandLine(1000,"change pclkLowSh %d")' % PCLKLshDAC)
-        jy.do('reb0DAC.synchCommandLine(1000,"change pclkHighSh %d")' % PCLKUshDAC)
-        for PCLKLV in stepRange(PCLKLshV, PCLKLshV + 15, 0.5):
-            PCLKLdac = voltsToShiftedDAC(PCLKLV, PCLKLshV, 49.9, 20)
-            PCLKUV = PCLKLV + PCLKDV
-            PCLKUdac = voltsToShiftedDAC(PCLKUV, PCLKUshV, 49.9, 20)
-            printv("%5.2f\t%4i\t%5.2f\t%4i" % (PCLKLV, PCLKLdac, PCLKUV, PCLKUdac)),
-            jy.do('reb0DAC.synchCommandLine(1000,"change pclkLow %d")' % PCLKLdac)
-            jy.do('reb0DAC.synchCommandLine(1000,"change pclkHigh %d")' % PCLKUdac)
-            jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
+        pclkLV_arr = []
+        pclkUV_arr = []
+        WREB_PCKL_V_arr = []
+        WREB_PCKU_V_arr = []
+        deltapclkLV_arr = []
+        deltapclkUV_arr = []
+        for pclkLV in stepRange(PCLKLshV, PCLKLshV + 15, 0.5):
+            pclkUV = pclkLV + pclkDV
+            setPCKRailVoltage(pclkLV, pclkUV)
+            # Read back voltage
             time.sleep(tsoak)
-            WREB_CKPSH_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.CKPSH_V").getResult()')
-            WREB_DphiPS_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.DphiPS_V").getResult()')
+            WREB_PCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.PClkL").getResult()')
+            WREB_PCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.PClkU").getResult()')
             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
-                   (WREB_CKPSH_V, WREB_DphiPS_V, (PCLKLV - WREB_CKPSH_V), (PCLKUV - WREB_DphiPS_V)))
+                   (WREB_PCKL_V, WREB_PCKU_V, (pclkLV - WREB_PCKL_V), (pclkUV - WREB_PCKU_V)))
             # Append to arrays
-            PCLKLV_arr.append(PCLKLV)
-            PCLKUV_arr.append(PCLKUV)
-            WREB_CKPSH_V_arr.append(WREB_CKPSH_V)
-            WREB_DphiPS_V_arr.append(WREB_DphiPS_V)
-            deltaPCLKLV_arr.append(PCLKLV - WREB_CKPSH_V)
-            deltaPCLKUV_arr.append(PCLKUV - WREB_DphiPS_V)
-            self.status = int(-100 * float(PCLKLV - PCLKLshV) / 15.0)
+            pclkLV_arr.append(pclkLV)
+            pclkUV_arr.append(pclkUV)
+            WREB_PCKL_V_arr.append(WREB_PCKL_V)
+            WREB_PCKU_V_arr.append(WREB_PCKU_V)
+            deltapclkLV_arr.append(pclkLV - WREB_PCKL_V)
+            deltapclkUV_arr.append(pclkUV - WREB_PCKU_V)
+            self.status = int(-100 * float(pclkLV - PCLKLshV) / 12.0)
             if not verbose and noGUI: pbar.inc()
         if not verbose and noGUI: pbar.finish()
-        self.data = ((PCLKLV_arr, "PCLKLV (V)"),
-                     (PCLKUV_arr, "PCLKUV (V)"),
-                     (WREB_CKPSH_V_arr, "REB0.CKPSH_V (V)"),
-                     (WREB_DphiPS_V_arr, "REB0.DphiPS_V (V)"))
-        self.residuals = ((deltaPCLKLV_arr, "deltaPCLKLV (V)"),
-                          (deltaPCLKUV_arr, "deltaPCLKUV (V)"))
+        self.data = ((pclkLV_arr, "pclkLV (V)"),
+                     (pclkUV_arr, "pclkUV (V)"),
+                     (WREB_PCKL_V_arr, "REB0.PCKL_V (V)"),
+                     (WREB_PCKU_V_arr, "REB0.PCKU_V (V)"))
+        self.residuals = ((deltapclkLV_arr, "deltapclkLV (V)"),
+                          (deltapclkUV_arr, "deltapclkUV (V)"))
 
         # Give pass/fail result
         self.passed = "PASS"
@@ -472,18 +576,18 @@ class PCKRails(object):
         maxFails = 0  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        self.ROI = [7, 30]
-        for x, residual in enumerate(deltaPCLKLV_arr):
+        self.ROI = [6, 21]
+        for x, residual in enumerate(deltapclkLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
-        for x, residual in enumerate(deltaPCLKUV_arr):
+        for x, residual in enumerate(deltapclkUV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
 
         # Other information
         l, h = self.ROI
-        ml, bl = np.polyfit(PCLKLV_arr[l:h], WREB_CKPSH_V_arr[l:h], 1)
-        mu, bu = np.polyfit(PCLKUV_arr[l:h], WREB_DphiPS_V_arr[l:h], 1)
+        ml, bl = np.polyfit(pclkLV_arr[l:h], WREB_PCKL_V_arr[l:h], 1)
+        mu, bu = np.polyfit(pclkUV_arr[l:h], WREB_PCKU_V_arr[l:h], 1)
         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
                      (ml, mu, totalPoints - numErrors, totalPoints)
 
@@ -533,8 +637,8 @@ class SCKRails(object):
             setSCKRailVoltage(sclkLV, sclkUV)
             # Read back voltage
             time.sleep(tsoak)
-            WREB_SCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SCKL_V").getResult()')
-            WREB_SCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SCKU_V").getResult()')
+            WREB_SCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkL").getResult()')
+            WREB_SCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkU").getResult()')
             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                    (WREB_SCKL_V, WREB_SCKU_V, (sclkLV - WREB_SCKL_V), (sclkUV - WREB_SCKU_V)))
             # Append to arrays
@@ -628,9 +732,9 @@ class SCKRailsDiverging(object):
             sclkUV = self.startV + sclkDV
             setSCKRailVoltage(sclkLV, sclkUV)
             # Read back voltage
-            WREB_SCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SCKL_V").getResult()')
-            WREB_SCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SCKU_V").getResult()')
-            ClkHPS_I = 0.1 * jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ClkHPS_I").getResult()')
+            WREB_SCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkL").getResult()')
+            WREB_SCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkU").getResult()')
+            ClkHPS_I = 0.1 * jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ClkI").getResult()')
             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                    (WREB_SCKL_V, WREB_SCKU_V, (sclkLV - WREB_SCKL_V), (sclkUV - WREB_SCKU_V)))
             # Append to arrays
@@ -662,12 +766,15 @@ class SCKRailsDiverging(object):
         U, L = np.array(WREB_SCKU_V_arr), np.array(WREB_SCKL_V_arr)
         iterationValues = np.arange(self.amplitude / step + 1)
         # Select range where current is less than 40mA and voltages are within +/-(-0.5 to +7.5V)
-        self.ROI = np.take(iterationValues[  # (currents < 4.0 ) &
-                               (-0.0 < U) &
-                               (U < 7.0) &
-                               (-7.0 < L) &
-                               (L < 0.0)], [1, -1])
-        self.ROI = map(int, self.ROI)
+        try:
+            self.ROI = np.take(iterationValues[  # (currents < 4.0 ) &
+                                   (-0.0 < U) &
+                                   (U < 7.0) &
+                                   (-7.0 < L) &
+                                   (L < 0.0)], [1, -1])
+            self.ROI = map(int, self.ROI)
+        except IndexError:
+            self.ROI = [int(iterationValues[0]), int(iterationValues[-1])]
         for x, residual in enumerate(deltasclkLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -735,8 +842,8 @@ class RGRails(object):
             setRGRailVoltage(RGLV, RGUV)
             # Read back voltages
             time.sleep(tsoak)
-            WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL_V").getResult()')
-            WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU_V").getResult()')
+            WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL").getResult()')
+            WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU").getResult()')
             # Append to arrays
             RGLV_arr.append(RGLV)
             RGUV_arr.append(RGUV)
@@ -825,9 +932,9 @@ class RGRailsDiverging(object):
             RGUV = self.startV + RGDV
             setRGRailVoltage(RGLV, RGUV)
             # Read back voltages
-            WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL_V").getResult()')
-            WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU_V").getResult()')
-            ClkHPS_I = 0.1 * jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ClkHPS_I").getResult()')
+            WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL").getResult()')
+            WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU").getResult()')
+            ClkHPS_I = 0.1 * jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ClkI").getResult()')
             # Append to arrays
             RGLV_arr.append(RGLV)
             RGUV_arr.append(RGUV)
@@ -856,9 +963,13 @@ class RGRailsDiverging(object):
         UV, LV = np.array(WREB_RGU_V_arr), np.array(WREB_RGL_V_arr)
         iterationValues = np.arange(self.amplitude / step + 1)
         # Start where values begin to be accurate
-        ROI = iterationValues[1:][(-7.0 < LV[1:]) & (LV[1:] < 0.0) & (-0.0 < UV[1:]) & (UV[1:] < 7.0)]
-        self.ROI = [ROI[0], ROI[-1]]
-        self.ROI = map(int, self.ROI)
+        try:
+            ROI = iterationValues[1:][(-7.0 < LV[1:]) & (LV[1:] < 0.0) & (-0.0 < UV[1:]) & (UV[1:] < 7.0)]
+            self.ROI = [ROI[0], ROI[-1]]
+            self.ROI = map(int, self.ROI)
+        except IndexError:
+            self.ROI = [0, len(RGLV_arr) - 1]
+
         for x, residual in enumerate(deltaRGLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -1404,6 +1515,7 @@ class ParameterLogging(object):
                 pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg", [(self.data[name], name)])
                 pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
 
+
 class ASPICNoise(object):
     '''@brief Measure noise distribution in ASPICs for the unclamped, clamped, and reset cases.'''
 
@@ -1418,9 +1530,9 @@ class ASPICNoise(object):
         self.status = -1
         errorLevel = 5.5  # Max allowable standard deviation
         # Delete directory containing old files, if it exists
-        if os.path.exists("/u1/u/wreb/rafts/ASPICNoise/"):
-            shutil.rmtree("/u1/u/wreb/rafts/ASPICNoise/")
-        os.makedirs("/u1/u/wreb/rafts/ASPICNoise/")
+        if os.path.exists("/u1/wreb/rafts/ASPICNoise/"):
+            shutil.rmtree("/u1/wreb/rafts/ASPICNoise/")
+        os.makedirs("/u1/wreb/rafts/ASPICNoise/")
         if not os.path.exists("ASPICNoise"):
             os.makedirs("ASPICNoise")
         self.fnames = ["unclamped_${sensorId}.fits", "clamped_${sensorId}.fits", "reset_${sensorId}.fits"]
@@ -1428,17 +1540,17 @@ class ASPICNoise(object):
                       "REB4_test_aspic_clamped_cfg",
                       "REB4_test_aspic_clamped_cfg"]
         # Same sequencers for WREB
-        sequencers = ["/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
-                      "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
-                      "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
-        # sequencers = ["/u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq",
-        #               "/u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq",
-        #               "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_aspic_reset.seq"]
+        sequencers = ["/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                      "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                      "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
+        # sequencers = ["/u1/wreb/rafts/xml/wreb_ITL_20160419.seq",
+        #               "/u1/wreb/rafts/xml/wreb_ITL_20160419.seq",
+        #               "/u1/wreb/rafts/xml/wreb_ITL_20160419_aspic_reset.seq"]
         self.passed = "PASS"
         errCount = 0
         totalCount = 0
         for cat, seq, fname in zip(categories, sequencers, self.fnames):
-            # Generate fits files to /u1/u/wreb/rafts/ASPICNoise
+            # Generate fits files to /u1/wreb/rafts/ASPICNoise
             commands = '''
             # Load standard sequencer and run it with 0s exposure time
             vst.synchCommandLine(1000,"loadCategories Rafts:{}")
@@ -1462,7 +1574,7 @@ class ASPICNoise(object):
             matplotlib.rc('font', **font)
             for stripe in range(3):
                 # Read the data the plot
-                f = fits.open("/u1/u/wreb/rafts/ASPICNoise/" + fname.replace("${sensorId}", str(stripe)))
+                f = fits.open("/u1/wreb/rafts/ASPICNoise/" + fname.replace("${sensorId}", str(stripe)))
                 # Generate the multiplot
                 fig, axArr = plt.subplots(4, 4)
                 fig.set_size_inches(8, 8)
@@ -1516,6 +1628,128 @@ class ASPICNoise(object):
             pdf.addPlotPage("Reset ASPIC Noise Test - Stripe %s" % letter,
                             "ASPICNoise/" + self.fnames[2].replace("${sensorId}", str(stripe)) + ".jpg")
             pdf.passFail(self.passed)
+
+
+class ASPICLogging(object):
+    '''@brief Continuously measure noise distribution in ASPICs. Must be run with -l enabled.'''
+
+    def __init__(self, valuesToRead = None):
+        '''@brief Initialize minimum required variables for test list.'''
+        self.title = "Continuous ASPIC Logging"
+        self.status = "Waiting..."
+        self.numImages = 0
+        self.logging = True
+        self.valuesToRead = valuesToRead
+        if self.valuesToRead is not None:
+            self.names = [subsystem + "." + value for (subsystem, value) in self.valuesToRead]
+            self.data = dict.fromkeys(self.names)  # Initialize data dictionary, stored as lists with named keys
+            for key in self.data:  # Avoid identical lists problem
+                self.data[key] = []
+            # Add timestamp key
+            self.data["timestamp"] = []
+        else:
+            self.names = None
+            self.data = None
+
+    def runTest(self, delay = 5 * 60):
+        '''@brief Continuously log ASPIC images every time interval.'''
+        # Delete directory containing old files, if it exists
+        self.status = "Images: {}".format(self.numImages)
+        if not os.path.exists("/u1/wreb/rafts/ASPICNoise/"):
+            os.makedirs("/u1/wreb/rafts/ASPICNoise/")
+        if not os.path.exists("ASPICNoise"):
+            os.makedirs("ASPICNoise")
+        while self.logging:
+            timestamp = time.strftime("%y.%m.%d.%H.%M", time.localtime(time.time()))
+            # Log other values
+            if self.names is not None:
+                for (subsystem, value), name in zip(self.valuesToRead, self.names):
+                    command = '{}.synchCommandLine(1000,"readChannelValue {}").getResult()'.format(subsystem, value)
+                    result = jy2.get(command)
+                    self.data[name].append(result)
+                self.data["timestamp"].append(timestamp)
+                pickle.dump(self.data, open("ParameterLogging.dat", "wb"))
+            # Imaging
+            errorLevel = 5.5  # Max allowable standard deviation
+            self.fnames = ["unclamped." + timestamp + "_${sensorId}.fits",
+                           "clamped." + timestamp + "_${sensorId}.fits",
+                           "reset." + timestamp + "_${sensorId}.fits"]
+            categories = ["REB4_test_base_cfg",
+                          "REB4_test_aspic_clamped_cfg",
+                          "REB4_test_aspic_clamped_cfg"]
+            # Same sequencers for WREB
+            sequencers = ["/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                          "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                          "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
+            self.passed = "PASS"
+            errCount = 0
+            totalCount = 0
+            for cat, seq, fname in zip(categories, sequencers, self.fnames):
+                # Generate fits files to /u1/wreb/rafts/ASPICNoise
+                commands = '''
+                # Load standard sequencer and run it with 0s exposure time
+                vst.synchCommandLine(1000,"loadCategories Rafts:{}")
+                vst.synchCommandLine(1000,"loadSequencer {}")
+                reb0.synchCommandLine(1000,"loadDacs true")
+                reb0.synchCommandLine(1000,"loadBiasDacs true")
+                reb0.synchCommandLine(1000,"loadAspics true")
+                vst.synchCommandLine(1000, "setParameter Exptime 0");  # sets exposure time to 0ms
+                time.sleep(tsoak)
+                vst.synchCommandLine(1000, "startSequencer")
+                time.sleep(5)
+                vst.synchCommandLine(1000, "setFitsFileNamePattern {}")
+                result = vst.synchCommand(1000,"saveFitsImage ASPICNoise")
+                '''.format(cat, seq, fname)
+                jy.do(textwrap.dedent(commands))
+                printv("Generating test for %s..." % fname)
+                time.sleep(5)
+                # Set fonts
+                font = {'family': 'normal',
+                        'weight': 'bold',
+                        'size'  : 8}
+                matplotlib.rc('font', **font)
+                for stripe in range(3):
+                    # Read the data the plot
+                    f = fits.open("/u1/wreb/rafts/ASPICNoise/" + fname.replace("${sensorId}", str(stripe)))
+                    # Generate the multiplot
+                    fig, axArr = plt.subplots(4, 4)
+                    fig.set_size_inches(8, 8)
+                    for i in range(16):  # TODO: Different image size
+                        totalCount += 1
+                        imgData = f[i + 1].data.flatten()
+                        subPlot = axArr[i / 4, i % 4]
+                        mu, sigma = np.mean(imgData), np.std(imgData)
+                        if sigma > errorLevel:
+                            self.passed = "FAIL"
+                            errCount += 1
+                        # Generate histogram
+                        imgData = rejectOutliers(imgData, 4.0)  # Chop off the extreme outliers, improving the fit
+                        n, bins, patches = subPlot.hist(imgData, 40, range = [mu - 20, mu + 20], normed = 1,
+                                                        facecolor = 'blue', alpha = 0.75)
+                        # Add a 'best fit' line
+                        y = matplotlib.mlab.normpdf(bins, mu, sigma)
+                        subPlot.plot(bins, y, 'r--', linewidth = 1)
+                        # Labeling
+                        subPlot.set_yticklabels([])
+                        subPlot.set_title('Channel {}\n$\mu={:.2}, \sigma={:.2} $'.format(i + 1, mu, sigma))
+                        subPlot.grid(True)
+                    plt.tight_layout()
+                    plt.savefig("ASPICNoise/" + fname.replace("${sensorId}", str(stripe)) + ".jpg")
+                    plt.close()
+                    self.numImages += 1
+                    self.status = "Images: {}".format(self.numImages)
+            # Sleep for 5 minutes by default
+            time.sleep(delay)
+
+    def summarize(self, summary):
+        '''@brief Summarize the test results for the cover page of the report.
+        @param summary Summary obejct passed from FunctionalTest()'''
+        pass
+
+    def report(self, pdf):
+        '''@brief generate this test's page in the PDF report.
+        @param pdf pyfpdf-compatible PDF object.'''
+        pass
 
 
 def getBoardInfo():
@@ -1590,8 +1824,16 @@ class FunctionalTest(object):
                       GDBias(),
                       RDBias(),
                       TemperatureLogging(self.startTime),
-                      ASPICNoise()
-                      ]
+                      ASPICNoise()]
+        if logIndefinitely:
+            self.tests.append(ASPICLogging([("vst", "REB0.Temp1"),
+                                            ("vst", "REB0.Temp2"),
+                                            ("vst", "REB0.Temp3"),
+                                            ("vst", "REB0.Temp4"),
+                                            ("vst", "REB0.Temp5"),
+                                            ("vst", "REB0.Temp6"),
+                                            ("vst", "REB0.Temp7"),
+                                            ("vst", "REB0.Temp8")]))
         self.testsMask = [True for _ in self.tests]
         self.reportName = "SR_REB_Test_" + time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + "_" + \
                           str(self.boardID) + ".pdf"
@@ -1713,7 +1955,7 @@ class GUI(object):
     def runFunctionalTest(self):
         '''@brief Runs the full suite of tests from the GUI.'''
         self.d.infobox("Initializing WREB Functional Test...")
-        initialize()
+        initialize(jy)
         self.fnTest = FunctionalTest()
         self.startUpdateContinuously()
         self.fnTest.runTests()
@@ -1738,7 +1980,7 @@ class GUI(object):
             testList = [(test in selectedTests) for test in testList]
             self.fnTest.testsMask = testList
             self.d.infobox("Initializing WREB Functional Test...")
-            initialize()
+            initialize(jy)
             self.startUpdateContinuously()
             self.fnTest.runTests()
             self.fnTest.generateReport()
@@ -1757,7 +1999,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description =
                                      '''Test script for WREB controller boards to generate a pdf status report.''',
-                                     epilog = '''>> Example: python WREBTest.py ~/u1/u/wreb/data -q''')
+                                     epilog = '''>> Example: python WREBTest.py ~/u1/wreb/data -q''')
     parser.add_argument("writeDirectory", nargs = '?', default = "./Reports",
                         help = "Directory to save outputs to. Defaults to ./Reports.", action = "store")
     parser.add_argument("-v", "--verbose",

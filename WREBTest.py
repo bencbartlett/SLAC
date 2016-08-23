@@ -8,6 +8,7 @@ External dependencies:
 - astropy
 - numpy
 - matplotlib
+- Unix Dialogs installation (for GUI, optional)
 
 To run:
 - Ensure Jython console is running (./JythonConsole or the bootstrapper program)
@@ -91,12 +92,20 @@ signal.signal(signal.SIGINT, exitScript)
 
 # ---------- Helper functions ----------
 def stepRange(start, end, step):
+    '''@brief Generate a range object that can take non-integer steps
+    @param start Starting value
+    @param end Ending value
+    @param step Step size'''
     while start <= end:
         yield start
         start += step
 
 
 def voltsToDAC(volt, Rfb, Rin):
+    '''@brief Generate a DAC code to correspond to a desired voltage
+    @param volt Desired voltage level
+    @param Rfb Op-amp Rf
+    @param Rin Op-amp Ri'''
     dac = (volt * 4095 / 5 / (-Rfb / Rin))
     if dac > 4095: dac = 4095
     if dac < 0: dac = 0
@@ -104,6 +113,11 @@ def voltsToDAC(volt, Rfb, Rin):
 
 
 def voltsToShiftedDAC(volt, shvolt, Rfb, Rin):
+    '''@brief Generate a shifted DAC code to correspond to a desired voltage in a rail system
+    @param volt Desired voltage level
+    @param shvolt Shifted voltage level
+    @param Rfb Op-amp Rf
+    @param Rin Op-amp Ri'''
     dac = ((volt - shvolt) * 4095 / 5 / (1 + Rfb / Rin))
     if dac > 4095: dac = 4095
     if dac < 0: dac = 0
@@ -656,7 +670,7 @@ class SCKRails(object):
         maxFails = 0  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        self.ROI = [6, 20]
+        self.ROI = [6, 18]
         for x, residual in enumerate(deltasclkLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -860,7 +874,7 @@ class RGRails(object):
         maxFails = 0  # Some value giving the maximum number of allowed failures
         numErrors = 0
         totalPoints = 0
-        self.ROI = [7, 20]
+        self.ROI = [7, 18]
         for x, residual in enumerate(deltaRGLV_arr):
             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
             totalPoints += 1
@@ -1380,7 +1394,7 @@ class ParameterLogging(object):
         self.valuesToRead = valuesToRead
         self.names = [subsystem + "." + value for (subsystem, value) in self.valuesToRead]
         self.data = dict.fromkeys(self.names)  # Initialize data dictionary, stored as lists with named keys
-        for key in self.data: # Avoid identical lists problem
+        for key in self.data:  # Avoid identical lists problem
             self.data[key] = []
         self.recording = False
 
@@ -1394,7 +1408,6 @@ class ParameterLogging(object):
             thread.start()
         else:
             self.recordContinuously()
-
 
     def stopTest(self):
         '''@brief Sets the recording option to false, allowing the test to stop.'''
@@ -1465,26 +1478,26 @@ class ASPICNoise(object):
         self.status = -1
         errorLevel = 5.5  # Max allowable standard deviation
         # Delete directory containing old files, if it exists
-        if os.path.exists("/u1/u/wreb/rafts/ASPICNoise/"):
-            shutil.rmtree("/u1/u/wreb/rafts/ASPICNoise/")
-        os.makedirs("/u1/u/wreb/rafts/ASPICNoise/")
+        if os.path.exists("/u1/wreb/rafts/ASPICNoise/"):
+            shutil.rmtree("/u1/wreb/rafts/ASPICNoise/")
+        os.makedirs("/u1/wreb/rafts/ASPICNoise/")
         if not os.path.exists("ASPICNoise"):
             os.makedirs("ASPICNoise")
         self.fnames = ["unclamped.fits", "clamped.fits", "reset.fits"]
         categories = ["WREB_test_base_cfg",
                       "WREB_test_aspic_clamped_cfg",
                       "WREB_test_aspic_clamped_cfg"]
-        sequencers = ["/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
-                      "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
-                      "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
-        # sequencers = ["/u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq",
-        #               "/u1/u/wreb/rafts/xml/wreb_ITL_20160419.seq",
-        #               "/u1/u/wreb/rafts/xml/wreb_ITL_20160419_aspic_reset.seq"]
+        sequencers = ["/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                      "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                      "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
+        # sequencers = ["/u1/wreb/rafts/xml/wreb_ITL_20160419.seq",
+        #               "/u1/wreb/rafts/xml/wreb_ITL_20160419.seq",
+        #               "/u1/wreb/rafts/xml/wreb_ITL_20160419_aspic_reset.seq"]
         self.passed = "PASS"
         errCount = 0
         totalCount = 0
         for cat, seq, fname in zip(categories, sequencers, self.fnames):
-            # Generate fits files to /u1/u/wreb/rafts/ASPICNoise
+            # Generate fits files to /u1/wreb/rafts/ASPICNoise
             commands = '''
             # Load standard sequencer and run it with 0s exposure time
             raftsub.synchCommandLine(1000,"loadCategories Rafts:{}")
@@ -1503,7 +1516,7 @@ class ASPICNoise(object):
             printv("Generating test for %s..." % fname)
             time.sleep(5)
             # Read the data the plot
-            f = fits.open("/u1/u/wreb/rafts/ASPICNoise/" + fname)
+            f = fits.open("/u1/wreb/rafts/ASPICNoise/" + fname)
             # Set fonts
             font = {'family': 'normal',
                     'weight': 'bold',
@@ -1554,6 +1567,106 @@ class ASPICNoise(object):
         pdf.passFail(self.passed)
         pdf.addPlotPage("Reset ASPIC Noise Test", "ASPICNoise/" + self.fnames[2] + ".jpg")
         pdf.passFail(self.passed)
+
+
+class ASPICLogging(object):
+    '''@brief Continuously measure noise distribution in ASPICs. Must be run with -l enabled.'''
+
+    def __init__(self):
+        '''@brief Initialize minimum required variables for test list.'''
+        self.title = "Continuous ASPIC Logging"
+        self.status = "Waiting..."
+        self.numImages = 0
+        self.logging = True
+
+    def runTest(self, delay = 50 * 60):
+        '''@brief Continuously log ASPIC images every time interval.'''
+        # Delete directory containing old files, if it exists
+        self.status = "Images: {}".format(self.numImages)
+        if not os.path.exists("/u1/wreb/rafts/ASPICNoise/"):
+            os.makedirs("/u1/wreb/rafts/ASPICNoise/")
+        if not os.path.exists("ASPICNoise"):
+            os.makedirs("ASPICNoise")
+        while self.logging:
+            errorLevel = 5.5  # Max allowable standard deviation
+            timestamp = time.strftime("%y.%m.%d.%H.%M", time.localtime(time.time()))
+            self.fnames = ["unclamped." + timestamp + ".fits",
+                           "clamped." + timestamp + ".fits",
+                           "reset." + timestamp + ".fits"]
+            categories = ["WREB_test_base_cfg",
+                          "WREB_test_aspic_clamped_cfg",
+                          "WREB_test_aspic_clamped_cfg"]
+            sequencers = ["/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                          "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high.seq",
+                          "/u1/wreb/rafts/xml/wreb_ITL_20160419_RG_high_ASPIC_CL_RST_high.seq"]
+            self.passed = "PASS"
+            errCount = 0
+            totalCount = 0
+            for cat, seq, fname in zip(categories, sequencers, self.fnames):
+                # Generate fits files to /u1/wreb/rafts/ASPICNoise
+                commands = '''
+                # Load standard sequencer and run it with 0s exposure time
+                raftsub.synchCommandLine(1000,"loadCategories Rafts:{}")
+                raftsub.synchCommandLine(1000,"loadSequencer {}")
+                wreb.synchCommandLine(1000,"loadDacs true")
+                wreb.synchCommandLine(1000,"loadBiasDacs true")
+                wreb.synchCommandLine(1000,"loadAspics true")
+                raftsub.synchCommandLine(1000, "setParameter Exptime 0");  # sets exposure time to 0ms
+                time.sleep(tsoak)
+                raftsub.synchCommandLine(1000, "startSequencer")
+                time.sleep(5)
+                raftsub.synchCommandLine(1000, "setFitsFileNamePattern {}")
+                result = raftsub.synchCommand(1000,"saveFitsImage ASPICNoise")
+                '''.format(cat, seq, fname)
+                jy.do(textwrap.dedent(commands))
+                printv("Generating test for %s..." % fname)
+                time.sleep(5)
+                # Read the data the plot
+                f = fits.open("/u1/wreb/rafts/ASPICNoise/" + fname)
+                # Set fonts
+                font = {'family': 'normal',
+                        'weight': 'bold',
+                        'size'  : 8}
+                matplotlib.rc('font', **font)
+                # Generate the multiplot
+                fig, axArr = plt.subplots(4, 4)
+                fig.set_size_inches(8, 8)
+                for i in range(16):
+                    totalCount += 1
+                    imgData = f[i + 1].data.flatten()
+                    subPlot = axArr[i / 4, i % 4]
+                    mu, sigma = np.mean(imgData), np.std(imgData)
+                    if sigma > errorLevel:
+                        self.passed = "FAIL"
+                        errCount += 1
+                    # Generate histogram
+                    imgData = rejectOutliers(imgData, 4.0)  # Chop off the extreme outliers, improving the fit
+                    n, bins, patches = subPlot.hist(imgData, 40, range = [mu - 20, mu + 20], normed = 1,
+                                                    facecolor = 'blue', alpha = 0.75)
+                    # Add a 'best fit' line
+                    y = matplotlib.mlab.normpdf(bins, mu, sigma)
+                    subPlot.plot(bins, y, 'r--', linewidth = 1)
+                    # Labeling
+                    subPlot.set_yticklabels([])
+                    subPlot.set_title('Channel {}\n$\mu={:.2}, \sigma={:.2} $'.format(i + 1, mu, sigma))
+                    subPlot.grid(True)
+                plt.tight_layout()
+                plt.savefig("ASPICNoise/" + fname + ".jpg")
+                plt.close()
+                self.numImages += 1
+                self.status = "Images: {}".format(self.numImages)
+            # Sleep for 50 minutes by default
+            time.sleep(delay)
+
+    def summarize(self, summary):
+        '''@brief Summarize the test results for the cover page of the report.
+        @param summary Summary obejct passed from FunctionalTest()'''
+        pass
+
+    def report(self, pdf):
+        '''@brief generate this test's page in the PDF report.
+        @param pdf pyfpdf-compatible PDF object.'''
+        pass
 
 
 def getBoardInfo():
@@ -1631,6 +1744,8 @@ class FunctionalTest(object):
                       RDBias(),
                       TemperatureLogging(self.startTime),
                       ASPICNoise()]
+        if logIndefinitely:
+            self.tests.append(ASPICLogging())
         self.testsMask = [True for _ in self.tests]
         self.reportName = "WREB_Test_" + time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + "_" + \
                           str(self.boardID) + ".pdf"
@@ -1796,7 +1911,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description =
                                      '''Test script for WREB controller boards to generate a pdf status report.''',
-                                     epilog = '''>> Example: python WREBTest.py ~/u1/u/wreb/data -q''')
+                                     epilog = '''>> Example: python WREBTest.py ~/u1/wreb/data -q''')
     parser.add_argument("writeDirectory", nargs = '?', default = "./Reports",
                         help = "Directory to save outputs to. Defaults to ./Reports.", action = "store")
     parser.add_argument("-v", "--verbose",
