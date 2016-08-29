@@ -74,7 +74,6 @@ def initialize(jythonIF):
 
 def resetSettings():
     '''@brief Reset the board settings for use in between tests.'''
-    # TODO: get REB equivalent of WREB conigurations and sequencers
     jy.do('vst.synchCommandLine(1000,"loadCategories Rafts:REB4_test_base_cfg")')
     jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
     jy.do('reb0.synchCommandLine(1000,"loadBiasDacs true")')
@@ -100,14 +99,14 @@ def stepRange(start, end, step):
 
 
 def voltsToDAC(volt, Rfb, Rin):
-    dac = (volt * 4095 / 5 / (-Rfb / Rin))
+    dac = (volt * 4095 / 5 / (-float(Rfb) / float(Rin)))
     if dac > 4095: dac = 4095
     if dac < 0: dac = 0
     return dac
 
 
 def voltsToShiftedDAC(volt, shvolt, Rfb, Rin):
-    dac = ((volt - shvolt) * 4095 / 5 / (1 + Rfb / Rin))
+    dac = ((volt - shvolt) * 4095 / 5 / (1 + float(Rfb) / float(Rin)))
     if dac > 4095: dac = 4095
     if dac < 0: dac = 0
     return dac
@@ -115,6 +114,20 @@ def voltsToShiftedDAC(volt, shvolt, Rfb, Rin):
 
 def rejectOutliers(data, sigma = 2.0):
     return data[abs(data - np.mean(data)) < sigma * np.std(data)]
+
+
+def readRails(railType, count = 0, uBound = 20, lBound = -20):
+    '''@brief Reads the upper and lower voltages for a rail type (RG, SClk, PClk) and rejects if nonsensible.
+    @param railType "RG", "SClk", or "PClk" - specifies the type of rail to read
+    @param uBound Upper bound on sensible voltage
+    @param lBound Lower bound on sensible voltage'''
+    UV = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.{}U").getResult()'.format(railType))
+    LV = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.{}L").getResult()'.format(railType))
+    if count >= 3:  # Max recursion depth
+        return UV, LV
+    if not (lBound < LV < uBound and lBound < UV < uBound):
+        return readRails(railType, count + 1)
+    return UV, LV
 
 
 def voltsToRailDAC(V, rf, ri):
@@ -132,7 +145,8 @@ def voltsToRailDAC(V, rf, ri):
     return int(up), int(down)
 
 
-def setRGRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
+# Rail setting functions: in science raft, there is no upper rail shift, so upper rail cannot go below 0V
+def setRGRailVoltage(lowV, highV, rf = 25.0, ri = 10.0):
     '''@brief Set the voltage for the RG rail system.
     @param lowV Desired lower rail voltage.
     @param highV Desired upper rail voltage
@@ -140,15 +154,15 @@ def setRGRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
     @param ri Optional op-amp Ri, defaults to 20.0 Ohm.'''
     LV, shLV = voltsToRailDAC(lowV, rf, ri)
     UV, shUV = voltsToRailDAC(highV, rf, ri)
-    jy.do('reb0DAC.synchCommandLine(1000,"change rgLowSh %d")' % shLV)
-    jy.do('reb0DAC.synchCommandLine(1000,"change rgLow %d")' % LV)
-    jy.do('reb0DAC.synchCommandLine(1000,"change rgHighSh %d")' % shUV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change rgLow %d")' % shLV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change rgLowSh %d")' % LV)  # Swapped
+    # jy.do('reb0DAC.synchCommandLine(1000,"change rgHighSh %d")' % shUV)
     jy.do('reb0DAC.synchCommandLine(1000,"change rgHigh %d")' % UV)
     jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
     time.sleep(tsoak)
 
 
-def setSCKRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
+def setSCKRailVoltage(lowV, highV, rf = 25.0, ri = 10.0):
     '''@brief Set the voltage for the SCK rail system.
     @param lowV Desired lower rail voltage.
     @param highV Desired upper rail voltage
@@ -156,15 +170,15 @@ def setSCKRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
     @param ri Optional op-amp Ri, defaults to 20.0 Ohm.'''
     LV, shLV = voltsToRailDAC(lowV, rf, ri)
     UV, shUV = voltsToRailDAC(highV, rf, ri)
-    jy.do('reb0DAC.synchCommandLine(1000,"change sclkLowSh %d")' % shLV)
-    jy.do('reb0DAC.synchCommandLine(1000,"change sclkLow %d")' % LV)
-    jy.do('reb0DAC.synchCommandLine(1000,"change sclkHighSh %d")' % shUV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change sclkLow %d")' % shLV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change sclkLowSh %d")' % LV)  # Swapped
+    # jy.do('reb0DAC.synchCommandLine(1000,"change sclkHighSh %d")' % shUV)
     jy.do('reb0DAC.synchCommandLine(1000,"change sclkHigh %d")' % UV)
     jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
     time.sleep(tsoak)
 
 
-def setPCKRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
+def setPCKRailVoltage(lowV, highV, rf = 25.0, ri = 10.0):
     '''@brief Set the voltage for the SCK rail system.
     @param lowV Desired lower rail voltage.
     @param highV Desired upper rail voltage
@@ -172,9 +186,9 @@ def setPCKRailVoltage(lowV, highV, rf = 49.9, ri = 20.0):
     @param ri Optional op-amp Ri, defaults to 20.0 Ohm.'''
     LV, shLV = voltsToRailDAC(lowV, rf, ri)
     UV, shUV = voltsToRailDAC(highV, rf, ri)
-    jy.do('reb0DAC.synchCommandLine(1000,"change pclkLowSh %d")' % shLV)
-    jy.do('reb0DAC.synchCommandLine(1000,"change pclkLow %d")' % LV)
-    jy.do('reb0DAC.synchCommandLine(1000,"change pclkHighSh %d")' % shUV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change pclkLow %d")' % shLV)
+    jy.do('reb0DAC.synchCommandLine(1000,"change pclkLowSh %d")' % LV)  # Swapped
+    # jy.do('reb0DAC.synchCommandLine(1000,"change pclkHighSh %d")' % shUV)
     jy.do('reb0DAC.synchCommandLine(1000,"change pclkHigh %d")' % UV)
     jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
     time.sleep(tsoak)
@@ -270,10 +284,18 @@ class IdleCurrentConsumption(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.idleCurrent("Idle Current Test", self.voltages, self.currents)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/voltages.dat", "wb") as output:
+                pickle.dump(self.voltages, output)
+            with open(testPath + "/currents.dat", "wb") as output:
+                pickle.dump(self.currents, output)
 
 
 class ChannelTest(object):
@@ -318,13 +340,22 @@ class ChannelTest(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-            @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.add_page()
         pdf.set_font('Courier', '', 12)
         pdf.cell(0, 6, "Channel Communications Test", 0, 1, 'L', 1)
+        pdf.cell(0, 6, "", 0, 1, 'L', 0)
         pdf.columnTable([self.channels, self.vals], colHeaders = ["Channel", "Value"], fontSize = 12)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/channels.dat", "wb") as output:
+                pickle.dump(self.channels, output)
+            with open(testPath + "/vals.dat", "wb") as output:
+                pickle.dump(self.vals, output)
 
 
 class ASPICcommsTest(object):
@@ -360,14 +391,21 @@ class ASPICcommsTest(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.add_page()
         pdf.set_font('Courier', '', 12)
         pdf.cell(0, 6, "ASPIC Communications Test", 0, 1, 'L', 1)
+        pdf.cell(0, 6, "", 0, 1, 'L', 0)
         pdf.cell(0, 6, "Test " + self.passed + ". " + self.stats, 0, 1, 'L')
-        pdf.cell(0, 6, "ccs-vst.checkAspics result: " + self.aspicstr, 0, 1, 'L')
+        pdf.cell(0, 6, "ccs-vst.checkAsics result: " + self.aspicstr, 0, 1, 'L')
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/aspicstr.dat", "wb") as output:
+                pickle.dump(self.aspicstr, output)
 
 
 class CSGate(object):
@@ -380,7 +418,7 @@ class CSGate(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        # TODO: No equivlent to ODPS_I...
+        # TODO: Sum 48 current channels to get OD_PSI
         pbar = progressbar("CS Gate Test, &count&: ", 21)
         if not verbose and noGUI: pbar.start()
         # Arrays for report
@@ -393,7 +431,7 @@ class CSGate(object):
             jy.do('wrebBias.synchCommandLine(1000,"change csGate %d")' % CSGdac)
             jy.do('reb0.synchCommandLine(1000,"loadBiasDacs true")')
             time.sleep(tsoak)
-            WREB_OD_I = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.OD_I").getResult()')
+            WREB_OD_I = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ODI").getResult()')
             WREB_ODPS_I = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ODPS_I").getResult()')
             printv("\t%5.2f\t%5.2f" % (WREB_OD_I, WREB_ODPS_I))
             # Add to arrays to make plots for report
@@ -417,114 +455,21 @@ class CSGate(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
         @param pdf pyfpdf-compatible PDF object.'''
         pdf.makePlotPage("CSGate Test", "CSGate.jpg", self.data)
         pdf.columnTable(self.data)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
 
 
-# class PCKRails(object):
-#     '''@brief Test the parallel clock rail performance.'''
-# 
-#     # TODO: Need PCK functionality
-# 
-#     def __init__(self):
-#         '''@brief Initialize minimum required variables for test list.'''
-#         self.title = "PCK Rails"
-#         self.status = "Waiting..."
-# 
-#     def runTest(self):
-#         '''@brief Run the test, save output to state variables.'''
-#         pbar = progressbar("PCK Rails Test, &count&: ", 31)
-#         if not verbose and noGUI: pbar.start()
-#         printv("\nrail voltage generation for PCLK test ")
-#         PCLKDV = 5  # delta voltage between lower and upper
-#         PCLKLshV = -8.0  # sets the offset shift to -8V on the lower
-#         PCLKUshV = -2  # PCLKLshV+PCLKDV    #sets the offset shift on the upper
-#         PCLKLshDAC = voltsToDAC(PCLKLshV, 49.9, 20)
-#         PCLKUshDAC = voltsToDAC(PCLKUshV, 49.9, 20)
-#         time.sleep(tsoak)
-#         # Report arrays
-#         PCLKLV_arr = []
-#         PCLKUV_arr = []
-#         WREB_CKPSH_V_arr = []
-#         WREB_DphiPS_V_arr = []
-#         deltaPCLKLV_arr = []
-#         deltaPCLKUV_arr = []
-#         jy.do('reb0DAC.synchCommandLine(1000,"change pclkLowSh %d")' % PCLKLshDAC)
-#         jy.do('reb0DAC.synchCommandLine(1000,"change pclkHighSh %d")' % PCLKUshDAC)
-#         for PCLKLV in stepRange(PCLKLshV, PCLKLshV + 15, 0.5):
-#             PCLKLdac = voltsToShiftedDAC(PCLKLV, PCLKLshV, 49.9, 20)
-#             PCLKUV = PCLKLV + PCLKDV
-#             PCLKUdac = voltsToShiftedDAC(PCLKUV, PCLKUshV, 49.9, 20)
-#             printv("%5.2f\t%4i\t%5.2f\t%4i" % (PCLKLV, PCLKLdac, PCLKUV, PCLKUdac)),
-#             jy.do('reb0DAC.synchCommandLine(1000,"change pclkLow %d")' % PCLKLdac)
-#             jy.do('reb0DAC.synchCommandLine(1000,"change pclkHigh %d")' % PCLKUdac)
-#             jy.do('reb0.synchCommandLine(1000,"loadDacs true")')
-#             time.sleep(tsoak)
-#             WREB_CKPSH_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.CKPSH_V").getResult()')
-#             WREB_DphiPS_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.DphiPS_V").getResult()')
-#             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
-#                    (WREB_CKPSH_V, WREB_DphiPS_V, (PCLKLV - WREB_CKPSH_V), (PCLKUV - WREB_DphiPS_V)))
-#             # Append to arrays
-#             PCLKLV_arr.append(PCLKLV)
-#             PCLKUV_arr.append(PCLKUV)
-#             WREB_CKPSH_V_arr.append(WREB_CKPSH_V)
-#             WREB_DphiPS_V_arr.append(WREB_DphiPS_V)
-#             deltaPCLKLV_arr.append(PCLKLV - WREB_CKPSH_V)
-#             deltaPCLKUV_arr.append(PCLKUV - WREB_DphiPS_V)
-#             self.status = int(-100 * float(PCLKLV - PCLKLshV) / 15.0)
-#             if not verbose and noGUI: pbar.inc()
-#         if not verbose and noGUI: pbar.finish()
-#         self.data = ((PCLKLV_arr, "PCLKLV (V)"),
-#                      (PCLKUV_arr, "PCLKUV (V)"),
-#                      (WREB_CKPSH_V_arr, "REB0.CKPSH_V (V)"),
-#                      (WREB_DphiPS_V_arr, "REB0.DphiPS_V (V)"))
-#         self.residuals = ((deltaPCLKLV_arr, "deltaPCLKLV (V)"),
-#                           (deltaPCLKUV_arr, "deltaPCLKUV (V)"))
-# 
-#         # Give pass/fail result
-#         self.passed = "PASS"
-#         allowedError = 0.1  # 100mV
-#         maxFails = 0  # Some value giving the maximum number of allowed failures
-#         numErrors = 0
-#         totalPoints = 0
-#         self.ROI = [7, 30]
-#         for x, residual in enumerate(deltaPCLKLV_arr):
-#             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
-#             totalPoints += 1
-#         for x, residual in enumerate(deltaPCLKUV_arr):
-#             if abs(residual) > allowedError and self.ROI[0] <= x <= self.ROI[1]: numErrors += 1
-#             totalPoints += 1
-# 
-#         # Other information
-#         l, h = self.ROI
-#         ml, bl = np.polyfit(PCLKLV_arr[l:h], WREB_CKPSH_V_arr[l:h], 1)
-#         mu, bu = np.polyfit(PCLKUV_arr[l:h], WREB_DphiPS_V_arr[l:h], 1)
-#         self.stats = "LV Gain: %f.  UV Gain: %f.  %i/%i values okay." % \
-#                      (ml, mu, totalPoints - numErrors, totalPoints)
-# 
-#         # Pass criterion:
-#         if numErrors > maxFails:
-#             self.passed = "FAIL"
-#         self.status = self.passed
-# 
-#     def summarize(self, summary):
-#         '''@brief Summarize the test results for the cover page of the report.
-#         @param summary Summary obejct passed from FunctionalTest()'''
-#         summary.testList.append(self.title)
-#         summary.passList.append(self.passed)
-#         summary.statsList.append(self.stats)
-# 
-#     def report(self, pdf):
-#         '''@brief generate this test's page in the PDF report.
-#         @param pdf pyfpdf-compatible PDF object.'''
-#         pdf.residualTest("PCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
 class PCKRails(object):
     '''@brief Tests the parallel clock rail performance.'''
 
-    # TODO: Need rail functionality
     def __init__(self):
         '''@brief Initialize minimum required variables for test list.'''
         self.title = "PCK Rails"
@@ -549,8 +494,7 @@ class PCKRails(object):
             setPCKRailVoltage(pclkLV, pclkUV)
             # Read back voltage
             time.sleep(tsoak)
-            WREB_PCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.PClkL").getResult()')
-            WREB_PCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.PClkU").getResult()')
+            WREB_PCKU_V, WREB_PCKL_V = readRails("PClk")
             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                    (WREB_PCKL_V, WREB_PCKU_V, (pclkLV - WREB_PCKL_V), (pclkUV - WREB_PCKU_V)))
             # Append to arrays
@@ -603,16 +547,21 @@ class PCKRails(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest("PCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
 
 
 class SCKRails(object):
     '''@brief Tests the serial clock rail performance.'''
 
-    # TODO: Need rail functionality
     def __init__(self):
         '''@brief Initialize minimum required variables for test list.'''
         self.title = "SCK Rails"
@@ -637,8 +586,7 @@ class SCKRails(object):
             setSCKRailVoltage(sclkLV, sclkUV)
             # Read back voltage
             time.sleep(tsoak)
-            WREB_SCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkL").getResult()')
-            WREB_SCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkU").getResult()')
+            WREB_SCKU_V, WREB_SCKL_V = readRails("SClk")
             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                    (WREB_SCKL_V, WREB_SCKU_V, (sclkLV - WREB_SCKL_V), (sclkUV - WREB_SCKU_V)))
             # Append to arrays
@@ -691,14 +639,24 @@ class SCKRails(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest("SCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class SCKRailsDiverging(object):
     '''@brief Test the serial clock rail performance with a diverging voltage pattern.'''
+
+    # TODO: better aphysical value rejection
 
     def __init__(self, amplitude, startV):
         '''@brief Initialize required variables for test list and stores input arguments to state variables.
@@ -732,8 +690,7 @@ class SCKRailsDiverging(object):
             sclkUV = self.startV + sclkDV
             setSCKRailVoltage(sclkLV, sclkUV)
             # Read back voltage
-            WREB_SCKL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkL").getResult()')
-            WREB_SCKU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.SClkU").getResult()')
+            WREB_SCKU_V, WREB_SCKL_V = readRails("SClk")
             ClkHPS_I = 0.1 * jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ClkI").getResult()')
             printv("\t%5.2f\t%5.2f\t\t%5.2f\t%5.2f" %
                    (WREB_SCKL_V, WREB_SCKU_V, (sclkLV - WREB_SCKL_V), (sclkUV - WREB_SCKU_V)))
@@ -800,9 +757,10 @@ class SCKRailsDiverging(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.makeResidualPlotPage("Diverging SCKRails Test %i V" % int(self.startV),
                                  "tempFigures/divergingSCKRails %i.jpg" % int(self.startV),
                                  self.data,
@@ -812,6 +770,13 @@ class SCKRailsDiverging(object):
         pdf.cell(epw, pdf.font_size, self.stats, align = 'C', ln = 1)
         pdf.passFail(self.passed)
         pdf.columnTable(self.data + self.residuals, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class RGRails(object):
@@ -842,8 +807,7 @@ class RGRails(object):
             setRGRailVoltage(RGLV, RGUV)
             # Read back voltages
             time.sleep(tsoak)
-            WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL").getResult()')
-            WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU").getResult()')
+            WREB_RGU_V, WREB_RGL_V = readRails("RG")
             # Append to arrays
             RGLV_arr.append(RGLV)
             RGUV_arr.append(RGUV)
@@ -894,10 +858,18 @@ class RGRails(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest("RG Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class RGRailsDiverging(object):
@@ -932,8 +904,7 @@ class RGRailsDiverging(object):
             RGUV = self.startV + RGDV
             setRGRailVoltage(RGLV, RGUV)
             # Read back voltages
-            WREB_RGL_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGL").getResult()')
-            WREB_RGU_V = jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.RGU").getResult()')
+            WREB_RGU_V, WREB_RGL_V = readRails("RG")
             ClkHPS_I = 0.1 * jy.get('vst.synchCommandLine(1000,"readChannelValue REB0.ClkI").getResult()')
             # Append to arrays
             RGLV_arr.append(RGLV)
@@ -996,9 +967,10 @@ class RGRailsDiverging(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.makeResidualPlotPage("Diverging RGRails Test %i V" % self.startV,
                                  "tempFigures/divergingRGRails %i.jpg" % self.startV,
                                  self.data,
@@ -1008,6 +980,13 @@ class RGRailsDiverging(object):
         pdf.cell(epw, pdf.font_size, self.stats, align = 'C', ln = 1)
         pdf.passFail(self.passed)
         pdf.columnTable(self.data + self.residuals, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class OGBias(object):
@@ -1023,7 +1002,7 @@ class OGBias(object):
         pbar = progressbar("OG Bias Test, &count&: ", 21)
         if not verbose and noGUI: pbar.start()
         OGshV = -5.0  # #sets the offset shift to -5V
-        OGshDAC = voltsToDAC(OGshV, 10, 10)
+        OGshDAC = voltsToDAC(OGshV, 10.0, 10)
         jy.do('reb0Bias0.synchCommandLine(1000,"change ogSh %d")' % OGshDAC)
         jy.do('reb0Bias1.synchCommandLine(1000,"change ogSh %d")' % OGshDAC)
         jy.do('reb0Bias2.synchCommandLine(1000,"change ogSh %d")' % OGshDAC)
@@ -1036,7 +1015,7 @@ class OGBias(object):
         deltaOG1V_arr = []
         deltaOG2V_arr = []
         for OGV in OGV_arr:
-            OGdac = voltsToShiftedDAC(OGV, OGshV, 10, 10)
+            OGdac = voltsToShiftedDAC(OGV, OGshV, 10.0, 10)
             jy.do('reb0Bias0.synchCommandLine(1000,"change og %d")' % OGdac)
             jy.do('reb0Bias1.synchCommandLine(1000,"change og %d")' % OGdac)
             jy.do('reb0Bias2.synchCommandLine(1000,"change og %d")' % OGdac)
@@ -1091,10 +1070,18 @@ class OGBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class ODBias(object):
@@ -1117,7 +1104,7 @@ class ODBias(object):
         deltaOD1V_arr = []
         deltaOD2V_arr = []
         for ODV in ODV_arr:
-            ODdac = voltsToShiftedDAC(ODV, 0, 10, 10)
+            ODdac = voltsToShiftedDAC(ODV, 0, 62.5, 10.0)
             jy.do('reb0Bias0.synchCommandLine(1000,"change od %d")' % ODdac)
             jy.do('reb0Bias1.synchCommandLine(1000,"change od %d")' % ODdac)
             jy.do('reb0Bias2.synchCommandLine(1000,"change od %d")' % ODdac)
@@ -1179,10 +1166,18 @@ class ODBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class GDBias(object):
@@ -1205,7 +1200,7 @@ class GDBias(object):
         deltaGD1V_arr = []
         deltaGD2V_arr = []
         for GDV in GDV_arr:
-            GDdac = voltsToShiftedDAC(GDV, 0, 10, 10)
+            GDdac = voltsToShiftedDAC(GDV, 0, 62.5, 10.0)
             jy.do('reb0Bias0.synchCommandLine(1000,"change gd %d")' % GDdac)
             jy.do('reb0Bias1.synchCommandLine(1000,"change gd %d")' % GDdac)
             jy.do('reb0Bias2.synchCommandLine(1000,"change gd %d")' % GDdac)
@@ -1262,10 +1257,18 @@ class GDBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class RDBias(object):
@@ -1288,7 +1291,7 @@ class RDBias(object):
         deltaRD1V_arr = []
         deltaRD2V_arr = []
         for RDV in RDV_arr:
-            RDdac = voltsToShiftedDAC(RDV, 0, 10, 10)
+            RDdac = voltsToShiftedDAC(RDV, 0, 40.0, 10)
             jy.do('reb0Bias0.synchCommandLine(1000,"change rd %d")' % RDdac)
             jy.do('reb0Bias1.synchCommandLine(1000,"change rd %d")' % RDdac)
             jy.do('reb0Bias2.synchCommandLine(1000,"change rd %d")' % RDdac)
@@ -1345,10 +1348,18 @@ class RDBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class TemperatureLogging(object):
@@ -1502,9 +1513,10 @@ class ParameterLogging(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         onePage = False
         if onePage:
             pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg",
@@ -1514,6 +1526,11 @@ class ParameterLogging(object):
             for name in self.names:
                 pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg", [(self.data[name], name)])
                 pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
 
 
 class ASPICNoise(object):
@@ -1525,7 +1542,6 @@ class ASPICNoise(object):
         self.status = "Waiting..."
 
     def runTest(self):
-        # TODO: need sequencers and property files
         '''@brief Run the test, save output to state variables.'''
         self.status = -1
         errorLevel = 5.5  # Max allowable standard deviation
@@ -1578,7 +1594,7 @@ class ASPICNoise(object):
                 # Generate the multiplot
                 fig, axArr = plt.subplots(4, 4)
                 fig.set_size_inches(8, 8)
-                for i in range(16):  # TODO: Different image size
+                for i in range(16):
                     totalCount += 1
                     imgData = f[i + 1].data.flatten()
                     subPlot = axArr[i / 4, i % 4]
@@ -1714,7 +1730,7 @@ class ASPICLogging(object):
                     # Generate the multiplot
                     fig, axArr = plt.subplots(4, 4)
                     fig.set_size_inches(8, 8)
-                    for i in range(16):  # TODO: Different image size
+                    for i in range(16):
                         totalCount += 1
                         imgData = f[i + 1].data.flatten()
                         subPlot = axArr[i / 4, i % 4]
@@ -1836,7 +1852,9 @@ class FunctionalTest(object):
                                             ("vst", "REB0.Temp8")]))
         self.testsMask = [True for _ in self.tests]
         self.reportName = "SR_REB_Test_" + time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + "_" + \
-                          str(self.boardID) + ".pdf"
+                          str(self.boardID)
+        self.reportPath = dataDir + "/" + self.reportName
+        os.mkdir(self.reportPath)
 
     def runTests(self):
         '''@brief Run the tests.'''
@@ -1869,8 +1887,12 @@ class FunctionalTest(object):
                         self.summary.statsList)
         # Generate individual test reports
         for test, doTest in zip(self.tests, self.testsMask):
-            if doTest: test.report(pdf)
-        pdf.output(dataDir + "/" + self.reportName, 'F')
+            if doTest:
+                try:
+                    test.report(pdf, self.reportPath)
+                except TypeError:
+                    test.report(pdf)
+        pdf.output(self.reportPath + "/" + self.reportName + ".pdf", 'F')
         # Clean up
         shutil.rmtree("tempFigures")
         # shutil.rmtree("ASPICNoise")
@@ -1959,10 +1981,10 @@ class GUI(object):
         self.fnTest = FunctionalTest()
         self.startUpdateContinuously()
         self.fnTest.runTests()
-        self.d.infobox("Writing PDF report to:\n" + dataDir + "/" + self.fnTest.reportName + "...")
+        self.d.infobox("Writing PDF report to:\n" + self.fnTest.reportPath + "/" + self.fnTest.reportName + "...")
         self.fnTest.generateReport()
         return (self.d.yesno("WREB functional test complete.\n" +
-                             "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
+                             "Report available at " + self.fnTest.reportPath + "/" + self.fnTest.reportName + ".\n" +
                              "Test another board?") == self.d.OK)
 
     def runCustomTests(self):
@@ -1985,7 +2007,7 @@ class GUI(object):
             self.fnTest.runTests()
             self.fnTest.generateReport()
             return (self.d.yesno("WREB custom functional test complete.\n" +
-                                 "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
+                                 "Report available at " + self.fnTest.reportPath + "/" + self.fnTest.reportName + ".\n" +
                                  "Test another board?") == self.d.OK)
         else:
             self.fnTest = None
@@ -2008,12 +2030,15 @@ if __name__ == "__main__":
                         help = "Do not use the pythonDialogs GUI.", action = "store_true")
     parser.add_argument("-l", "--logValues",
                         help = "Log values indefinitely.", action = "store_true")
+    parser.add_argument("-d", "--dump",
+                        help = "Dump test data to pickleable objects.", action = "store_true")
     args = parser.parse_args()
 
     tsoak = 0.5
     dataDir = args.writeDirectory
     verbose = args.verbose
     noGUI = args.noGUI
+    dump = args.dump
     logIndefinitely = args.logValues
     # Create the Jython interface
     jy = JythonInterface()

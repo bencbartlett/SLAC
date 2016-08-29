@@ -270,10 +270,18 @@ class IdleCurrentConsumption(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.idleCurrent("Idle Current Test", self.voltages, self.currents)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/voltages.dat", "wb") as output:
+                pickle.dump(self.voltages, output)
+            with open(testPath + "/currents.dat", "wb") as output:
+                pickle.dump(self.currents, output)
 
 
 class ChannelTest(object):
@@ -315,14 +323,22 @@ class ChannelTest(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.add_page()
         pdf.set_font('Courier', '', 12)
         pdf.cell(0, 6, "Channel Communications Test", 0, 1, 'L', 1)
         pdf.cell(0, 6, "", 0, 1, 'L', 0)
         pdf.columnTable([self.channels, self.vals], colHeaders = ["Channel", "Value"], fontSize = 12)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/channels.dat", "wb") as output:
+                pickle.dump(self.channels, output)
+            with open(testPath + "/vals.dat", "wb") as output:
+                pickle.dump(self.vals, output)
 
 
 class ASPICcommsTest(object):
@@ -358,15 +374,21 @@ class ASPICcommsTest(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.add_page()
         pdf.set_font('Courier', '', 12)
         pdf.cell(0, 6, "ASPIC Communications Test", 0, 1, 'L', 1)
         pdf.cell(0, 6, "", 0, 1, 'L', 0)
         pdf.cell(0, 6, "Test " + self.passed + ". " + self.stats, 0, 1, 'L')
         pdf.cell(0, 6, "ccs-cr.checkAsics result: " + self.aspicstr, 0, 1, 'L')
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/aspicstr.dat", "wb") as output:
+                pickle.dump(self.aspicstr, output)
 
 
 class SequencerToggling(object):
@@ -441,9 +463,10 @@ class SequencerToggling(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.add_page()
         pdf.set_font('Courier', '', 12)
         pdf.cell(0, 6, self.title, 0, 1, 'L', 1)
@@ -464,6 +487,21 @@ class SequencerToggling(object):
                         colHeaders = ["Seq. State", "Description", "sckL", "sckU",
                                       "pckL", "pckU", "rgL", "rgU", "cks", "ckp", "rgv"],
                         fontSize = 10, widthArray = [1.75, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump([self.states,
+                             self.stateDescriptions,
+                             self.sckL_arr,
+                             self.sckU_arr,
+                             self.pckL_arr,
+                             self.pckU_arr,
+                             self.rgL_arr,
+                             self.rgU_arr,
+                             self.cks_arr,
+                             self.ckp_arr,
+                             self.rgv_arr], output)
 
 
 class CSGate(object):
@@ -512,11 +550,16 @@ class CSGate(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
         @param pdf pyfpdf-compatible PDF object.'''
         pdf.makePlotPage("CSGate Test", "CSGate.jpg", self.data)
         pdf.columnTable(self.data)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
 
 
 class PCKRails(object):
@@ -610,10 +653,16 @@ class PCKRails(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest("PCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
 
 
 class SCKRails(object):
@@ -697,10 +746,18 @@ class SCKRails(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest("SCK Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class SCKRailsDiverging(object):
@@ -804,9 +861,10 @@ class SCKRailsDiverging(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.makeResidualPlotPage("Diverging SCKRails Test %i V" % int(self.startV),
                                  "tempFigures/divergingSCKRails %i.jpg" % int(self.startV),
                                  self.data,
@@ -816,6 +874,13 @@ class SCKRailsDiverging(object):
         pdf.cell(epw, pdf.font_size, self.stats, align = 'C', ln = 1)
         pdf.passFail(self.passed)
         pdf.columnTable(self.data + self.residuals, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class RGRails(object):
@@ -901,10 +966,18 @@ class RGRails(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest("RG Rails Test", self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class RGRailsDiverging(object):
@@ -1003,9 +1076,10 @@ class RGRailsDiverging(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.makeResidualPlotPage("Diverging RGRails Test %i V" % self.startV,
                                  "tempFigures/divergingRGRails %i.jpg" % self.startV,
                                  self.data,
@@ -1015,6 +1089,13 @@ class RGRailsDiverging(object):
         pdf.cell(epw, pdf.font_size, self.stats, align = 'C', ln = 1)
         pdf.passFail(self.passed)
         pdf.columnTable(self.data + self.residuals, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class OGBias(object):
@@ -1086,10 +1167,18 @@ class OGBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class ODBias(object):
@@ -1157,10 +1246,18 @@ class ODBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class GDBias(object):
@@ -1228,10 +1325,18 @@ class GDBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class RDBias(object):
@@ -1299,10 +1404,18 @@ class RDBias(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         pdf.residualTest(self.title, self.data, self.residuals, self.passed, self.stats, ROI = self.ROI)
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
+            with open(testPath + "/residuals.dat", "wb") as output:
+                pickle.dump(self.residuals, output)
 
 
 class TemperatureLogging(object):
@@ -1451,9 +1564,10 @@ class ParameterLogging(object):
         summary.passList.append(self.passed)
         summary.statsList.append(self.stats)
 
-    def report(self, pdf):
+    def report(self, pdf, reportPath):
         '''@brief generate this test's page in the PDF report.
-        @param pdf pyfpdf-compatible PDF object.'''
+        @param pdf pyfpdf-compatible PDF object.
+        @param reportPath Path of directory containing the pdf report'''
         onePage = False
         if onePage:
             pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg",
@@ -1463,6 +1577,11 @@ class ParameterLogging(object):
             for name in self.names:
                 pdf.makePlotPage("Parameter Logging: " + name, name + ".jpg", [(self.data[name], name)])
                 pdf.cell(0, 6, "Data saved to pickleable object in ParameterLogging.dat with key " + name, 0, 1, 'L')
+        if dump:
+            testPath = reportPath + "/" + self.title
+            os.mkdir(testPath)
+            with open(testPath + "/data.dat", "wb") as output:
+                pickle.dump(self.data, output)
 
 
 class ASPICNoise(object):
@@ -1748,7 +1867,9 @@ class FunctionalTest(object):
             self.tests.append(ASPICLogging())
         self.testsMask = [True for _ in self.tests]
         self.reportName = "WREB_Test_" + time.strftime("%y.%m.%d.%H.%M", time.localtime(self.startTime)) + "_" + \
-                          str(self.boardID) + ".pdf"
+                          str(self.boardID)
+        self.reportPath = dataDir + "/" + self.reportName
+        os.mkdir(self.reportPath)
 
     def runTests(self):
         '''@brief Run the tests.'''
@@ -1781,8 +1902,12 @@ class FunctionalTest(object):
                         self.summary.statsList)
         # Generate individual test reports
         for test, doTest in zip(self.tests, self.testsMask):
-            if doTest: test.report(pdf)
-        pdf.output(dataDir + "/" + self.reportName, 'F')
+            if doTest:
+                try:
+                    test.report(pdf, self.reportPath)
+                except TypeError:
+                    test.report(pdf)
+        pdf.output(self.reportPath + "/" + self.reportName + ".pdf", 'F')
         # Clean up
         shutil.rmtree("tempFigures")
         # shutil.rmtree("ASPICNoise")
@@ -1871,10 +1996,10 @@ class GUI(object):
         self.fnTest = FunctionalTest()
         self.startUpdateContinuously()
         self.fnTest.runTests()
-        self.d.infobox("Writing PDF report to:\n" + dataDir + "/" + self.fnTest.reportName + "...")
+        self.d.infobox("Writing PDF report to:\n" + self.fnTest.reportPath + "/" + self.fnTest.reportName + "...")
         self.fnTest.generateReport()
         return (self.d.yesno("WREB functional test complete.\n" +
-                             "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
+                             "Report available at " + self.fnTest.reportPath + "/" + self.fnTest.reportName + ".\n" +
                              "Test another board?") == self.d.OK)
 
     def runCustomTests(self):
@@ -1897,7 +2022,7 @@ class GUI(object):
             self.fnTest.runTests()
             self.fnTest.generateReport()
             return (self.d.yesno("WREB custom functional test complete.\n" +
-                                 "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
+                                 "Report available at " + self.fnTest.reportPath + "/" + self.fnTest.reportName + ".\n" +
                                  "Test another board?") == self.d.OK)
         else:
             self.fnTest = None
@@ -1920,12 +2045,15 @@ if __name__ == "__main__":
                         help = "Do not use the pythonDialogs GUI.", action = "store_true")
     parser.add_argument("-l", "--logValues",
                         help = "Log values indefinitely.", action = "store_true")
+    parser.add_argument("-d", "--dump",
+                        help = "Dump test data to pickleable objects.", action = "store_true")
     args = parser.parse_args()
 
     tsoak = 0.5
     dataDir = args.writeDirectory
     verbose = args.verbose
     noGUI = args.noGUI
+    dump = args.dump
     logIndefinitely = args.logValues
     # Create the Jython interface
     jy = JythonInterface()
