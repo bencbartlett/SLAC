@@ -11,9 +11,7 @@ External dependencies:
 - Unix Dialogs installation (for GUI, optional)
 
 To run:
-- Ensure Jython console is running (./JythonConsole or the bootstrapper program)
-- Ensure crRun.sh is running
-- "python WREBTest.py [options]"
+- "python REBTest.py [options]"
 Initial crashing yielding a ValueError is likely due to a crRun or JythonConsole crashing or not being loaded.
 
 Tests are structured as classes with four required methods:
@@ -96,120 +94,33 @@ def getBoardInfo():
         return -1, -1, -1, -1
 
 
-class GUI(object):
+class BoardSelect(object):
     '''@brief Dialog-based GUI for displaying test progress and navigating options.'''
 
     def __init__(self):
         '''@brief Start the dialog.'''
-        self.scriptVersion = time.strftime("%y.%m.%d.%H.%M", time.localtime(os.path.getmtime("WREBTest.py")))
-        self.tsleep = 1.0  # Time to sleep in between refreshes of progress dialog
         self.d = Dialog(autowidgetsize = True)
 
-    def update(self):
-        '''@brief Update the GUI to display current testing progress.'''
-        elems = []
-        # Stupid issue: 0 is hard-coded as "SUCCESS" in this package...
-        for test, doTest in zip(self.fnTest.tests, self.fnTest.testsMask):
-            if doTest:
-                if test.status == 0:
-                    elems.append((test.title, -1))
-                else:
-                    elems.append((test.title, test.status))
-        infoString = ["WREB Functional Test:",
-                      "Elapsed time....." + str(int(time.time() - self.fnTest.startTime)) + "s",
-                      "Script version..." + str(self.scriptVersion),
-                      "Board ID........." + str(self.fnTest.boardID),
-                      "Board type......." + str(self.fnTest.boardType),
-                      "Link version....." + str(self.fnTest.linkVersion),
-                      "FPGA version....." + str(self.fnTest.FPGAVersion)]
-        infoString = "\n".join(infoString)
-        self.d.mixedgauge(infoString, title = "WREB Functional Test", backtitle = "Running functional test...",
-                          percent = self.fnTest.progress, elements = elems)
-
-    def updateContinuously(self):
-        '''@brief Continuously update the display every _ seconds.'''
-        while self.fnTest.progress < 100:
-            self.update()
-            time.sleep(self.tsleep)
-
-    def startUpdateContinuously(self):
-        '''@brief Start the self.updateContinuously() procedure in a separate daemon thread.'''
-        thread = Thread(target = self.updateContinuously)
-        thread.daemon = True  # Daemon thread allows for graceful exiting and crashing
-        thread.start()
 
     def startMenu(self):
-        '''@brief Initial navigation menu. Checks that board is connected and presents the user with various options.'''
-        notConnected = any([v == -1 for v in getBoardInfo()])
-        while notConnected:
-            infoString = "No board connected. Please connect a WREB to continue."
-            self.d.infobox(infoString, title = "WREB Functional Test")
-            time.sleep(1)
-            boardInfo = getBoardInfo()
-            notConnected = any([v == -1 for v in boardInfo])
-            print("Board Info: ", boardInfo)
-        self.boardID, self.boardType, self.linkVersion, self.FPGAVersion = getBoardInfo()
-        infoString = ["WREB Functional Test Version " + str(self.scriptVersion) + ":",
-                      "Board ID........." + str(self.boardID),
-                      "Board type......." + str(self.boardType),
-                      "Link version....." + str(self.linkVersion),
-                      "FPGA version....." + str(self.FPGAVersion),
-                      "",
-                      "Select an option:"]
-        infoString = "\n".join(infoString)
-        ret, tag = self.d.menu(infoString, title = "WREB Functional Test",
-                               choices = [("1", "Run functional test suite"),
-                                          ("2", "Run custom test list"),
-                                          ("3", "Exit")])
+        '''@brief Initial board selection menu'''
+        ret, tag = self.d.menu(infoString, title = "Select readout board type:",
+                               choices = [("1", "WREB (1 stripe)"),
+                                          ("2", "GREB (2 stripe)"),
+                                          ("3", "VST (3 stripe)"),
+                                          ("4", "Cancel")])
 
-        if ret == self.d.CANCEL or ret == self.d.ESC or tag == "3":
-            self.d.infobox("Exiting WREB Functional Test.")
-            print("WREB test aborted.\n")
+        if ret == self.d.CANCEL or ret == self.d.ESC or tag == "4":
+            self.d.infobox("Exiting REB Functional Test.")
+            print("REB test aborted.\n")
             sys.exit()
+        # Launch appropriate test
         if tag == "1":
             # Run test
             return self.runFunctionalTest()
         elif tag == "2":
             return self.runCustomTests()
 
-    def runFunctionalTest(self):
-        '''@brief Runs the full suite of tests from the GUI.'''
-        self.d.infobox("Initializing WREB Functional Test...")
-        initialize(jy)
-        self.fnTest = FunctionalTest()
-        self.startUpdateContinuously()
-        self.fnTest.runTests()
-        self.d.infobox("Writing PDF report to:\n" + dataDir + "/" + self.fnTest.reportName + "...")
-        self.fnTest.generateReport()
-        return (self.d.yesno("WREB functional test complete.\n" +
-                             "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
-                             "Test another board?") == self.d.OK)
-
-    def runCustomTests(self):
-        '''@brief Allows the user to configure which tests should be run, and runs only those tests.'''
-        # Initialize functional test to get an initial test list
-        self.fnTest = FunctionalTest()
-        testList = [test.title for test in self.fnTest.tests]
-        code, selectedTests = self.d.checklist(text = "Use the arrow keys and spacebar to\n" +
-                                                      "select the tests you wish to run:",
-                                               width = 64,
-                                               list_height = len(testList),
-                                               choices = [(title, "", False) for title in testList],
-                                               title = "WREB Functional Test")
-        if code == self.d.OK:
-            testList = [(test in selectedTests) for test in testList]
-            self.fnTest.testsMask = testList
-            self.d.infobox("Initializing WREB Functional Test...")
-            initialize(jy)
-            self.startUpdateContinuously()
-            self.fnTest.runTests()
-            self.fnTest.generateReport()
-            return (self.d.yesno("WREB custom functional test complete.\n" +
-                                 "Report available at " + dataDir + "/" + self.fnTest.reportName + ".\n" +
-                                 "Test another board?") == self.d.OK)
-        else:
-            self.fnTest = None
-            return self.startMenu()
 
 
 # --------- Execution ---------
@@ -228,13 +139,20 @@ if __name__ == "__main__":
                         help = "Do not use the pythonDialogs GUI.", action = "store_true")
     parser.add_argument("-l", "--logValues",
                         help = "Log values indefinitely.", action = "store_true")
+    parser.add_argument("-d", "--dump",
+                        help = "Dump test data to pickleable objects.", action = "store_true")
     args = parser.parse_args()
 
     tsoak = 0.5
     dataDir = args.writeDirectory
     verbose = args.verbose
     noGUI = args.noGUI
+    dump = args.dump
     logIndefinitely = args.logValues
+
+    # GUI board selection screen
+
+
     # Create the Jython interface
     jy = JythonInterface()
     jy2 = JythonInterface()
@@ -269,3 +187,10 @@ if __name__ == "__main__":
     # Restore previous settings and exit
     print("WREB test completed.\n\n\n")
     exitScript()
+
+
+
+import subprocess
+
+cmd = ['/usr/bin/python', '/path/to/my/second/pythonscript.py']
+subprocess.Popen(cmd)

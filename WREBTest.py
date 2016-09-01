@@ -12,7 +12,7 @@ External dependencies:
 
 To run:
 - Ensure Jython console is running (./JythonConsole or the bootstrapper program)
-- Ensure crRun.sh is running
+- Ensure rebRun.sh w is running
 - "python WREBTest.py [options]"
 Initial crashing yielding a ValueError is likely due to a crRun or JythonConsole crashing or not being loaded.
 
