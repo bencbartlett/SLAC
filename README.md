@@ -33,7 +33,7 @@ Individual tests are structured as classes with four required methods:
 - `runTest` is the body of the tests, running the code to execute the tests and storing the results to state variables.
 - `summarize` writes summary information to the summary object passed to it; this is used in generating the cover page.
 - `report` writes the portion of the pdf report that the test is responsible for and dumps the raw data into the report directory structure if `-d` is called with the program.
-- 
+
 ### List of subtests
 - `IdleCurrentConsumption`: reads the idle current consumption across parts of the readout board. Pass metric: none
 - `ChannelTest`: obtains the list of comminicable channels. Pass metric: passes if number of channels is the expected value (must be updated, is not current in GREB or VST tests)
