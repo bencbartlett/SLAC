@@ -1,7 +1,10 @@
 # LSST Readout Electronics Boards Testing Suite
 
+## [Documentation](https://bencbartlett.github.io/SLAC/)
+
 ## Introduction
 This is the testing suite for the readout electronics boards for the LSST CCD interface, designed to verify that the boards are defect-free and operating as expected. Note that this program communicates directly with the Jython interpreter to manipulate the board, so it does not need to be loaded into the Jython exectuor and can be run directly from the terminal with python.
+
 
 ### Test versions
 There are three separate versions of this test to cover the three types of readout boards:
@@ -53,10 +56,6 @@ Individual tests are structured as classes with four required methods:
 - `ParameterLogging`: Actively queries the board in a separate thread for the desired properties while the test is running. Using `-l` or `--logValues` while calling the program will allow you to actively log these values without a time limit. Pass metric: none
 - `ASPICNoise`: Obtains a fits image from each ASPIC in the readout board. Analyses the images to measure the noise distribution and mean pixel value across the image. This test is run with three different sequencers: unclamped, clamped, and reset. Pass metric: no channels have a standard deviation in pixel value larger than X (currently 5.5).
 - `ASPICLogging`: Continually runs the ASPICNoise tests periodically; this was used for thermocycling testing over long periods of time. This test must be run with `-l` enabled.
-
-
-## Full documentation
-Extensive doxygen-generated documentation is available in html and pdf formats in the "Documentation" directory.
 
 ## Contact
 My SLAC email (`bcb@slac.stanford.edu`) will be terminated when I leave SLAC in September. If something is wrong, confusing, or not working, feel free to contact me after I have left SLAC at `bartlett@caltech.edu`.
