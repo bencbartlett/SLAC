@@ -16,10 +16,18 @@ Inheritance diagram for W\+R\+E\+B\+Test.\+G\+UI\+:\begin{figure}[H]
 \item 
 def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_af16c984b23c92fbd1c31ef7e7f7528f6}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self)
 \begin{DoxyCompactList}\small\item\em Start the dialog. \end{DoxyCompactList}\item 
-def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_a6f9d70bcdf483cc55920068feacb8472}{update} (self, fn\+Test, generating\+P\+DF=False)
+def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_abc2011214a0840bba3adef7991a3aca3}{update} (self)
 \begin{DoxyCompactList}\small\item\em Update the \hyperlink{class_w_r_e_b_test_1_1_g_u_i}{G\+UI} to display current testing progress. \end{DoxyCompactList}\item 
-def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_abf4a962a7a5b1da66157a96916bab756}{update\+Continuously} (self, fn\+Test)
-\begin{DoxyCompactList}\small\item\em Continuously update the display every \+\_\+ seconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_aa86d80ee578acd6fb3788a6172ed3bab}{update\+Continuously} (self)
+\begin{DoxyCompactList}\small\item\em Continuously update the display every \+\_\+ seconds. \end{DoxyCompactList}\item 
+def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_a560a6cb0f260851f891886476a2622ae}{start\+Update\+Continuously} (self)
+\begin{DoxyCompactList}\small\item\em Start the self.\+update\+Continuously() procedure in a separate daemon thread. \end{DoxyCompactList}\item 
+def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_aaa2dcb5d345fb56cd8af7d9285a588c8}{start\+Menu} (self)
+\begin{DoxyCompactList}\small\item\em Initial navigation menu. \end{DoxyCompactList}\item 
+def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_ad7aaf8bb689aee297bd28ad187f15706}{run\+Functional\+Test} (self)
+\begin{DoxyCompactList}\small\item\em Runs the full suite of tests from the \hyperlink{class_w_r_e_b_test_1_1_g_u_i}{G\+UI}. \end{DoxyCompactList}\item 
+def \hyperlink{class_w_r_e_b_test_1_1_g_u_i_aba86aeee5c1216c98eaf2386be743e50}{run\+Custom\+Tests} (self)
+\begin{DoxyCompactList}\small\item\em Allows the user to configure which tests should be run, and runs only those tests. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -42,27 +50,68 @@ Start the dialog.
 
 
 \subsection{Member Function Documentation}
+\index{W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}!run\+Custom\+Tests@{run\+Custom\+Tests}}
+\index{run\+Custom\+Tests@{run\+Custom\+Tests}!W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}}
+\subsubsection[{\texorpdfstring{run\+Custom\+Tests(self)}{runCustomTests(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+run\+Custom\+Tests (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_aba86aeee5c1216c98eaf2386be743e50}{}\label{class_w_r_e_b_test_1_1_g_u_i_aba86aeee5c1216c98eaf2386be743e50}
+
+
+Allows the user to configure which tests should be run, and runs only those tests. 
+
+\index{W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}!run\+Functional\+Test@{run\+Functional\+Test}}
+\index{run\+Functional\+Test@{run\+Functional\+Test}!W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}}
+\subsubsection[{\texorpdfstring{run\+Functional\+Test(self)}{runFunctionalTest(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+run\+Functional\+Test (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_ad7aaf8bb689aee297bd28ad187f15706}{}\label{class_w_r_e_b_test_1_1_g_u_i_ad7aaf8bb689aee297bd28ad187f15706}
+
+
+Runs the full suite of tests from the \hyperlink{class_w_r_e_b_test_1_1_g_u_i}{G\+UI}. 
+
+\index{W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}!start\+Menu@{start\+Menu}}
+\index{start\+Menu@{start\+Menu}!W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}}
+\subsubsection[{\texorpdfstring{start\+Menu(self)}{startMenu(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+start\+Menu (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_aaa2dcb5d345fb56cd8af7d9285a588c8}{}\label{class_w_r_e_b_test_1_1_g_u_i_aaa2dcb5d345fb56cd8af7d9285a588c8}
+
+
+Initial navigation menu. 
+
+Checks that board is connected and presents the user with various options. \index{W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}!start\+Update\+Continuously@{start\+Update\+Continuously}}
+\index{start\+Update\+Continuously@{start\+Update\+Continuously}!W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}}
+\subsubsection[{\texorpdfstring{start\+Update\+Continuously(self)}{startUpdateContinuously(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+start\+Update\+Continuously (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_a560a6cb0f260851f891886476a2622ae}{}\label{class_w_r_e_b_test_1_1_g_u_i_a560a6cb0f260851f891886476a2622ae}
+
+
+Start the self.\+update\+Continuously() procedure in a separate daemon thread. 
+
 \index{W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}!update@{update}}
 \index{update@{update}!W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}}
-\subsubsection[{\texorpdfstring{update(self, fn\+Test, generating\+P\+D\+F=\+False)}{update(self, fnTest, generatingPDF=False)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+update (
+\subsubsection[{\texorpdfstring{update(self)}{update(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+update (
 \begin{DoxyParamCaption}
-\item[{}]{self, }
-\item[{}]{fn\+Test, }
-\item[{}]{generating\+P\+DF = {\ttfamily False}}
+\item[{}]{self}
 \end{DoxyParamCaption}
-)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_a6f9d70bcdf483cc55920068feacb8472}{}\label{class_w_r_e_b_test_1_1_g_u_i_a6f9d70bcdf483cc55920068feacb8472}
+)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_abc2011214a0840bba3adef7991a3aca3}{}\label{class_w_r_e_b_test_1_1_g_u_i_abc2011214a0840bba3adef7991a3aca3}
 
 
 Update the \hyperlink{class_w_r_e_b_test_1_1_g_u_i}{G\+UI} to display current testing progress. 
 
 \index{W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}!update\+Continuously@{update\+Continuously}}
 \index{update\+Continuously@{update\+Continuously}!W\+R\+E\+B\+Test\+::\+G\+UI@{W\+R\+E\+B\+Test\+::\+G\+UI}}
-\subsubsection[{\texorpdfstring{update\+Continuously(self, fn\+Test)}{updateContinuously(self, fnTest)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+update\+Continuously (
+\subsubsection[{\texorpdfstring{update\+Continuously(self)}{updateContinuously(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+G\+U\+I.\+update\+Continuously (
 \begin{DoxyParamCaption}
-\item[{}]{self, }
-\item[{}]{fn\+Test}
+\item[{}]{self}
 \end{DoxyParamCaption}
-)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_abf4a962a7a5b1da66157a96916bab756}{}\label{class_w_r_e_b_test_1_1_g_u_i_abf4a962a7a5b1da66157a96916bab756}
+)}\hypertarget{class_w_r_e_b_test_1_1_g_u_i_aa86d80ee578acd6fb3788a6172ed3bab}{}\label{class_w_r_e_b_test_1_1_g_u_i_aa86d80ee578acd6fb3788a6172ed3bab}
 
 
 Continuously update the display every \+\_\+ seconds. 

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['makeplotpage',['makePlotPage',['../class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f.html#ac11d25d68eb296a39f765b94a591f514',1,'WREBTestPDFGen::PDF']]],
-  ['makeresidualplotpage',['makeResidualPlotPage',['../class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f.html#ad8bdb2be88e67b4f538d7749a340e175',1,'WREBTestPDFGen::PDF']]],
-  ['multiplots',['multiPlots',['../_w_r_e_b_test_p_d_f_gen_8py.html#acd43e3fb768bba155474a50165c7e259',1,'WREBTestPDFGen']]]
+  ['makeplotpage',['makePlotPage',['../classpdf_gen_w_r_e_b_1_1_p_d_f.html#a6d5d3b21e55356e95a2c73d2e086620c',1,'pdfGenWREB::PDF']]],
+  ['makeresidualplotpage',['makeResidualPlotPage',['../classpdf_gen_w_r_e_b_1_1_p_d_f.html#a6fa66ac0799cc7bd37698f30f0136931',1,'pdfGenWREB::PDF']]],
+  ['multiplots',['multiPlots',['../pdf_gen_w_r_e_b_8py.html#a24d1f1e4c1cddcdaebeb3485d3b41f99',1,'pdfGenWREB']]]
 ];

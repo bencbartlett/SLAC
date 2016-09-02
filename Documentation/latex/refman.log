@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  15 JUL 2016 15:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  2 SEP 2016 11:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1073,7 +1073,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 128.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 130.
+(Font)              scaled to size 10.79993pt on input line 128.
  [1
 
 
@@ -1100,11 +1100,17 @@ LaTeX Font Info:    Font shape `T1/phv/b/n' will be
 
 [3
 
-] [4] [5] [6] [7])
+] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13]
+Underfull \hbox (badness 1152) in paragraph at lines 355--355
+ [][] [][][]\T1/phv/m/n/10 summary[]Page(self, board[]I[]D, board[]Type, link[]
+Version, F[]P[]G[]A[]Version, script[] 
+ []
+
+[14] [15] [16] [17] [18] [19] [20])
 \tf@toc=\write5
 \openout5 = `refman.toc'.
 
- [8]
+ [21] [22]
 Package hyperref Info: Option `pageanchor' set `true' on input line 137.
 
 Chapter 1.
@@ -1119,23 +1125,29 @@ LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
 LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
 (Font)              scaled to size 6.29996pt on input line 140.
 (./index.tex
-LaTeX Font Info:    Try loading font information for TS1+phv on input line 5.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 10.79993pt on input line 1.
+LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
+(Font)              scaled to size 10.79993pt on input line 1.
+LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
+(Font)              scaled to size 8.99994pt on input line 5.
+LaTeX Font Info:    Try loading font information for TS1+phv on input line 20.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ts1phv.fd
 File: ts1phv.fd 2001/06/04 scalable font definitions for TS1/phv.
 )
 LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 5.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 11.
-LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 11.
-LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
-(Font)              scaled to size 10.79993pt on input line 11.
-)
-[1
+(Font)              scaled to size 8.99994pt on input line 20.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 32.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+) [1
 
 
-] [2
+] [2])
+[3] [4
 
 ]
 Chapter 2.
@@ -1146,42 +1158,42 @@ LaTeX Font Info:    Font shape `T1/phv/b/n' will be
 (Font)              scaled to size 12.9599pt on input line 1.
 LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
 (Font)              scaled to size 12.9599pt on input line 1.
-) [3] [4
+ [5]) [6]
+Chapter 3.
+(./annotated.tex [7
+
+] [8]) [9] [10
 
 ]
-Chapter 3.
-(./annotated.tex [5]) [6]
 Chapter 4.
-(./files.tex) [7
-
-] [8
+(./files.tex) [11] [12
 
 ]
 Chapter 5.
-(./class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test.tex
-Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test
+(./class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test
 .eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:55
 (epstopdf)                    size: 3800 bytes
-(epstopdf)             Output file: <class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test
 -eps-converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:55
-(epstopdf)                    size: 5716 bytes
-(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_a_s
-_p_i_ccomms_test-eps-converted-to.pdf class_w_r_e_b_test_1_1_a_s_p_i_ccomms_tes
+(epstopdf)                    date: 2016-09-02 11:07:15
+(epstopdf)                    size: 5719 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_a_s
+_p_i_ccomms_test-eps-converted-to.pdf class_g_r_e_b_test_1_1_a_s_p_i_ccomms_tes
 t.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf, id=1080, 501.
-875pt x 223.05333pt>
-File: class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf Graphic f
+<class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf, id=3276, 501.
+875pt x 225.5627pt>
+File: class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf Graphic f
 ile (type pdf)
 
-<use class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>
-Package pdftex.def Info: class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-convert
+<use class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-convert
 ed-to.pdf used on input line 11.
-(pdftex.def)             Requested size: 128.03386pt x 56.9055pt.
+(pdftex.def)             Requested size: 126.60947pt x 56.9055pt.
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 (Font)              scaled to size 8.09995pt on input line 18.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
@@ -1196,8 +1208,6 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 24.
 LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
 (Font)              scaled to size 6.29996pt on input line 24.
-LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
-(Font)              scaled to size 8.99994pt on input line 39.
 LaTeX Font Info:    Font shape `T1/phv/bc/it' in size <10> not available
 (Font)              Font shape `T1/phv/bc/sl' tried instead on input line 39.
 LaTeX Font Info:    Font shape `T1/phv/bc/sl' will be
@@ -1219,22 +1229,317 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[9 <./class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>])
+LaTeX Font Info:    Font shape `T1/phv/bc/it' in size <7> not available
+(Font)              Font shape `T1/phv/bc/sl' tried instead on input line 55.
+LaTeX Font Info:    Font shape `T1/phv/bc/sl' will be
+(Font)              scaled to size 6.29996pt on input line 55.
+[13 <./class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_a_s_p_i_ccomms_test.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_a_s_p_i_ccomms_test.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3798 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_a_s_p_i_ccomms_test-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:15
+(epstopdf)                    size: 5340 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_a_s_p
+_i_ccomms_test-eps-converted-to.pdf class_v_s_t_test_1_1_a_s_p_i_ccomms_test.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf, id=3302, 501.87
+5pt x 237.57759pt>
+File: class_v_s_t_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_v_s_t_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_a_s_p_i_ccomms_test-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 120.2074pt x 56.9055pt.
+ [14 <./class_v_s_t_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+) (./class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test.tex
+Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test
+.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3800 bytes
+(epstopdf)             Output file: <class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test
+-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:15
+(epstopdf)                    size: 5716 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_a_s
+_p_i_ccomms_test-eps-converted-to.pdf class_w_r_e_b_test_1_1_a_s_p_i_ccomms_tes
+t.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf, id=3328, 501.
+875pt x 223.05333pt>
+File: class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf Graphic f
+ile (type pdf)
+
+<use class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-convert
+ed-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 128.03386pt x 56.9055pt.
+ [15]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[16 <./class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_a_s_p_i_c_logging.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_a_s_p_i_c_logging.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3796 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_a_s_p_i_c_logging-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:16
+(epstopdf)                    size: 6007 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_a_s
+_p_i_c_logging-eps-converted-to.pdf class_g_r_e_b_test_1_1_a_s_p_i_c_logging.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf, id=3361, 501.87
+5pt x 247.83592pt>
+File: class_g_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_g_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 115.2297pt x 56.9055pt.
+
+
+LaTeX Font Warning: Font shape `T1/pcr/bc/it' undefined
+(Font)              using `T1/pcr/m/n' instead on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+[17 <./class_g_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_a_s_p_i_c_logging.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_a_s_p_i_c_logging.eps
+>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3794 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_a_s_p_i_c_logging-eps
+-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:16
+(epstopdf)                    size: 5584 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_a_s_p
+_i_c_logging-eps-converted-to.pdf class_v_s_t_test_1_1_a_s_p_i_c_logging.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf, id=3386, 501.875p
+t x 262.4204pt>
+File: class_v_s_t_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf Graphic file 
+(type pdf)
+
+<use class_v_s_t_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_a_s_p_i_c_logging-eps-converted-t
+o.pdf used on input line 11.
+(pdftex.def)             Requested size: 108.82764pt x 56.9055pt.
+ [18 <./class_v_s_t_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+) (./class_w_r_e_b_test_1_1_a_s_p_i_c_logging.tex
+Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_a_s_p_i_c_logging.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3796 bytes
+(epstopdf)             Output file: <class_w_r_e_b_test_1_1_a_s_p_i_c_logging-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:17
+(epstopdf)                    size: 6057 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_a_s
+_p_i_c_logging-eps-converted-to.pdf class_w_r_e_b_test_1_1_a_s_p_i_c_logging.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_w_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf, id=3412, 501.87
+5pt x 244.81462pt>
+File: class_w_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_w_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_w_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 116.6541pt x 56.9055pt.
+ [19]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[20 <./class_w_r_e_b_test_1_1_a_s_p_i_c_logging-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_a_s_p_i_c_noise.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_a_s_p_i_c_noise.eps
+>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3792 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_a_s_p_i_c_noise-eps
+-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:17
+(epstopdf)                    size: 5721 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_a_s
+_p_i_c_noise-eps-converted-to.pdf class_g_r_e_b_test_1_1_a_s_p_i_c_noise.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf, id=3443, 501.875p
+t x 269.46672pt>
+File: class_g_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf Graphic file 
+(type pdf)
+
+<use class_g_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-t
+o.pdf used on input line 11.
+(pdftex.def)             Requested size: 105.97887pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[21 <./class_g_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_a_s_p_i_c_noise.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_a_s_p_i_c_noise.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3790 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_a_s_p_i_c_noise-eps-c
+onverted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:18
+(epstopdf)                    size: 5284 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_a_s_p
+_i_c_noise-eps-converted-to.pdf class_v_s_t_test_1_1_a_s_p_i_c_noise.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf, id=3470, 501.875pt 
+x 286.7814pt>
+File: class_v_s_t_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf Graphic file (t
+ype pdf)
+ <use class_v_s_t_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_a_s_p_i_c_noise-eps-converted-to.
+pdf used on input line 11.
+(pdftex.def)             Requested size: 99.58444pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[22 <./class_v_s_t_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_a_s_p_i_c_noise.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_a_s_p_i_c_noise.eps
 >
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:55
 (epstopdf)                    size: 3792 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps
 -converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:55
+(epstopdf)                    date: 2016-09-02 11:07:18
 (epstopdf)                    size: 5713 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_a_s
 _p_i_c_noise-eps-converted-to.pdf class_w_r_e_b_test_1_1_a_s_p_i_c_noise.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf, id=1106, 501.875p
+<class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf, id=3496, 501.875p
 t x 265.89337pt>
 File: class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf Graphic file 
 (type pdf)
@@ -1243,7 +1548,85 @@ File: class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf Graphic file
 Package pdftex.def Info: class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-t
 o.pdf used on input line 11.
 (pdftex.def)             Requested size: 107.40324pt x 56.9055pt.
+ [23]
 
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[24 <./class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf>])
+(./class_r_e_b_test_1_1_board_select.tex
+Package epstopdf Info: Source file: <class_r_e_b_test_1_1_board_select.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3792 bytes
+(epstopdf)             Output file: <class_r_e_b_test_1_1_board_select-eps-conv
+erted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:18
+(epstopdf)                    size: 5472 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_r_e_b_test_1_1_board
+_select-eps-converted-to.pdf class_r_e_b_test_1_1_board_select.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_r_e_b_test_1_1_board_select-eps-converted-to.pdf, id=3527, 501.875pt x 2
+86.7814pt>
+File: class_r_e_b_test_1_1_board_select-eps-converted-to.pdf Graphic file (type
+ pdf)
+ <use class_r_e_b_test_1_1_board_select-eps-converted-to.pdf>
+Package pdftex.def Info: class_r_e_b_test_1_1_board_select-eps-converted-to.pdf
+ used on input line 11.
+(pdftex.def)             Requested size: 99.58444pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 36.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 36.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 36.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 36.
+
+) (./class_g_r_e_b_test_1_1_channel_test.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_channel_test.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3794 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_channel_test-eps-co
+nverted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:19
+(epstopdf)                    size: 5623 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_cha
+nnel_test-eps-converted-to.pdf class_g_r_e_b_test_1_1_channel_test.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_channel_test-eps-converted-to.pdf, id=3530, 501.875pt x
+ 267.67003pt>
+File: class_g_r_e_b_test_1_1_channel_test-eps-converted-to.pdf Graphic file (ty
+pe pdf)
+ <use class_g_r_e_b_test_1_1_channel_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_channel_test-eps-converted-to.p
+df used on input line 11.
+(pdftex.def)             Requested size: 106.69106pt x 56.9055pt.
+
+[25 <./class_r_e_b_test_1_1_board_select-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1260,21 +1643,21 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[10 <./class_w_r_e_b_test_1_1_a_s_p_i_c_noise-eps-converted-to.pdf>])
+[26 <./class_g_r_e_b_test_1_1_channel_test-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_channel_test.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_channel_test.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:55
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_channel_test-eps-co
 nverted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:56
+(epstopdf)                    date: 2016-09-02 11:07:19
 (epstopdf)                    size: 5571 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_cha
 nnel_test-eps-converted-to.pdf class_w_r_e_b_test_1_1_channel_test.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_channel_test-eps-converted-to.pdf, id=1133, 501.875pt x
+<class_w_r_e_b_test_1_1_channel_test-eps-converted-to.pdf, id=3570, 501.875pt x
  264.14685pt>
 File: class_w_r_e_b_test_1_1_channel_test-eps-converted-to.pdf Graphic file (ty
 pe pdf)
@@ -1283,7 +1666,6 @@ Package pdftex.def Info: class_w_r_e_b_test_1_1_channel_test-eps-converted-to.p
 df used on input line 11.
 (pdftex.def)             Requested size: 108.11543pt x 56.9055pt.
 
-[11]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1300,21 +1682,103 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[12 <./class_w_r_e_b_test_1_1_channel_test-eps-converted-to.pdf>])
+[27 <./class_w_r_e_b_test_1_1_channel_test-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_channel_test.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_channel_test.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3792 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_channel_test-eps-conv
+erted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:20
+(epstopdf)                    size: 5291 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_chann
+el_test-eps-converted-to.pdf class_v_s_t_test_1_1_channel_test.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_channel_test-eps-converted-to.pdf, id=3596, 501.875pt x 2
+84.75385pt>
+File: class_v_s_t_test_1_1_channel_test-eps-converted-to.pdf Graphic file (type
+ pdf)
+ <use class_v_s_t_test_1_1_channel_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_channel_test-eps-converted-to.pdf
+ used on input line 11.
+(pdftex.def)             Requested size: 100.28897pt x 56.9055pt.
+
+[28 <./class_v_s_t_test_1_1_channel_test-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [29])
+(./class_g_r_e_b_test_1_1_c_s_gate.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_c_s_gate.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_c_s_gate-eps-conver
+ted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:20
+(epstopdf)                    size: 5451 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_c_s
+_gate-eps-converted-to.pdf class_g_r_e_b_test_1_1_c_s_gate.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf, id=3629, 501.875pt x 326
+.41951pt>
+File: class_g_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf Graphic file (type p
+df)
+ <use class_g_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf u
+sed on input line 11.
+(pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[30 <./class_g_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_c_s_gate.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_c_s_gate.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:55
 (epstopdf)                    size: 3784 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_c_s_gate-eps-conver
 ted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:56
+(epstopdf)                    date: 2016-09-02 11:07:20
 (epstopdf)                    size: 5587 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_c_s
 _gate-eps-converted-to.pdf class_w_r_e_b_test_1_1_c_s_gate.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf, id=1165, 501.875pt x 321
+<class_w_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf, id=3653, 501.875pt x 321
 .2pt>
 File: class_w_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf Graphic file (type p
 df)
@@ -1339,22 +1803,22 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[13 <./class_w_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf>])
+[31 <./class_w_r_e_b_test_1_1_c_s_gate-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_functional_test.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_functional_test.eps
 >
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3800 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_functional_test-eps
 -converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:57
+(epstopdf)                    date: 2016-09-02 11:07:21
 (epstopdf)                    size: 5591 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_fun
 ctional_test-eps-converted-to.pdf class_w_r_e_b_test_1_1_functional_test.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_functional_test-eps-converted-to.pdf, id=1190, 501.875p
+<class_w_r_e_b_test_1_1_functional_test-eps-converted-to.pdf, id=3679, 501.875p
 t x 244.81462pt>
 File: class_w_r_e_b_test_1_1_functional_test-eps-converted-to.pdf Graphic file 
 (type pdf)
@@ -1363,38 +1827,150 @@ File: class_w_r_e_b_test_1_1_functional_test-eps-converted-to.pdf Graphic file
 Package pdftex.def Info: class_w_r_e_b_test_1_1_functional_test-eps-converted-t
 o.pdf used on input line 11.
 (pdftex.def)             Requested size: 116.6541pt x 56.9055pt.
+ [32])
+(./class_g_r_e_b_test_1_1_functional_test.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_functional_test.eps
+>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3800 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_functional_test-eps
+-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:21
+(epstopdf)                    size: 5591 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_fun
+ctional_test-eps-converted-to.pdf class_g_r_e_b_test_1_1_functional_test.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_functional_test-eps-converted-to.pdf, id=3689, 501.875p
+t x 247.83592pt>
+File: class_g_r_e_b_test_1_1_functional_test-eps-converted-to.pdf Graphic file 
+(type pdf)
+
+<use class_g_r_e_b_test_1_1_functional_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_functional_test-eps-converted-t
+o.pdf used on input line 11.
+(pdftex.def)             Requested size: 115.2297pt x 56.9055pt.
+ [33 <./class_w_r_e_b_test_1_1_functional_test-eps-converted-to.pdf> <./class_g
+_r_e_b_test_1_1_functional_test-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_functional_test.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_functional_test.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3798 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_functional_test-eps-c
+onverted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:22
+(epstopdf)                    size: 5338 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_funct
+ional_test-eps-converted-to.pdf class_v_s_t_test_1_1_functional_test.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_functional_test-eps-converted-to.pdf, id=3713, 501.875pt 
+x 262.4204pt>
+File: class_v_s_t_test_1_1_functional_test-eps-converted-to.pdf Graphic file (t
+ype pdf)
+ <use class_v_s_t_test_1_1_functional_test-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_functional_test-eps-converted-to.
+pdf used on input line 11.
+(pdftex.def)             Requested size: 108.82764pt x 56.9055pt.
+
+[34 <./class_v_s_t_test_1_1_functional_test-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_g_d_bias.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_g_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3782 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_g_d_bias-eps-converte
+d-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:22
+(epstopdf)                    size: 5418 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_g_d_b
+ias-eps-converted-to.pdf class_v_s_t_test_1_1_g_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_g_d_bias-eps-converted-to.pdf, id=3734, 501.875pt x 355.3
+0743pt>
+File: class_v_s_t_test_1_1_g_d_bias-eps-converted-to.pdf Graphic file (type pdf
+)
+ <use class_v_s_t_test_1_1_g_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_g_d_bias-eps-converted-to.pdf use
+d on input line 11.
+(pdftex.def)             Requested size: 80.37822pt x 56.9055pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 39.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 39.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 39.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 39.
 
-[14 <./class_w_r_e_b_test_1_1_functional_test-eps-converted-to.pdf>])
+[35 <./class_v_s_t_test_1_1_g_d_bias-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_g_d_bias.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_g_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_g_d_bias-eps-conver
+ted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:22
+(epstopdf)                    size: 5409 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_g_d
+_bias-eps-converted-to.pdf class_g_r_e_b_test_1_1_g_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf, id=3758, 501.875pt x 329
+.0995pt>
+File: class_g_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf Graphic file (type p
+df)
+ <use class_g_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf u
+sed on input line 11.
+(pdftex.def)             Requested size: 86.78029pt x 56.9055pt.
+ [36 <./class_g_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [37])
 (./class_w_r_e_b_test_1_1_g_d_bias.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_g_d_bias.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3784 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_g_d_bias-eps-conver
 ted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:57
+(epstopdf)                    date: 2016-09-02 11:07:23
 (epstopdf)                    size: 5550 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_g_d
 _bias-eps-converted-to.pdf class_w_r_e_b_test_1_1_g_d_bias.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf, id=1212, 501.875pt x 323
+<class_w_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf, id=3790, 501.875pt x 323
 .78966pt>
 File: class_w_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf Graphic file (type p
 df)
@@ -1419,21 +1995,21 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[15 <./class_w_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf>])
+[38 <./class_w_r_e_b_test_1_1_g_d_bias-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_g_u_i.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_g_u_i.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3778 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_g_u_i-eps-converted
 -to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:57
+(epstopdf)                    date: 2016-09-02 11:07:23
 (epstopdf)                    size: 5375 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_g_u
 _i-eps-converted-to.pdf class_w_r_e_b_test_1_1_g_u_i.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf, id=1237, 501.875pt x 393.63
+<class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf, id=3816, 501.875pt x 393.63
 06pt>
 File: class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf Graphic file (type pdf)
 
@@ -1441,43 +2017,107 @@ File: class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf Graphic file (type pdf)
 Package pdftex.def Info: class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf used
  on input line 11.
 (pdftex.def)             Requested size: 72.55176pt x 56.9055pt.
- [16 <./class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf>]
+ [39 <./class_w_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 45.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 45.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 37.
+(hyperref)                removing `subscript' on input line 45.
 
-LaTeX Font Info:    Font shape `T1/phv/bc/it' in size <7> not available
-(Font)              Font shape `T1/phv/bc/sl' tried instead on input line 53.
-LaTeX Font Info:    Font shape `T1/phv/bc/sl' will be
-(Font)              scaled to size 6.29996pt on input line 53.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 53.
-(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)
 
-LaTeX Font Warning: Font shape `T1/pcr/bc/it' undefined
-(Font)              using `T1/pcr/m/n' instead on input line 53.
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
 
-) (./class_w_r_e_b_test_1_1_idle_current_consumption.tex
+) (./class_g_r_e_b_test_1_1_g_u_i.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_g_u_i.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3778 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_g_u_i-eps-converted
+-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:24
+(epstopdf)                    size: 5183 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_g_u
+_i-eps-converted-to.pdf class_g_r_e_b_test_1_1_g_u_i.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf, id=3852, 501.875pt x 401.5p
+t>
+File: class_g_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf Graphic file (type pdf)
+
+ <use class_g_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf used
+ on input line 11.
+(pdftex.def)             Requested size: 71.12737pt x 56.9055pt.
+ [40]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+[41 <./class_g_r_e_b_test_1_1_g_u_i-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_g_u_i.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_g_u_i.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3776 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_g_u_i-eps-converted-t
+o.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:24
+(epstopdf)                    size: 5039 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_g_u_i
+-eps-converted-to.pdf class_v_s_t_test_1_1_g_u_i.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_g_u_i-eps-converted-to.pdf, id=3889, 501.875pt x 441.2083
+4pt>
+File: class_v_s_t_test_1_1_g_u_i-eps-converted-to.pdf Graphic file (type pdf)
+ <use class_v_s_t_test_1_1_g_u_i-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_g_u_i-eps-converted-to.pdf used o
+n input line 11.
+(pdftex.def)             Requested size: 64.7253pt x 56.9055pt.
+ [42 <./class_v_s_t_test_1_1_g_u_i-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 45.
+
+[43]) (./class_w_r_e_b_test_1_1_idle_current_consumption.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_idle_current_consum
 ption.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3816 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_idle_current_consum
 ption-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:58
+(epstopdf)                    date: 2016-09-02 11:07:25
 (epstopdf)                    size: 6035 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_idl
 e_current_consumption-eps-converted-to.pdf class_w_r_e_b_test_1_1_idle_current_
@@ -1485,7 +2125,7 @@ consumption.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf, id=1257,
+<class_w_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf, id=3926,
  501.875pt x 185.02124pt>
 File: class_w_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf Grap
 hic file (type pdf)
@@ -1495,7 +2135,6 @@ Package pdftex.def Info: class_w_r_e_b_test_1_1_idle_current_consumption-eps-co
 nverted-to.pdf used on input line 11.
 (pdftex.def)             Requested size: 154.35435pt x 56.9055pt.
 
-[17 <./class_w_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1512,18 +2151,160 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
+[44 <./class_w_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf>]
+[45]) (./class_g_r_e_b_test_1_1_idle_current_consumption.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_idle_current_consum
+ption.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3816 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_idle_current_consum
+ption-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:25
+(epstopdf)                    size: 6094 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_idl
+e_current_consumption-eps-converted-to.pdf class_g_r_e_b_test_1_1_idle_current_
+consumption.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf, id=3955,
+ 501.875pt x 186.7477pt>
+File: class_g_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf Grap
+hic file (type pdf)
+
+<use class_g_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_idle_current_consumption-eps-co
+nverted-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 152.92998pt x 56.9055pt.
+
+[46 <./class_g_r_e_b_test_1_1_idle_current_consumption-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+) (./class_v_s_t_test_1_1_idle_current_consumption.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_idle_current_consumpt
+ion.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3814 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_idle_current_consumpt
+ion-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:26
+(epstopdf)                    size: 5815 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_idle_
+current_consumption-eps-converted-to.pdf class_v_s_t_test_1_1_idle_current_cons
+umption.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_idle_current_consumption-eps-converted-to.pdf, id=3981, 5
+01.875pt x 194.89813pt>
+File: class_v_s_t_test_1_1_idle_current_consumption-eps-converted-to.pdf Graphi
+c file (type pdf)
+
+<use class_v_s_t_test_1_1_idle_current_consumption-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_idle_current_consumption-eps-conv
+erted-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 146.53555pt x 56.9055pt.
+
+[47]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[48 <./class_v_s_t_test_1_1_idle_current_consumption-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_jython_interface.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_jython_interface.ep
+s>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3830 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_jython_interface-ep
+s-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:27
+(epstopdf)                    size: 5866 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_jyt
+hon_interface-eps-converted-to.pdf class_g_r_e_b_test_1_1_jython_interface.eps>
+
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf, id=4013, 501.875
+pt x 238.99287pt>
+File: class_g_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf Graphic file
+ (type pdf)
+
+<use class_g_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_jython_interface-eps-converted-
+to.pdf used on input line 11.
+(pdftex.def)             Requested size: 119.49521pt x 56.9055pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [18])
-(./class_w_r_e_b_test_1_1_jython_interface.tex
+ [49 <./class_g_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf>]
+Underfull \hbox (badness 10000) detected at line 66
+[][][]
+ []
+
+) (./class_r_e_b_test_1_1_jython_interface.tex
+Package epstopdf Info: Source file: <class_r_e_b_test_1_1_jython_interface.eps>
+
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3828 bytes
+(epstopdf)             Output file: <class_r_e_b_test_1_1_jython_interface-eps-
+converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:27
+(epstopdf)                    size: 5731 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_r_e_b_test_1_1_jytho
+n_interface-eps-converted-to.pdf class_r_e_b_test_1_1_jython_interface.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf, id=4032, 501.875pt
+ x 252.5134pt>
+File: class_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf Graphic file (
+type pdf)
+
+<use class_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf>
+Package pdftex.def Info: class_r_e_b_test_1_1_jython_interface-eps-converted-to
+.pdf used on input line 11.
+(pdftex.def)             Requested size: 113.10078pt x 56.9055pt.
+ [50 <./class_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf>]
+Underfull \hbox (badness 10000) detected at line 66
+[][][]
+ []
+
+) (./class_w_r_e_b_test_1_1_jython_interface.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_jython_interface.ep
 s>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3830 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_jython_interface-ep
 s-converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:58
+(epstopdf)                    date: 2016-09-02 11:07:28
 (epstopdf)                    size: 5865 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_jyt
 hon_interface-eps-converted-to.pdf class_w_r_e_b_test_1_1_jython_interface.eps>
@@ -1531,7 +2312,7 @@ hon_interface-eps-converted-to.pdf class_w_r_e_b_test_1_1_jython_interface.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf, id=1294, 501.875
+<class_w_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf, id=4049, 501.875
 pt x 236.17233pt>
 File: class_w_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf Graphic file
  (type pdf)
@@ -1540,29 +2321,131 @@ File: class_w_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf Graphic file
 Package pdftex.def Info: class_w_r_e_b_test_1_1_jython_interface-eps-converted-
 to.pdf used on input line 11.
 (pdftex.def)             Requested size: 120.92725pt x 56.9055pt.
-
-Overfull \vbox (16.01157pt too high) has occurred while \output is active []
-
-
-[19 <./class_w_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf>]
+ [51 <./class_w_r_e_b_test_1_1_jython_interface-eps-converted-to.pdf>]
 Underfull \hbox (badness 10000) detected at line 66
 [][][]
  []
 
-) (./class_w_r_e_b_test_1_1_o_d_bias.tex
+) (./class_v_s_t_test_1_1_jython_interface.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_jython_interface.eps>
+
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3828 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_jython_interface-eps-
+converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:28
+(epstopdf)                    size: 5580 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_jytho
+n_interface-eps-converted-to.pdf class_v_s_t_test_1_1_jython_interface.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_jython_interface-eps-converted-to.pdf, id=4070, 501.875pt
+ x 252.5134pt>
+File: class_v_s_t_test_1_1_jython_interface-eps-converted-to.pdf Graphic file (
+type pdf)
+
+<use class_v_s_t_test_1_1_jython_interface-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_jython_interface-eps-converted-to
+.pdf used on input line 11.
+(pdftex.def)             Requested size: 113.10078pt x 56.9055pt.
+ [52 <./class_v_s_t_test_1_1_jython_interface-eps-converted-to.pdf>]
+Underfull \hbox (badness 10000) detected at line 66
+[][][]
+ []
+
+) (./class_v_s_t_test_1_1_o_d_bias.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_o_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3782 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_o_d_bias-eps-converte
+d-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:28
+(epstopdf)                    size: 5405 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_o_d_b
+ias-eps-converted-to.pdf class_v_s_t_test_1_1_o_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_o_d_bias-eps-converted-to.pdf, id=4089, 501.875pt x 352.1
+958pt>
+File: class_v_s_t_test_1_1_o_d_bias-eps-converted-to.pdf Graphic file (type pdf
+)
+ <use class_v_s_t_test_1_1_o_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_o_d_bias-eps-converted-to.pdf use
+d on input line 11.
+(pdftex.def)             Requested size: 81.09041pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[53 <./class_v_s_t_test_1_1_o_d_bias-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_o_d_bias.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_o_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_o_d_bias-eps-conver
+ted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:29
+(epstopdf)                    size: 5531 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_o_d
+_bias-eps-converted-to.pdf class_g_r_e_b_test_1_1_o_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf, id=4115, 501.875pt x 326
+.41951pt>
+File: class_g_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf Graphic file (type p
+df)
+ <use class_g_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf u
+sed on input line 11.
+(pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
+ [54]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[55 <./class_g_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf>])
+(./class_w_r_e_b_test_1_1_o_d_bias.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_o_d_bias.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3784 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_o_d_bias-eps-conver
 ted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:59
+(epstopdf)                    date: 2016-09-02 11:07:29
 (epstopdf)                    size: 5531 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_o_d
 _bias-eps-converted-to.pdf class_w_r_e_b_test_1_1_o_d_bias.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf, id=1313, 501.875pt x 321
+<class_w_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf, id=4146, 501.875pt x 321
 .2pt>
 File: class_w_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf Graphic file (type p
 df)
@@ -1587,21 +2470,98 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[20 <./class_w_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf>])
+[56 <./class_w_r_e_b_test_1_1_o_d_bias-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_o_g_bias.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_o_g_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3782 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_o_g_bias-eps-converte
+d-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:30
+(epstopdf)                    size: 5439 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_o_g_b
+ias-eps-converted-to.pdf class_v_s_t_test_1_1_o_g_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_o_g_bias-eps-converted-to.pdf, id=4172, 501.875pt x 352.1
+958pt>
+File: class_v_s_t_test_1_1_o_g_bias-eps-converted-to.pdf Graphic file (type pdf
+)
+ <use class_v_s_t_test_1_1_o_g_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_o_g_bias-eps-converted-to.pdf use
+d on input line 11.
+(pdftex.def)             Requested size: 81.09041pt x 56.9055pt.
+ [57 <./class_v_s_t_test_1_1_o_g_bias-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+) (./class_g_r_e_b_test_1_1_o_g_bias.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_o_g_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_o_g_bias-eps-conver
+ted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:30
+(epstopdf)                    size: 5427 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_o_g
+_bias-eps-converted-to.pdf class_g_r_e_b_test_1_1_o_g_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf, id=4199, 501.875pt x 326
+.41951pt>
+File: class_g_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf Graphic file (type p
+df)
+ <use class_g_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf u
+sed on input line 11.
+(pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
+ [58]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[59 <./class_g_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_o_g_bias.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_o_g_bias.eps>
-(epstopdf)                    date: 2016-07-15 15:36:08
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3784 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_o_g_bias-eps-conver
 ted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:37:59
+(epstopdf)                    date: 2016-09-02 11:07:31
 (epstopdf)                    size: 5564 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_o_g
 _bias-eps-converted-to.pdf class_w_r_e_b_test_1_1_o_g_bias.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf, id=1337, 501.875pt x 321
+<class_w_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf, id=4230, 501.875pt x 321
 .2pt>
 File: class_w_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf Graphic file (type p
 df)
@@ -1609,10 +2569,6 @@ df)
 Package pdftex.def Info: class_w_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf u
 sed on input line 11.
 (pdftex.def)             Requested size: 88.90921pt x 56.9055pt.
- [21 <./class_w_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf>]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 39.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
@@ -1626,20 +2582,152 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-) (./class_w_r_e_b_test_1_1_p_c_k_rails.tex
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[60 <./class_w_r_e_b_test_1_1_o_g_bias-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_parameter_logging.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_parameter_logging.eps
+>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3802 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_parameter_logging-eps
+-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:31
+(epstopdf)                    size: 5726 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_param
+eter_logging-eps-converted-to.pdf class_v_s_t_test_1_1_parameter_logging.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_parameter_logging-eps-converted-to.pdf, id=4256, 501.875p
+t x 230.75209pt>
+File: class_v_s_t_test_1_1_parameter_logging-eps-converted-to.pdf Graphic file 
+(type pdf)
+
+<use class_v_s_t_test_1_1_parameter_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_parameter_logging-eps-converted-t
+o.pdf used on input line 11.
+(pdftex.def)             Requested size: 123.7607pt x 56.9055pt.
+ [61 <./class_v_s_t_test_1_1_parameter_logging-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+[62]) (./class_g_r_e_b_test_1_1_parameter_logging.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_parameter_logging.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3804 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_parameter_logging-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:32
+(epstopdf)                    size: 6001 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_par
+ameter_logging-eps-converted-to.pdf class_g_r_e_b_test_1_1_parameter_logging.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf, id=4289, 501.87
+5pt x 219.39967pt>
+File: class_g_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_g_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_parameter_logging-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 130.17044pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Overfull \vbox (20.89365pt too high) has occurred while \output is active []
+
+
+[63 <./class_g_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf>])
+(./class_w_r_e_b_test_1_1_parameter_logging.tex
+Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_parameter_logging.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:56
+(epstopdf)                    size: 3804 bytes
+(epstopdf)             Output file: <class_w_r_e_b_test_1_1_parameter_logging-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:32
+(epstopdf)                    size: 5996 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_par
+ameter_logging-eps-converted-to.pdf class_w_r_e_b_test_1_1_parameter_logging.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_w_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf, id=4316, 501.87
+5pt x 217.03082pt>
+File: class_w_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_w_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_w_r_e_b_test_1_1_parameter_logging-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 131.58716pt x 56.9055pt.
+ [64 <./class_w_r_e_b_test_1_1_parameter_logging-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 47.
+
+[65]) (./class_w_r_e_b_test_1_1_p_c_k_rails.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_p_c_k_rails.eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3788 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_p_c_k_rails-eps-con
 verted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:00
+(epstopdf)                    date: 2016-09-02 11:07:33
 (epstopdf)                    size: 5707 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_p_c
 _k_rails-eps-converted-to.pdf class_w_r_e_b_test_1_1_p_c_k_rails.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf, id=1363, 501.875pt x 
+<class_w_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf, id=4348, 501.875pt x 
 299.62943pt>
 File: class_w_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf Graphic file (typ
 e pdf)
@@ -1648,7 +2736,6 @@ Package pdftex.def Info: class_w_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pd
 f used on input line 11.
 (pdftex.def)             Requested size: 95.31128pt x 56.9055pt.
 
-[22]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1665,56 +2752,29 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[23 <./class_w_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf>])
-(./class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f.tex
-Package epstopdf Info: Source file: <class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f.eps
->
-(epstopdf)                    date: 2016-07-15 15:36:09
+[66 <./class_w_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_p_c_k_rails.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_p_c_k_rails.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
 (epstopdf)                    size: 3786 bytes
-(epstopdf)             Output file: <class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f-eps
--converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:00
-(epstopdf)                    size: 5142 bytes
-(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_p_d_f_g
-en_1_1_p_d_f-eps-converted-to.pdf class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f.eps>
+(epstopdf)             Output file: <class_v_s_t_test_1_1_p_c_k_rails-eps-conve
+rted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:33
+(epstopdf)                    size: 5493 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_p_c_k
+_rails-eps-converted-to.pdf class_v_s_t_test_1_1_p_c_k_rails.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f-eps-converted-to.pdf, id=1397, 501.875p
-t x 259.02773pt>
-File: class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f-eps-converted-to.pdf Graphic file 
-(type pdf)
-
-<use class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f-eps-converted-to.pdf>
-Package pdftex.def Info: class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f-eps-converted-t
-o.pdf used on input line 11.
-(pdftex.def)             Requested size: 110.25201pt x 56.9055pt.
- [24 <./class_w_r_e_b_test_p_d_f_gen_1_1_p_d_f-eps-converted-to.pdf>] [25]
-Underfull \vbox (badness 2050) has occurred while \output is active []
-
- [26])
-(./class_w_r_e_b_test_1_1_r_d_bias.tex
-Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_r_d_bias.eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
-(epstopdf)                    size: 3784 bytes
-(epstopdf)             Output file: <class_w_r_e_b_test_1_1_r_d_bias-eps-conver
-ted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:00
-(epstopdf)                    size: 5353 bytes
-(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_r_d
-_bias-eps-converted-to.pdf class_w_r_e_b_test_1_1_r_d_bias.eps>
-(epstopdf)             \includegraphics on input line 11.
-Package epstopdf Info: Output file is already uptodate.
-
-<class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf, id=1450, 501.875pt x 326
-.41951pt>
-File: class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf Graphic file (type p
-df)
- <use class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf>
-Package pdftex.def Info: class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf u
-sed on input line 11.
+<class_v_s_t_test_1_1_p_c_k_rails-eps-converted-to.pdf, id=4373, 501.875pt x 32
+6.41951pt>
+File: class_v_s_t_test_1_1_p_c_k_rails-eps-converted-to.pdf Graphic file (type 
+pdf)
+ <use class_v_s_t_test_1_1_p_c_k_rails-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_p_c_k_rails-eps-converted-to.pdf 
+used on input line 11.
 (pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
- [27 <./class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf>]
+ [67 <./class_v_s_t_test_1_1_p_c_k_rails-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1734,21 +2794,290 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [28])
-(./class_w_r_e_b_test_1_1_r_g_rails.tex
+ [68])
+(./class_g_r_e_b_test_1_1_p_c_k_rails.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_p_c_k_rails.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3788 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_p_c_k_rails-eps-con
+verted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:34
+(epstopdf)                    size: 5662 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_p_c
+_k_rails-eps-converted-to.pdf class_g_r_e_b_test_1_1_p_c_k_rails.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf, id=4405, 501.875pt x 
+304.16637pt>
+File: class_g_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf Graphic file (typ
+e pdf)
+ <use class_g_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pd
+f used on input line 11.
+(pdftex.def)             Requested size: 93.89456pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[69 <./class_g_r_e_b_test_1_1_p_c_k_rails-eps-converted-to.pdf>])
+(./classpdf_gen_w_r_e_b_1_1_p_d_f.tex
+Package epstopdf Info: Source file: <classpdf_gen_w_r_e_b_1_1_p_d_f.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3778 bytes
+(epstopdf)             Output file: <classpdf_gen_w_r_e_b_1_1_p_d_f-eps-convert
+ed-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:34
+(epstopdf)                    size: 5231 bytes
+(epstopdf)             Command: <repstopdf --outfile=classpdf_gen_w_r_e_b_1_1_p
+_d_f-eps-converted-to.pdf classpdf_gen_w_r_e_b_1_1_p_d_f.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<classpdf_gen_w_r_e_b_1_1_p_d_f-eps-converted-to.pdf, id=4432, 501.875pt x 321.
+2pt>
+File: classpdf_gen_w_r_e_b_1_1_p_d_f-eps-converted-to.pdf Graphic file (type pd
+f)
+ <use classpdf_gen_w_r_e_b_1_1_p_d_f-eps-converted-to.pdf>
+Package pdftex.def Info: classpdf_gen_w_r_e_b_1_1_p_d_f-eps-converted-to.pdf us
+ed on input line 11.
+(pdftex.def)             Requested size: 88.90921pt x 56.9055pt.
+ [70 <./classpdf_gen_w_r_e_b_1_1_p_d_f-eps-converted-to.pdf>]
+Overfull \vbox (17.48186pt too high) has occurred while \output is active []
+
+
+[71]
+Overfull \vbox (6.47882pt too high) has occurred while \output is active []
+
+
+[72] [73]) (./class_w_r_e_b_test_1_1_r_d_bias.tex
+Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_r_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:56
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_w_r_e_b_test_1_1_r_d_bias-eps-conver
+ted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:34
+(epstopdf)                    size: 5353 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_r_d
+_bias-eps-converted-to.pdf class_w_r_e_b_test_1_1_r_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf, id=4492, 501.875pt x 326
+.41951pt>
+File: class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf Graphic file (type p
+df)
+ <use class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf u
+sed on input line 11.
+(pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Overfull \vbox (11.03639pt too high) has occurred while \output is active []
+
+
+[74 <./class_w_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_r_d_bias.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_r_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3782 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_r_d_bias-eps-converte
+d-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:35
+(epstopdf)                    size: 5401 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_r_d_b
+ias-eps-converted-to.pdf class_v_s_t_test_1_1_r_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_r_d_bias-eps-converted-to.pdf, id=4518, 501.875pt x 358.4
+793pt>
+File: class_v_s_t_test_1_1_r_d_bias-eps-converted-to.pdf Graphic file (type pdf
+)
+ <use class_v_s_t_test_1_1_r_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_r_d_bias-eps-converted-to.pdf use
+d on input line 11.
+(pdftex.def)             Requested size: 79.66602pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[75 <./class_v_s_t_test_1_1_r_d_bias-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_r_d_bias.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_r_d_bias.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_r_d_bias-eps-conver
+ted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:35
+(epstopdf)                    size: 5410 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_r_d
+_bias-eps-converted-to.pdf class_g_r_e_b_test_1_1_r_d_bias.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf, id=4544, 501.875pt x 331
+.81966pt>
+File: class_g_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf Graphic file (type p
+df)
+ <use class_g_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf u
+sed on input line 11.
+(pdftex.def)             Requested size: 86.0681pt x 56.9055pt.
+ [76 <./class_g_r_e_b_test_1_1_r_d_bias-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [77])
+(./class_v_s_t_test_1_1_r_g_rails.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_r_g_rails.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_r_g_rails-eps-convert
+ed-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:36
+(epstopdf)                    size: 5342 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_r_g_r
+ails-eps-converted-to.pdf class_v_s_t_test_1_1_r_g_rails.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_r_g_rails-eps-converted-to.pdf, id=4576, 501.875pt x 349.
+13435pt>
+File: class_v_s_t_test_1_1_r_g_rails-eps-converted-to.pdf Graphic file (type pd
+f)
+ <use class_v_s_t_test_1_1_r_g_rails-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_r_g_rails-eps-converted-to.pdf us
+ed on input line 11.
+(pdftex.def)             Requested size: 81.79494pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[78 <./class_v_s_t_test_1_1_r_g_rails-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_r_g_rails.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_r_g_rails.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3786 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_r_g_rails-eps-conve
+rted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:36
+(epstopdf)                    size: 5309 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_r_g
+_rails-eps-converted-to.pdf class_g_r_e_b_test_1_1_r_g_rails.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf, id=4601, 501.875pt x 32
+3.78966pt>
+File: class_g_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf Graphic file (type 
+pdf)
+ <use class_g_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf 
+used on input line 11.
+(pdftex.def)             Requested size: 88.20468pt x 56.9055pt.
+ [79 <./class_g_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+) (./class_w_r_e_b_test_1_1_r_g_rails.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_r_g_rails.eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3786 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_r_g_rails-eps-conve
 rted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:01
+(epstopdf)                    date: 2016-09-02 11:07:37
 (epstopdf)                    size: 5503 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_r_g
 _rails-eps-converted-to.pdf class_w_r_e_b_test_1_1_r_g_rails.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf, id=1483, 501.875pt x 31
+<class_w_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf, id=4627, 501.875pt x 31
 8.65047pt>
 File: class_w_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf Graphic file (type 
 pdf)
@@ -1756,11 +3085,7 @@ pdf)
 Package pdftex.def Info: class_w_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf 
 used on input line 11.
 (pdftex.def)             Requested size: 89.6214pt x 56.9055pt.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 39.
-
+ [80]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1773,15 +3098,19 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[29 <./class_w_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf>])
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[81 <./class_w_r_e_b_test_1_1_r_g_rails-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_r_g_rails_diverging.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_r_g_rails_diverging
 .eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3804 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_r_g_rails_diverging
 -eps-converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:01
+(epstopdf)                    date: 2016-09-02 11:07:37
 (epstopdf)                    size: 6128 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_r_g
 _rails_diverging-eps-converted-to.pdf class_w_r_e_b_test_1_1_r_g_rails_divergin
@@ -1789,7 +3118,7 @@ g.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf, id=1508, 501.
+<class_w_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf, id=4659, 501.
 875pt x 221.81873pt>
 File: class_w_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf Graphic f
 ile (type pdf)
@@ -1815,21 +3144,147 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 41.
 
-[30 <./class_w_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf>])
-(./class_w_r_e_b_test_1_1_s_c_k_rails.tex [31]
+[82 <./class_w_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_r_g_rails_diverging.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_r_g_rails_diverging
+.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3804 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_r_g_rails_diverging
+-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:38
+(epstopdf)                    size: 5931 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_r_g
+_rails_diverging-eps-converted-to.pdf class_g_r_e_b_test_1_1_r_g_rails_divergin
+g.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf, id=4684, 501.
+875pt x 224.29799pt>
+File: class_g_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf Graphic f
+ile (type pdf)
+
+<use class_g_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_r_g_rails_diverging-eps-convert
+ed-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 127.32167pt x 56.9055pt.
+ [83 <./class_g_r_e_b_test_1_1_r_g_rails_diverging-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+[84]) (./class_v_s_t_test_1_1_r_g_rails_diverging.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_r_g_rails_diverging.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3802 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_r_g_rails_diverging-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:38
+(epstopdf)                    size: 5912 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_r_g_r
+ails_diverging-eps-converted-to.pdf class_v_s_t_test_1_1_r_g_rails_diverging.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_r_g_rails_diverging-eps-converted-to.pdf, id=4718, 501.87
+5pt x 236.17233pt>
+File: class_v_s_t_test_1_1_r_g_rails_diverging-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_v_s_t_test_1_1_r_g_rails_diverging-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_r_g_rails_diverging-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 120.92725pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Overfull \vbox (3.13402pt too high) has occurred while \output is active []
+
+
+[85 <./class_v_s_t_test_1_1_r_g_rails_diverging-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_s_c_k_rails.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_s_c_k_rails.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3788 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_s_c_k_rails-eps-con
+verted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:39
+(epstopdf)                    size: 5720 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_s_c
+_k_rails-eps-converted-to.pdf class_g_r_e_b_test_1_1_s_c_k_rails.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf, id=4744, 501.875pt x 
+304.16637pt>
+File: class_g_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf Graphic file (typ
+e pdf)
+ <use class_g_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pd
+f used on input line 11.
+(pdftex.def)             Requested size: 93.89456pt x 56.9055pt.
+
+[86 <./class_g_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+) (./class_w_r_e_b_test_1_1_s_c_k_rails.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_s_c_k_rails.eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3788 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_s_c_k_rails-eps-con
 verted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:02
-(epstopdf)                    size: 5767 bytes
+(epstopdf)                    date: 2016-09-02 11:07:39
+(epstopdf)                    size: 5755 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_s_c
 _k_rails-eps-converted-to.pdf class_w_r_e_b_test_1_1_s_c_k_rails.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf, id=1541, 501.875pt x 
+<class_w_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf, id=4770, 501.875pt x 
 299.62943pt>
 File: class_w_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf Graphic file (typ
 e pdf)
@@ -1838,6 +3293,7 @@ Package pdftex.def Info: class_w_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pd
 f used on input line 11.
 (pdftex.def)             Requested size: 95.31128pt x 56.9055pt.
 
+[87]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
@@ -1854,15 +3310,140 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 39.
 
-[32 <./class_w_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf>])
+[88 <./class_w_r_e_b_test_1_1_s_c_k_rails-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_s_c_k_rails.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_s_c_k_rails.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3786 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_s_c_k_rails-eps-conve
+rted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:40
+(epstopdf)                    size: 5391 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_s_c_k
+_rails-eps-converted-to.pdf class_v_s_t_test_1_1_s_c_k_rails.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_s_c_k_rails-eps-converted-to.pdf, id=4803, 501.875pt x 32
+6.41951pt>
+File: class_v_s_t_test_1_1_s_c_k_rails-eps-converted-to.pdf Graphic file (type 
+pdf)
+ <use class_v_s_t_test_1_1_s_c_k_rails-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_s_c_k_rails-eps-converted-to.pdf 
+used on input line 11.
+(pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+[89 <./class_v_s_t_test_1_1_s_c_k_rails-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_s_c_k_rails_diverging.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_s_c_k_rails_divergi
+ng.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3806 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_s_c_k_rails_divergi
+ng-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:40
+(epstopdf)                    size: 6386 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_s_c
+_k_rails_diverging-eps-converted-to.pdf class_g_r_e_b_test_1_1_s_c_k_rails_dive
+rging.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf, id=4828, 50
+1.875pt x 214.70212pt>
+File: class_g_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf Graphic
+ file (type pdf)
+
+<use class_g_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_s_c_k_rails_diverging-eps-conve
+rted-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 133.01921pt x 56.9055pt.
+
+[90 <./class_g_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 7.19995pt on input line 87.
+[91]) (./class_v_s_t_test_1_1_s_c_k_rails_diverging.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_s_c_k_rails_diverging
+.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3804 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_s_c_k_rails_diverging
+-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:40
+(epstopdf)                    size: 6074 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_s_c_k
+_rails_diverging-eps-converted-to.pdf class_v_s_t_test_1_1_s_c_k_rails_divergin
+g.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf, id=4861, 501.
+875pt x 225.5627pt>
+File: class_v_s_t_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf Graphic f
+ile (type pdf)
+
+<use class_v_s_t_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_s_c_k_rails_diverging-eps-convert
+ed-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 126.60947pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 41.
+
+[92 <./class_v_s_t_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf>])
 (./class_w_r_e_b_test_1_1_s_c_k_rails_diverging.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_s_c_k_rails_divergi
 ng.eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3806 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_s_c_k_rails_divergi
 ng-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:02
+(epstopdf)                    date: 2016-09-02 11:07:41
 (epstopdf)                    size: 6340 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_s_c
 _k_rails_diverging-eps-converted-to.pdf class_w_r_e_b_test_1_1_s_c_k_rails_dive
@@ -1870,7 +3451,7 @@ rging.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf, id=1567, 50
+<class_w_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf, id=4887, 50
 1.875pt x 212.43365pt>
 File: class_w_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf Graphic
  file (type pdf)
@@ -1880,6 +3461,7 @@ Package pdftex.def Info: class_w_r_e_b_test_1_1_s_c_k_rails_diverging-eps-conve
 rted-to.pdf used on input line 11.
 (pdftex.def)             Requested size: 134.43593pt x 56.9055pt.
 
+[93 <./class_w_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 41.
@@ -1896,24 +3478,104 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 41.
 
-[33 <./class_w_r_e_b_test_1_1_s_c_k_rails_diverging-eps-converted-to.pdf>]
-LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 7.19995pt on input line 84.
-)
-(./class_w_r_e_b_test_1_1_summary.tex
+[94]) (./class_w_r_e_b_test_1_1_sequencer_toggling.tex
+Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_sequencer_toggling.
+eps>
+(epstopdf)                    date: 2016-09-02 11:05:56
+(epstopdf)                    size: 3806 bytes
+(epstopdf)             Output file: <class_w_r_e_b_test_1_1_sequencer_toggling-
+eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:41
+(epstopdf)                    size: 6018 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_seq
+uencer_toggling-eps-converted-to.pdf class_w_r_e_b_test_1_1_sequencer_toggling.
+eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_w_r_e_b_test_1_1_sequencer_toggling-eps-converted-to.pdf, id=4921, 501.8
+75pt x 210.20532pt>
+File: class_w_r_e_b_test_1_1_sequencer_toggling-eps-converted-to.pdf Graphic fi
+le (type pdf)
+
+<use class_w_r_e_b_test_1_1_sequencer_toggling-eps-converted-to.pdf>
+Package pdftex.def Info: class_w_r_e_b_test_1_1_sequencer_toggling-eps-converte
+d-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 135.86032pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 39.
+
+
+Overfull \vbox (11.03639pt too high) has occurred while \output is active []
+
+
+[95 <./class_w_r_e_b_test_1_1_sequencer_toggling-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_summary.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_summary.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3786 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_summary-eps-convert
+ed-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:42
+(epstopdf)                    size: 5839 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_sum
+mary-eps-converted-to.pdf class_g_r_e_b_test_1_1_summary.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_summary-eps-converted-to.pdf, id=4947, 501.875pt x 304.
+16637pt>
+File: class_g_r_e_b_test_1_1_summary-eps-converted-to.pdf Graphic file (type pd
+f)
+ <use class_g_r_e_b_test_1_1_summary-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_summary-eps-converted-to.pdf us
+ed on input line 11.
+(pdftex.def)             Requested size: 93.89456pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+) (./class_w_r_e_b_test_1_1_summary.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_summary.eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3786 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_summary-eps-convert
 ed-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:03
+(epstopdf)                    date: 2016-09-02 11:07:42
 (epstopdf)                    size: 5890 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_sum
 mary-eps-converted-to.pdf class_w_r_e_b_test_1_1_summary.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_summary-eps-converted-to.pdf, id=1593, 501.875pt x 299.
+<class_w_r_e_b_test_1_1_summary-eps-converted-to.pdf, id=4952, 501.875pt x 299.
 62943pt>
 File: class_w_r_e_b_test_1_1_summary-eps-converted-to.pdf Graphic file (type pd
 f)
@@ -1921,7 +3583,7 @@ f)
 Package pdftex.def Info: class_w_r_e_b_test_1_1_summary-eps-converted-to.pdf us
 ed on input line 11.
 (pdftex.def)             Requested size: 95.31128pt x 56.9055pt.
- [34 <./class_w_r_e_b_test_1_1_summary-eps-converted-to.pdf>]
+ [96 <./class_g_r_e_b_test_1_1_summary-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 33.
@@ -1938,14 +3600,137 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 33.
 
-) (./class_w_r_e_b_test_1_1_temperature_logging.tex
+) (./class_v_s_t_test_1_1_summary.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_summary.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3784 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_summary-eps-converted
+-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:43
+(epstopdf)                    size: 5384 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_summa
+ry-eps-converted-to.pdf class_v_s_t_test_1_1_summary.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_summary-eps-converted-to.pdf, id=4971, 501.875pt x 326.41
+951pt>
+File: class_v_s_t_test_1_1_summary-eps-converted-to.pdf Graphic file (type pdf)
+
+ <use class_v_s_t_test_1_1_summary-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_summary-eps-converted-to.pdf used
+ on input line 11.
+(pdftex.def)             Requested size: 87.49248pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 33.
+
+[97 <./class_w_r_e_b_test_1_1_summary-eps-converted-to.pdf> <./class_v_s_t_test
+_1_1_summary-eps-converted-to.pdf>])
+(./class_v_s_t_test_1_1_temperature_logging.tex
+Package epstopdf Info: Source file: <class_v_s_t_test_1_1_temperature_logging.e
+ps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3806 bytes
+(epstopdf)             Output file: <class_v_s_t_test_1_1_temperature_logging-e
+ps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:44
+(epstopdf)                    size: 5852 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_v_s_t_test_1_1_tempe
+rature_logging-eps-converted-to.pdf class_v_s_t_test_1_1_temperature_logging.ep
+s>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_v_s_t_test_1_1_temperature_logging-eps-converted-to.pdf, id=4995, 501.87
+5pt x 214.70212pt>
+File: class_v_s_t_test_1_1_temperature_logging-eps-converted-to.pdf Graphic fil
+e (type pdf)
+
+<use class_v_s_t_test_1_1_temperature_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_v_s_t_test_1_1_temperature_logging-eps-converted
+-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 133.01921pt x 56.9055pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+[98 <./class_v_s_t_test_1_1_temperature_logging-eps-converted-to.pdf>])
+(./class_g_r_e_b_test_1_1_temperature_logging.tex
+Package epstopdf Info: Source file: <class_g_r_e_b_test_1_1_temperature_logging
+.eps>
+(epstopdf)                    date: 2016-09-02 11:05:55
+(epstopdf)                    size: 3808 bytes
+(epstopdf)             Output file: <class_g_r_e_b_test_1_1_temperature_logging
+-eps-converted-to.pdf>
+(epstopdf)                    date: 2016-09-02 11:07:44
+(epstopdf)                    size: 6186 bytes
+(epstopdf)             Command: <repstopdf --outfile=class_g_r_e_b_test_1_1_tem
+perature_logging-eps-converted-to.pdf class_g_r_e_b_test_1_1_temperature_loggin
+g.eps>
+(epstopdf)             \includegraphics on input line 11.
+Package epstopdf Info: Output file is already uptodate.
+
+<class_g_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf, id=5019, 501.
+875pt x 204.8453pt>
+File: class_g_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf Graphic f
+ile (type pdf)
+
+<use class_g_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf>
+Package pdftex.def Info: class_g_r_e_b_test_1_1_temperature_logging-eps-convert
+ed-to.pdf used on input line 11.
+(pdftex.def)             Requested size: 139.41362pt x 56.9055pt.
+ [99 <./class_g_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 40.
+
+[100]) (./class_w_r_e_b_test_1_1_temperature_logging.tex
 Package epstopdf Info: Source file: <class_w_r_e_b_test_1_1_temperature_logging
 .eps>
-(epstopdf)                    date: 2016-07-15 15:36:09
+(epstopdf)                    date: 2016-09-02 11:05:56
 (epstopdf)                    size: 3808 bytes
 (epstopdf)             Output file: <class_w_r_e_b_test_1_1_temperature_logging
 -eps-converted-to.pdf>
-(epstopdf)                    date: 2016-07-15 15:38:03
+(epstopdf)                    date: 2016-09-02 11:07:45
 (epstopdf)                    size: 6128 bytes
 (epstopdf)             Command: <repstopdf --outfile=class_w_r_e_b_test_1_1_tem
 perature_logging-eps-converted-to.pdf class_w_r_e_b_test_1_1_temperature_loggin
@@ -1953,7 +3738,7 @@ g.eps>
 (epstopdf)             \includegraphics on input line 11.
 Package epstopdf Info: Output file is already uptodate.
 
-<class_w_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf, id=1610, 501.
+<class_w_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf, id=5054, 501.
 875pt x 202.77757pt>
 File: class_w_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf Graphic f
 ile (type pdf)
@@ -1979,69 +3764,112 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 40.
 
-[35 <./class_w_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf>])
-[36]
-Chapter 6.
-(./_w_r_e_b_test_8py.tex [37
 
-] [38]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [101 <./class_w_r_e_b_test_1_1_temperature_logging-eps-converted-to.pdf>]) [10
+2]
+Chapter 6.
+(./_g_r_e_b_test_8py.tex [103
+
+] [104]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 104.
+(hyperref)                removing `subscript' on input line 111.
 
 
-Overfull \hbox (3.9776pt too wide) in paragraph at lines 115--115
+Overfull \hbox (3.9776pt too wide) in paragraph at lines 122--122
 []\T1/phv/m/sl/10 type[] 
  []
 
 
-Underfull \hbox (badness 10000) detected at line 116
+Underfull \hbox (badness 10000) detected at line 123
 [][][]
  []
 
-[39]
-Underfull \hbox (badness 10000) detected at line 224
+[105]
+Underfull \vbox (badness 1590) has occurred while \output is active []
+
+ [106]
+Underfull \hbox (badness 10000) detected at line 279
 [][][]
  []
 
-) (./_w_r_e_b_test_p_d_f_gen_8py.tex [40]) [41] [42
+) (./pdf_gen_w_r_e_b_8py.tex [107]) (./_v_s_t_test_8py.tex [108] [109]
 
-] (./refman.ind [43
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 109.
 
 
-]
-[44] [45
+Overfull \hbox (3.9776pt too wide) in paragraph at lines 120--120
+[]\T1/phv/m/sl/10 type[] 
+ []
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 182.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 182.
- (./refman.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 182.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 182.
+
+Underfull \hbox (badness 10000) detected at line 121
+[][][]
+ []
+
+[110]
+Overfull \vbox (16.86304pt too high) has occurred while \output is active []
+
+
+[111]
+Underfull \hbox (badness 10000) detected at line 277
+[][][]
+ []
+
+) (./_w_r_e_b_test_8py.tex [112] [113]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 139.
+
+
+Overfull \hbox (3.9776pt too wide) in paragraph at lines 150--150
+[]\T1/phv/m/sl/10 type[] 
+ []
+
+[114]
+Underfull \hbox (badness 10000) detected at line 151
+[][][]
+ []
+
+[115]
+Underfull \hbox (badness 10000) detected at line 303
+[][][]
+ []
+
+[116]) [117] [118
+
+] (./refman.ind [119
+
+
+] [120] [121] [122] [123] [124] [125])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 230.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 230.
+
+(./refman.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 230.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 230.
 Package rerunfilecheck Info: File `refman.out' has not changed.
-(rerunfilecheck)             Checksum: 5D133878CEB3EE1B50C6766DEAD999AF;43970.
+(rerunfilecheck)             Checksum: 860A66130217CA66CE2DEB27605E63E8;138960.
+
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 182.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 230.
  ) 
 Here is how much of TeX's memory you used:
- 15578 strings out of 493089
- 238643 string characters out of 6134842
- 340647 words of memory out of 5000000
- 18311 multiletter control sequences out of 15000+600000
- 65665 words of font info for 70 fonts, out of 8000000 for 9000
+ 17528 strings out of 493089
+ 305041 string characters out of 6134842
+ 377791 words of memory out of 5000000
+ 19227 multiletter control sequences out of 15000+600000
+ 65987 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,16n,92p,1595b,633s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{_w_r_e_b_test_p_d_f_gen_8py_acd43e3fb768bba155474
-a50165c7e259} has been referenced but does not exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{_w_r_e_b_test_p_d_f_gen_8py_af064bd7841d8de40221ffc
-860bf594ff} has been referenced but does not exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{_w_r_e_b_test_8py_a49d73de2edbd5f06016c586eeaea0280
-} has been referenced but does not exist, replaced by a fixed one
+ 53i,16n,92p,1834b,633s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{_w_r_e_b_test_8py_a49d73de2edbd5f06016c586eeaea02
+80} has been referenced but does not exist, replaced by a fixed one
 
 pdfTeX warning (dest): name{_w_r_e_b_test_8py_ad2a0aa10dfce2ada829ac903539e5075
 } has been referenced but does not exist, replaced by a fixed one
@@ -2055,25 +3883,96 @@ pdfTeX warning (dest): name{_w_r_e_b_test_8py_a16558115ec6d6bb08bf67247f28ea9d7
 pdfTeX warning (dest): name{_w_r_e_b_test_8py_a0806fdf61e3889ec1967d3c834800adb
 } has been referenced but does not exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{_w_r_e_b_test_8py_a89da8741c281e720d74c25973130f9a3
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_w_r_e_b_test_8py_a41336a62ef3706e77de2da37e7a61b80
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_w_r_e_b_test_8py_adbfa8ad5a4a0a82ff1d41cce4e52b1c2
+} has been referenced but does not exist, replaced by a fixed one
+
 pdfTeX warning (dest): name{_w_r_e_b_test_8py_abc7cd7c86faa6126711ebd4b5242f794
 } has been referenced but does not exist, replaced by a fixed one
 
 pdfTeX warning (dest): name{_w_r_e_b_test_8py_a6e2b3326b0377d9631605fe89e91c890
 } has been referenced but does not exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{_v_s_t_test_8py_ada35370cbdd39561b78c5ca075391467} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_ae7d8f44f78772a431a2614ab154e8593} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_a7a6792fbdc75535202e39e7978ad1623} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_a5413ae0e16f994b3595a4edad028683d} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_aabb8a82da8ff6a6e4a09bbb17dcd8408} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_a439549e49523fa511b2356f8eb8c1e91} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_a1ad006566463a5d75e4dde972d3d8f60} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_a1021fa383fbdfff9d7e40c19513323de} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_v_s_t_test_8py_a7b1e56693c6345af98cf374f091a3d7f} 
+has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{pdf_gen_w_r_e_b_8py_a24d1f1e4c1cddcdaebeb3485d3b41f
+99} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{pdf_gen_w_r_e_b_8py_a270c8c0ac6503ed499647f1c39ce6f
+e1} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_ab29b2f5e057f49780686a116b4d355a4
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_a5875b7a2175abed02107dd875af8f8e8
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_a857ce1a32ff8b00ef77f1bdb07cafdab
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_a2d3978558bba0268f73af9d39e98461a
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_af5f974982fb407ff13e0d2fec1f286cf
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_a23186adfdacbd28625e69443b001d464
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_af42ab82677b1cf6a9d5ed141b6e1fab9
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_a0f16d3dc9468970377761b6891824157
+} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{_g_r_e_b_test_8py_a8dfa3e06abd422eca4a305a24ffc0c14
+} has been referenced but does not exist, replaced by a fixed one
+
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
-live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texli
-ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive
-/2015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2015/te
-xmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2015/texmf-dis
-t/fonts/type1/urw/helvetic/uhvb8ac.pfb></usr/local/texlive/2015/texmf-dist/font
-s/type1/urw/helvetic/uhvbo8ac.pfb></usr/local/texlive/2015/texmf-dist/fonts/typ
-e1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/
-helvetic/uhvro8a.pfb>
-Output written on refman.pdf (53 pages, 257310 bytes).
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2015/texmf-dist/
+fonts/type1/urw/helvetic/uhvb8ac.pfb></usr/local/texlive/2015/texmf-dist/fonts/
+type1/urw/helvetic/uhvbo8ac.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1
+/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/he
+lvetic/uhvro8a.pfb>
+Output written on refman.pdf (147 pages, 646510 bytes).
 PDF statistics:
- 2072 PDF objects out of 2073 (max. 8388607)
- 1919 compressed objects within 20 object streams
- 445 named destinations out of 1000 (max. 500000)
- 1557 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6362 PDF objects out of 7423 (max. 8388607)
+ 5915 compressed objects within 60 object streams
+ 1383 named destinations out of 1440 (max. 500000)
+ 4843 words of extra memory for PDF output out of 10000 (max. 10000000)
 

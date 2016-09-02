@@ -20,7 +20,7 @@ def \hyperlink{class_w_r_e_b_test_1_1_r_g_rails_ad734ff3e10aac9d80365f55dc88f5ad
 \begin{DoxyCompactList}\small\item\em Run the test, save output to state variables. \end{DoxyCompactList}\item 
 def \hyperlink{class_w_r_e_b_test_1_1_r_g_rails_a7c0b9c673b50fdaa24e1911a0634adca}{summarize} (self, summary)
 \begin{DoxyCompactList}\small\item\em Summarize the test results for the cover page of the report. \end{DoxyCompactList}\item 
-def \hyperlink{class_w_r_e_b_test_1_1_r_g_rails_ab0a6494b3e2b87d70cd08aa8556743bd}{report} (self, pdf)
+def \hyperlink{class_w_r_e_b_test_1_1_r_g_rails_a7736f682d02c1200e55ec3e587556c54}{report} (self, pdf, report\+Path)
 \begin{DoxyCompactList}\small\item\em generate this test\textquotesingle{}s page in the P\+DF report. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -46,12 +46,13 @@ Initialize minimum required variables for test list.
 \subsection{Member Function Documentation}
 \index{W\+R\+E\+B\+Test\+::\+R\+G\+Rails@{W\+R\+E\+B\+Test\+::\+R\+G\+Rails}!report@{report}}
 \index{report@{report}!W\+R\+E\+B\+Test\+::\+R\+G\+Rails@{W\+R\+E\+B\+Test\+::\+R\+G\+Rails}}
-\subsubsection[{\texorpdfstring{report(self, pdf)}{report(self, pdf)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+R\+G\+Rails.\+report (
+\subsubsection[{\texorpdfstring{report(self, pdf, report\+Path)}{report(self, pdf, reportPath)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+R\+G\+Rails.\+report (
 \begin{DoxyParamCaption}
 \item[{}]{self, }
-\item[{}]{pdf}
+\item[{}]{pdf, }
+\item[{}]{report\+Path}
 \end{DoxyParamCaption}
-)}\hypertarget{class_w_r_e_b_test_1_1_r_g_rails_ab0a6494b3e2b87d70cd08aa8556743bd}{}\label{class_w_r_e_b_test_1_1_r_g_rails_ab0a6494b3e2b87d70cd08aa8556743bd}
+)}\hypertarget{class_w_r_e_b_test_1_1_r_g_rails_a7736f682d02c1200e55ec3e587556c54}{}\label{class_w_r_e_b_test_1_1_r_g_rails_a7736f682d02c1200e55ec3e587556c54}
 
 
 generate this test\textquotesingle{}s page in the P\+DF report. 
@@ -59,6 +60,8 @@ generate this test\textquotesingle{}s page in the P\+DF report.
 
 \begin{DoxyParams}{Parameters}
 {\em pdf} & pyfpdf-\/compatible P\+DF object. \\
+\hline
+{\em report\+Path} & Path of directory containing the pdf report \\
 \hline
 \end{DoxyParams}
 \index{W\+R\+E\+B\+Test\+::\+R\+G\+Rails@{W\+R\+E\+B\+Test\+::\+R\+G\+Rails}!run\+Test@{run\+Test}}

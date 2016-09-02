@@ -16,6 +16,8 @@ class \hyperlink{class_w_r_e_b_test_1_1_channel_test}{W\+R\+E\+B\+Test.\+Channel
 \begin{DoxyCompactList}\small\item\em Tests number of communicable channels available to the board. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_a_s_p_i_ccomms_test}{W\+R\+E\+B\+Test.\+A\+S\+P\+I\+Ccomms\+Test}
 \begin{DoxyCompactList}\small\item\em Tests that the board can communicate with the A\+S\+P\+I\+CS. \end{DoxyCompactList}\item 
+class \hyperlink{class_w_r_e_b_test_1_1_sequencer_toggling}{W\+R\+E\+B\+Test.\+Sequencer\+Toggling}
+\begin{DoxyCompactList}\small\item\em Toggles the sequencer outputs for the P\+C\+K/\+S\+C\+K/\+RG rails systems, switching the polarity. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_c_s_gate}{W\+R\+E\+B\+Test.\+C\+S\+Gate}
 \begin{DoxyCompactList}\small\item\em Tests the current source gate. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_p_c_k_rails}{W\+R\+E\+B\+Test.\+P\+C\+K\+Rails}
@@ -38,8 +40,12 @@ class \hyperlink{class_w_r_e_b_test_1_1_r_d_bias}{W\+R\+E\+B\+Test.\+R\+D\+Bias}
 \begin{DoxyCompactList}\small\item\em Tests the reset drain performance. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_temperature_logging}{W\+R\+E\+B\+Test.\+Temperature\+Logging}
 \begin{DoxyCompactList}\small\item\em Requests temperature logs for W\+R\+E\+B.\+Temp(1-\/6) and C\+CD since the test started from the board\textquotesingle{}s database. \end{DoxyCompactList}\item 
+class \hyperlink{class_w_r_e_b_test_1_1_parameter_logging}{W\+R\+E\+B\+Test.\+Parameter\+Logging}
+\begin{DoxyCompactList}\small\item\em Periodically records specified values over the course of the testing sequence. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_a_s_p_i_c_noise}{W\+R\+E\+B\+Test.\+A\+S\+P\+I\+C\+Noise}
 \begin{DoxyCompactList}\small\item\em Measure noise distribution in A\+S\+P\+I\+Cs for the unclamped, clamped, and reset cases. \end{DoxyCompactList}\item 
+class \hyperlink{class_w_r_e_b_test_1_1_a_s_p_i_c_logging}{W\+R\+E\+B\+Test.\+A\+S\+P\+I\+C\+Logging}
+\begin{DoxyCompactList}\small\item\em Continuously measure noise distribution in A\+S\+P\+I\+Cs. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_summary}{W\+R\+E\+B\+Test.\+Summary}
 \begin{DoxyCompactList}\small\item\em \hyperlink{class_w_r_e_b_test_1_1_summary}{Summary} object containing the needed information for the cover page. \end{DoxyCompactList}\item 
 class \hyperlink{class_w_r_e_b_test_1_1_functional_test}{W\+R\+E\+B\+Test.\+Functional\+Test}
@@ -53,6 +59,12 @@ def \hyperlink{_w_r_e_b_test_8py_a6e2b3326b0377d9631605fe89e91c890}{W\+R\+E\+B\+
 \begin{DoxyCompactList}\small\item\em Reset the board settings for use in between tests. \end{DoxyCompactList}\item 
 def \hyperlink{_w_r_e_b_test_8py_abc7cd7c86faa6126711ebd4b5242f794}{W\+R\+E\+B\+Test.\+exit\+Script} ()
 \begin{DoxyCompactList}\small\item\em Reset settings and exit. \end{DoxyCompactList}\item 
+def \hyperlink{_w_r_e_b_test_8py_adbfa8ad5a4a0a82ff1d41cce4e52b1c2}{W\+R\+E\+B\+Test.\+step\+Range} (start, end, step)
+\begin{DoxyCompactList}\small\item\em Generate a range object that can take non-\/integer steps. \end{DoxyCompactList}\item 
+def \hyperlink{_w_r_e_b_test_8py_a41336a62ef3706e77de2da37e7a61b80}{W\+R\+E\+B\+Test.\+volts\+To\+D\+AC} (volt, Rfb, Rin)
+\begin{DoxyCompactList}\small\item\em Generate a D\+AC code to correspond to a desired voltage. \end{DoxyCompactList}\item 
+def \hyperlink{_w_r_e_b_test_8py_a89da8741c281e720d74c25973130f9a3}{W\+R\+E\+B\+Test.\+volts\+To\+Shifted\+D\+AC} (volt, shvolt, Rfb, Rin)
+\begin{DoxyCompactList}\small\item\em Generate a shifted D\+AC code to correspond to a desired voltage in a rail system. \end{DoxyCompactList}\item 
 def \hyperlink{_w_r_e_b_test_8py_a0806fdf61e3889ec1967d3c834800adb}{W\+R\+E\+B\+Test.\+volts\+To\+Rail\+D\+AC} (V, rf, ri)
 \begin{DoxyCompactList}\small\item\em Given a voltage, return a pair of voltage, shift D\+AC values. \end{DoxyCompactList}\item 
 def \hyperlink{_w_r_e_b_test_8py_a16558115ec6d6bb08bf67247f28ea9d7}{W\+R\+E\+B\+Test.\+set\+R\+G\+Rail\+Voltage} (lowV, highV, rf=49.\+9, ri=20.\+0)
@@ -75,13 +87,36 @@ External dependencies\+:
 \item astropy
 \item numpy
 \item matplotlib
+\item Unix Dialogs installation (for G\+UI, optional)
+\end{DoxyItemize}
+
+To run\+:
+\begin{DoxyItemize}
+\item \char`\"{}python R\+E\+B\+Test.\+py \mbox{[}options\mbox{]}\char`\"{} Initial crashing yielding a Value\+Error is likely due to a cr\+Run or Jython\+Console crashing or not being loaded.
+\end{DoxyItemize}
+
+Tests are structured as classes with four required methods\+:
+\begin{DoxyItemize}
+\item {\bfseries init} sets initial variables; minimum required variables are self.\+title and self.\+status.
+\item run\+Test is the body of the tests, running the code to execute the tests and storing the results to state variables.
+\item summarize writes summary information to the summary object passed to it; this is used in generating the cover page.
+\item report writes the portion of the pdf report that the test is responsible for. Tests are executed from a list of test objects defined in Functional\+Test().
+\end{DoxyItemize}
+
+This program communicates directly with the Jython interpreter to manipulate the board, so it does not need to be loaded into the Jython exectuor.
+
+External dependencies\+:
+\begin{DoxyItemize}
+\item astropy
+\item numpy
+\item matplotlib
+\item Unix Dialogs installation (for G\+UI, optional)
 \end{DoxyItemize}
 
 To run\+:
 \begin{DoxyItemize}
 \item Ensure Jython console is running (./\+Jython\+Console or the bootstrapper program)
-\item Ensure cr\+Run.\+sh is running
-\item Ensure D\+A\+Cs are loaded in the C\+CS console
+\item Ensure reb\+Run.\+sh w is running
 \item \char`\"{}python W\+R\+E\+B\+Test.\+py \mbox{[}options\mbox{]}\char`\"{} Initial crashing yielding a Value\+Error is likely due to a cr\+Run or Jython\+Console crashing or not being loaded.
 \end{DoxyItemize}
 
@@ -199,6 +234,50 @@ Set the voltage for the S\+CK rail system.
 {\em ri} & Optional op-\/amp Ri, defaults to 20.\+0 Ohm. \\
 \hline
 \end{DoxyParams}
+\index{W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}!step\+Range@{step\+Range}}
+\index{step\+Range@{step\+Range}!W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}}
+\subsubsection[{\texorpdfstring{step\+Range(start, end, step)}{stepRange(start, end, step)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+step\+Range (
+\begin{DoxyParamCaption}
+\item[{}]{start, }
+\item[{}]{end, }
+\item[{}]{step}
+\end{DoxyParamCaption}
+)}\hypertarget{_w_r_e_b_test_8py_file_adbfa8ad5a4a0a82ff1d41cce4e52b1c2}{}\label{_w_r_e_b_test_8py_file_adbfa8ad5a4a0a82ff1d41cce4e52b1c2}
+
+
+Generate a range object that can take non-\/integer steps. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & Starting value \\
+\hline
+{\em end} & Ending value \\
+\hline
+{\em step} & Step size \\
+\hline
+\end{DoxyParams}
+\index{W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}!volts\+To\+D\+AC@{volts\+To\+D\+AC}}
+\index{volts\+To\+D\+AC@{volts\+To\+D\+AC}!W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}}
+\subsubsection[{\texorpdfstring{volts\+To\+D\+A\+C(volt, Rfb, Rin)}{voltsToDAC(volt, Rfb, Rin)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+volts\+To\+D\+AC (
+\begin{DoxyParamCaption}
+\item[{}]{volt, }
+\item[{}]{Rfb, }
+\item[{}]{Rin}
+\end{DoxyParamCaption}
+)}\hypertarget{_w_r_e_b_test_8py_file_a41336a62ef3706e77de2da37e7a61b80}{}\label{_w_r_e_b_test_8py_file_a41336a62ef3706e77de2da37e7a61b80}
+
+
+Generate a D\+AC code to correspond to a desired voltage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em volt} & Desired voltage level \\
+\hline
+{\em Rfb} & Op-\/amp Rf \\
+\hline
+{\em Rin} & Op-\/amp Ri \\
+\hline
+\end{DoxyParams}
 \index{W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}!volts\+To\+Rail\+D\+AC@{volts\+To\+Rail\+D\+AC}}
 \index{volts\+To\+Rail\+D\+AC@{volts\+To\+Rail\+D\+AC}!W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}}
 \subsubsection[{\texorpdfstring{volts\+To\+Rail\+D\+A\+C(\+V, rf, ri)}{voltsToRailDAC(V, rf, ri)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+volts\+To\+Rail\+D\+AC (
@@ -224,3 +303,28 @@ Given a voltage, return a pair of voltage, shift D\+AC values.
 \begin{DoxyReturn}{Returns}
 (voltage, shift voltage) 
 \end{DoxyReturn}
+\index{W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}!volts\+To\+Shifted\+D\+AC@{volts\+To\+Shifted\+D\+AC}}
+\index{volts\+To\+Shifted\+D\+AC@{volts\+To\+Shifted\+D\+AC}!W\+R\+E\+B\+Test.\+py@{W\+R\+E\+B\+Test.\+py}}
+\subsubsection[{\texorpdfstring{volts\+To\+Shifted\+D\+A\+C(volt, shvolt, Rfb, Rin)}{voltsToShiftedDAC(volt, shvolt, Rfb, Rin)}}]{\setlength{\rightskip}{0pt plus 5cm}def W\+R\+E\+B\+Test.\+volts\+To\+Shifted\+D\+AC (
+\begin{DoxyParamCaption}
+\item[{}]{volt, }
+\item[{}]{shvolt, }
+\item[{}]{Rfb, }
+\item[{}]{Rin}
+\end{DoxyParamCaption}
+)}\hypertarget{_w_r_e_b_test_8py_file_a89da8741c281e720d74c25973130f9a3}{}\label{_w_r_e_b_test_8py_file_a89da8741c281e720d74c25973130f9a3}
+
+
+Generate a shifted D\+AC code to correspond to a desired voltage in a rail system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em volt} & Desired voltage level \\
+\hline
+{\em shvolt} & Shifted voltage level \\
+\hline
+{\em Rfb} & Op-\/amp Rf \\
+\hline
+{\em Rin} & Op-\/amp Ri \\
+\hline
+\end{DoxyParams}

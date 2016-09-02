@@ -107,7 +107,7 @@ class BoardSelect(object):
         ret, tag = self.d.menu(infoString, title = "Select readout board type:",
                                choices = [("1", "WREB (1 stripe)"),
                                           ("2", "GREB (2 stripe)"),
-                                          ("3", "VST (3 stripe)"),
+                                          ("3", "VST  (3 stripe)"),
                                           ("4", "Cancel")])
 
         if ret == self.d.CANCEL or ret == self.d.ESC or tag == "4":
