@@ -40,7 +40,7 @@ from pdfGenWREB import *
 from threading import Thread
 from datetime import datetime
 
-from Libraries.FastProgressBar import progressbar
+# from Libraries.FastProgressBar import progressbar
 from Libraries.PythonBinding import *
 from Libraries.dialog import Dialog
 

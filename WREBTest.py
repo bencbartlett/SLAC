@@ -42,7 +42,7 @@ from pdfGenWREB import *
 from threading import Thread
 from datetime import datetime
 
-from Libraries.FastProgressBar import progressbar
+# from Libraries.FastProgressBar import progressbar
 from Libraries.PythonBinding import *
 from Libraries.dialog import Dialog
 
@@ -298,8 +298,8 @@ class ChannelTest(object):
         self.channels = jy.get('raftsub.synchCommandLine(1000,"getChannelNames").getResult()', dtype = 'str')
         self.channels = self.channels.replace("[", "").replace("]", "").replace("\n", "")
         self.channels = self.channels.split(", ")  # Channels is now a list of strings representing channel names
-        pbar = progressbar("Channel Comms Test, &count&: ", len(self.channels))
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("Channel Comms Test, &count&: ", len(self.channels))
+        # if not verbose and noGUI: pbar.start()
         # Primitive pass metric: test if channel list has all channels in it
         self.passed = "PASS"
         if len(self.channels) != numChannels:
@@ -311,8 +311,8 @@ class ChannelTest(object):
             printv("Channel: {0:>10}  Value: {1:6.3f}".format(channel, val))
             self.vals.append(val)
             self.status = int(-100 * float(count) / len(self.channels))
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.stats = "%i/%i channels missing." % (numChannels - len(self.channels), numChannels)
         self.status = self.passed
 
@@ -514,8 +514,8 @@ class CSGate(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("CS Gate Test, &count&: ", 21)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("CS Gate Test, &count&: ", 21)
+        # if not verbose and noGUI: pbar.start()
         # Arrays for report
         CSGV_arr = []
         WREB_OD_I_arr = []
@@ -534,8 +534,8 @@ class CSGate(object):
             WREB_OD_I_arr.append(WREB_OD_I)
             WREB_ODPS_I_arr.append(WREB_ODPS_I)
             self.status = int(-100 * float(CSGV) / 5.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         # Return to report generator
         self.data = ((CSGV_arr, "CSGV (V)"), (WREB_OD_I_arr, "WREB.OD_I (mA)"), (WREB_ODPS_I_arr, "WREB.ODPS_I (mA)"))
         # TODO: Implement pass/stats metric: linear scaling of currents with increased voltage
@@ -572,8 +572,8 @@ class PCKRails(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("PCK Rails Test, &count&: ", 31)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("PCK Rails Test, &count&: ", 31)
+        # if not verbose and noGUI: pbar.start()
         printv("\nrail voltage generation for PCLK test ")
         PCLKDV = 5  # delta voltage between lower and upper
         PCLKLshV = -8.0  # sets the offset shift to -8V on the lower
@@ -611,8 +611,8 @@ class PCKRails(object):
             deltaPCLKLV_arr.append(PCLKLV - WREB_CKPSH_V)
             deltaPCLKUV_arr.append(PCLKUV - WREB_DphiPS_V)
             self.status = int(-100 * float(PCLKLV - PCLKLshV) / 15.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((PCLKLV_arr, "PCLKLV (V)"),
                      (PCLKUV_arr, "PCLKUV (V)"),
                      (WREB_CKPSH_V_arr, "WREB.CKPSH_V (V)"),
@@ -675,8 +675,8 @@ class SCKRails(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("SCK Rails Test, &count&: ", 25)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("SCK Rails Test, &count&: ", 25)
+        # if not verbose and noGUI: pbar.start()
         printv("\nrail voltage generation for SCLK test ")
         sclkDV = 5  # delta voltage between lower and upper
         SCLKLshV = -8.5  # sets the offset shift to -8V on the lower
@@ -704,8 +704,8 @@ class SCKRails(object):
             deltasclkLV_arr.append(sclkLV - WREB_SCKL_V)
             deltasclkUV_arr.append(sclkUV - WREB_SCKU_V)
             self.status = int(-100 * float(sclkLV - SCLKLshV) / 12.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((sclkLV_arr, "sclkLV (V)"),
                      (sclkUV_arr, "sclkUV (V)"),
                      (WREB_SCKL_V_arr, "WREB.SCKL_V (V)"),
@@ -777,8 +777,8 @@ class SCKRailsDiverging(object):
         '''Diverging SCK Rails test. Amplitude is half-wave maximum divergence,
         startV is initial voltage to start LV=UV diverging from.'''
         step = 0.5
-        pbar = progressbar("Diverging SCK Rails Test, &count&: ", self.amplitude / step + 1)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("Diverging SCK Rails Test, &count&: ", self.amplitude / step + 1)
+        # if not verbose and noGUI: pbar.start()
         printv("\nDiverging rail voltage generation for SCLK test ")
         time.sleep(tsoak)
         # Report arrays
@@ -809,8 +809,8 @@ class SCKRailsDiverging(object):
             deltasclkUV_arr.append(sclkUV - WREB_SCKU_V)
             ClkHPS_I_arr.append(ClkHPS_I)
             self.status = int(-100 * float(sclkDV) / self.amplitude)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((sclkLV_arr, "sclkLV (V)"),
                      (sclkUV_arr, "sclkUV (V)"),
                      (WREB_SCKL_V_arr, "WREB.SCKL_V (V)"),
@@ -893,8 +893,8 @@ class RGRails(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("RG Rails Test, &count&: ", 25)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("RG Rails Test, &count&: ", 25)
+        # if not verbose and noGUI: pbar.start()
         printv("\nrail voltage generation for RG test ")
         RGDV = 5  # delta voltage between lower and upper
         RGLshV = -8.5  # sets the offset shift to -8.5V on the lower
@@ -924,8 +924,8 @@ class RGRails(object):
             deltaRGLV_arr.append(RGLV - WREB_RGL_V)
             deltaRGUV_arr.append(RGUV - WREB_RGU_V)
             self.status = int(-100 * float(RGLV - RGLshV) / 12.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((RGLV_arr, "RGLV (V)"),
                      (RGUV_arr, "RGUV (V)"),
                      (WREB_RGL_V_arr, "WREB.RGL_V (V)"),
@@ -995,8 +995,8 @@ class RGRailsDiverging(object):
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
         step = 0.5
-        pbar = progressbar("Diverging RG Rails Test, &count&: ", self.amplitude / step + 1)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("Diverging RG Rails Test, &count&: ", self.amplitude / step + 1)
+        # if not verbose and noGUI: pbar.start()
         printv("\nDiverging rail voltage generation for RG test ")
         # Report arrays
         RGLV_arr = []
@@ -1024,8 +1024,8 @@ class RGRailsDiverging(object):
             deltaRGUV_arr.append(RGUV - WREB_RGU_V)
             ClkHPS_I_arr.append(ClkHPS_I)
             self.status = int(-100 * float(RGDV) / self.amplitude)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((RGLV_arr, "RGLV (V)"),
                      (RGUV_arr, "RGUV (V)"),
                      (WREB_RGL_V_arr, "WREB.RGL_V (V)"),
@@ -1108,8 +1108,8 @@ class OGBias(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("OG Bias Test, &count&: ", 21)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("OG Bias Test, &count&: ", 21)
+        # if not verbose and noGUI: pbar.start()
         printv("\nCCD bias OG voltage test ")
         OGshV = -5.0  # #sets the offset shift to -5V
         OGshDAC = voltsToDAC(OGshV, 10, 10)
@@ -1134,8 +1134,8 @@ class OGBias(object):
             WREB_OG_V_arr.append(WREB_OG_V)
             deltaOGV_arr.append(OGV - WREB_OG_V)
             self.status = int(-100 * float(OGV - OGshV) / 10.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((OGV_arr, "VOG (V)"),
                      (WREB_OG_V_arr, "WREB.OG_V (V)"))
         self.residuals = ((deltaOGV_arr, "deltaVOG (V)"),)
@@ -1191,8 +1191,8 @@ class ODBias(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("OD Bias Test, &count&: ", 21)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("OD Bias Test, &count&: ", 21)
+        # if not verbose and noGUI: pbar.start()
         printv("\nCCD bias OD voltage test ")
         printv("VOD[V]   VOD_DACval[ADU]   WREB.OD[V]")
         ODV_arr = []
@@ -1212,8 +1212,8 @@ class ODBias(object):
             WREB_OD_V_arr.append(WREB_OD_V)
             deltaODV_arr.append(ODV - WREB_OD_V)
             self.status = int(-100 * float(ODV - 0.0) / 30.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((ODV_arr, "VOD (V)"),
                      (WREB_OD_V_arr, "WREB.OD_V (V)"))
         self.residuals = ((deltaODV_arr, "deltaVOD (V)"),)
@@ -1270,8 +1270,8 @@ class GDBias(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("GD Bias Test, &count&: ", 21)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("GD Bias Test, &count&: ", 21)
+        # if not verbose and noGUI: pbar.start()
         printv("\nCCD bias GD voltage test ")
         printv("VGD[V]   VGD_DACval[ADU]   WREB.GD[V]")
         GDV_arr = []
@@ -1291,8 +1291,8 @@ class GDBias(object):
             WREB_GD_V_arr.append(WREB_GD_V)
             deltaGDV_arr.append(GDV - WREB_GD_V)
             self.status = int(-100 * float(GDV - 0.0) / 30.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((GDV_arr, "VGD (V)"),
                      (WREB_GD_V_arr, "WREB.GD_V (V)"))
         self.residuals = ((deltaGDV_arr, "deltaVGD (V)"),)
@@ -1349,8 +1349,8 @@ class RDBias(object):
 
     def runTest(self):
         '''@brief Run the test, save output to state variables.'''
-        pbar = progressbar("RD Bias Test, &count&: ", 21)
-        if not verbose and noGUI: pbar.start()
+        # pbar = progressbar("RD Bias Test, &count&: ", 21)
+        # if not verbose and noGUI: pbar.start()
         printv("\nCCD bias RD voltage test ")
         printv("VRD[V]   VRD_DACval[ADU]   WREB.RD[V]")
         RDV_arr = []
@@ -1370,8 +1370,8 @@ class RDBias(object):
             WREB_RD_V_arr.append(WREB_RD_V)
             deltaRDV_arr.append(RDV - WREB_RD_V)
             self.status = int(-100 * float(RDV - 0.0) / 30.0)
-            if not verbose and noGUI: pbar.inc()
-        if not verbose and noGUI: pbar.finish()
+        #     if not verbose and noGUI: pbar.inc()
+        # if not verbose and noGUI: pbar.finish()
         self.data = ((RDV_arr, "VRD (V)"),
                      (WREB_RD_V_arr, "WREB.RD_V (V)"))
         self.residuals = ((deltaRDV_arr, "deltaVRD (V)"),)
