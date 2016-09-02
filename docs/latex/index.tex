@@ -1,0 +1,76 @@
+\subsection*{\href{https://bencbartlett.github.io/SLAC/}{\tt Documentation}}
+
+\subsection*{Introduction}
+
+This is the testing suite for the readout electronics boards for the L\+S\+ST C\+CD interface, designed to verify that the boards are defect-\/free and operating as expected. Note that this program communicates directly with the Jython interpreter to manipulate the board, so it does not need to be loaded into the Jython exectuor and can be run directly from the terminal with python.
+
+\subsubsection*{Test versions}
+
+There are three separate versions of this test to cover the three types of readout boards\+:
+\begin{DoxyEnumerate}
+\item \hyperlink{_w_r_e_b_test_8py}{W\+R\+E\+B\+Test.\+py}\+: for the single-\/stripe corner raft board (W\+R\+EB)
+\item \hyperlink{_g_r_e_b_test_8py}{G\+R\+E\+B\+Test.\+py}\+: for the double-\/stripe guider board (G\+R\+EB)
+\item \hyperlink{_v_s_t_test_8py}{V\+S\+T\+Test.\+py}\+: for the triple-\/stripe science raft board (V\+ST)
+\end{DoxyEnumerate}
+
+Presently, the W\+R\+EB test is fully functional and a board (SN\+:03) passes all applicable tests. The V\+ST test is also fully functional, though there are some minor gain errors possibly due to invalid resistor values that prevent boards we have tested from being able to pass all tests. The G\+R\+E\+B\+Test is not fully functional, as the C\+CS system for it was still being developed at the conclusion of my time working on this project, though I have mostly adapted the code to work once the C\+CS is fully implemented for it.
+
+\subsection*{External dependencies}
+
+All external dependencies are contained within Anaconda\+:
+\begin{DoxyItemize}
+\item astropy
+\item numpy
+\item matplotlib
+\end{DoxyItemize}
+
+Additionally, the program requires a U\+N\+IX dialogs-\/like executable for the G\+UI to be run (default), which is installed by default on most Linux systems, including R\+H\+E\+L6.
+
+\subsection*{Running the testing suite}
+
+
+\begin{DoxyItemize}
+\item Ensure Jython console is running (./\+Jython\+Console or the C\+CS bootstrapper program)
+\item Ensure {\ttfamily reb\+Run.\+sh} is running with the approprate argument ({\ttfamily w} for W\+R\+EB, {\ttfamily g} for G\+R\+EB, {\ttfamily 4} for V\+ST)
+\item {\ttfamily python (W\+R\+E\+B/\+G\+R\+E\+B/\+V\+ST)Test.\+py \mbox{[}options\mbox{]}} Initial crashing yielding a {\ttfamily Value\+Error} is likely due to a {\ttfamily reb\+Run.\+sh} or {\ttfamily Jython\+Console} crashing or not being loaded.
+\end{DoxyItemize}
+
+\subsection*{Subtests}
+
+\subsubsection*{Test structure}
+
+Individual tests are structured as classes with four required methods\+:
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+\+\_\+init\+\_\+\+\_\+} sets initial variables; minimum required variables are {\ttfamily self.\+title} and {\ttfamily self.\+status}.
+\item {\ttfamily run\+Test} is the body of the tests, running the code to execute the tests and storing the results to state variables.
+\item {\ttfamily summarize} writes summary information to the summary object passed to it; this is used in generating the cover page.
+\item {\ttfamily report} writes the portion of the pdf report that the test is responsible for and dumps the raw data into the report directory structure if {\ttfamily -\/d} is called with the program.
+\end{DoxyItemize}
+
+\subsubsection*{List of subtests}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily Idle\+Current\+Consumption}\+: reads the idle current consumption across parts of the readout board. Pass metric\+: none
+\item {\ttfamily Channel\+Test}\+: obtains the list of comminicable channels. Pass metric\+: passes if number of channels is the expected value (must be updated, is not current in G\+R\+EB or V\+ST tests)
+\item {\ttfamily A\+S\+P\+I\+Ccomms\+Test}\+: tests that the readout board can communicate with the A\+S\+P\+I\+CS. Pass metric\+: passes if {\ttfamily $<$subsystem$>$ check\+Aspics} returns a list of zeros, indicating the ability to read and write from the A\+S\+P\+I\+C-\/associated registers
+\item {\ttfamily Sequencer\+Toggling} (W\+R\+EB test only)\+: toggles the sequencer outputs for the parallel clock, serial clock, and reset gate rails. Pass metric\+: none
+\item {\ttfamily C\+S\+Gate} (implemented on all tests, but only functional on W\+R\+EB test)\+: Tests the performance of the current source gate. Pass metric\+: not implemented
+\item {\ttfamily P\+C\+K\+Rails}\+: Scales the parallel clock rails over a range of voltages with a constant rail potential difference. Pass metric\+: upper and lower gain within R\+OI are close to 1 and fewer than N points are further than X from the expected value.
+\item {\ttfamily S\+C\+K\+Rails}\+: Scales the serial clock rails over a range of voltages with a constant rail potential difference. Pass metric\+: upper and lower gain within R\+OI are close to 1 and fewer than N points are further than X from the expected value.
+\item {\ttfamily S\+C\+K\+Rails\+Diverging}\+: Scales the serial clock rails over a range of voltages with an increasing rail potential difference. Pass metric\+: upper and lower gain within R\+OI are close to 1 and fewer than N points are further than X from the expected value.
+\item {\ttfamily R\+G\+Rails}\+: Scales the reset gate rails over a range of voltages with a constant rail potential difference. Pass metric\+: upper and lower gain within R\+OI are close to 1 and fewer than N points are further than X from the expected value.
+\item {\ttfamily R\+G\+Rails\+Diverging}\+: Scales the reset gate clock rails over a range of voltages with an increasing rail potential difference. Pass metric\+: upper and lower gain within R\+OI are close to 1 and fewer than N points are further than X from the expected value.
+\item {\ttfamily O\+G\+Bias}\+: Tests the output gate performance by scaling it over a range of potentials and testing for linearity. Pass metric\+: fewer than N points are further than X from the expected value.
+\item {\ttfamily O\+D\+Bias}\+: Tests the output drain performance by scaling it over a range of potentials and testing for linearity. Pass metric\+: fewer than N points are further than X from the expected value.
+\item {\ttfamily G\+D\+Bias}\+: Tests the guard drain performance by scaling it over a range of potentials and testing for linearity. Pass metric\+: fewer than N points are further than X from the expected value.
+\item {\ttfamily R\+D\+Bias}\+: Tests the reset drain performance by scaling it over a range of potentials and testing for linearity. Pass metric\+: fewer than N points are further than X from the expected value.
+\item {\ttfamily Temperature\+Logging}\+: Queries the board\textquotesingle{}s internal trending database to obtain the temperature values while the test has been running. Largely depricated due to poor functionality in the database retrieval program. An alternative is {\ttfamily Parameter\+Logging}, which actively queries the board for the desired properties during the course of the test. Pass metric\+: none
+\item {\ttfamily Parameter\+Logging}\+: Actively queries the board in a separate thread for the desired properties while the test is running. Using {\ttfamily -\/l} or {\ttfamily -\/-\/log\+Values} while calling the program will allow you to actively log these values without a time limit. Pass metric\+: none
+\item {\ttfamily A\+S\+P\+I\+C\+Noise}\+: Obtains a fits image from each A\+S\+P\+IC in the readout board. Analyses the images to measure the noise distribution and mean pixel value across the image. This test is run with three different sequencers\+: unclamped, clamped, and reset. Pass metric\+: no channels have a standard deviation in pixel value larger than X (currently 5.\+5).
+\item {\ttfamily A\+S\+P\+I\+C\+Logging}\+: Continually runs the A\+S\+P\+I\+C\+Noise tests periodically; this was used for thermocycling testing over long periods of time. This test must be run with {\ttfamily -\/l} enabled.
+\end{DoxyItemize}
+
+\subsection*{Contact}
+
+My S\+L\+AC email ({\ttfamily bcb@slac.\+stanford.\+edu}) will be terminated when I leave S\+L\+AC in September. If something is wrong, confusing, or not working, feel free to contact me after I have left S\+L\+AC at {\ttfamily bartlett@caltech.\+edu}. 

@@ -1,0 +1,328 @@
+\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f}{}\section{pdf\+Gen\+W\+R\+E\+B.\+P\+DF Class Reference}
+\label{classpdf_gen_w_r_e_b_1_1_p_d_f}\index{pdf\+Gen\+W\+R\+E\+B.\+P\+DF@{pdf\+Gen\+W\+R\+E\+B.\+P\+DF}}
+
+
+\hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f}{P\+DF} generation class for reports.  
+
+
+Inheritance diagram for pdf\+Gen\+W\+R\+E\+B.\+P\+DF\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classpdf_gen_w_r_e_b_1_1_p_d_f}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_ae0da62a475a1b97d62428ae3c662f2a6}{header} (self)
+\begin{DoxyCompactList}\small\item\em Adds a L\+S\+S\+T/\+S\+L\+AC header and title to every page. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a01a4153716448dc03856712735fee900}{footer} (self)
+\begin{DoxyCompactList}\small\item\em Adds page numbers to every page. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a682682f02997f0cc3fefc7468265a90b}{test\+Title} (self, title)
+\begin{DoxyCompactList}\small\item\em Generic title function for tests. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a08028486631686cbf99a23e97485478b}{summary\+Page} (self, board\+ID, board\+Type, link\+Version, F\+P\+G\+A\+Version, script\+Version, start\+Time, test\+List, pass\+List, stats\+List)
+\begin{DoxyCompactList}\small\item\em Generate a summary page for the tests that were run. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a38eb7da8869e7b9252f9e6dad3d5129b}{column\+Table} (self, col\+Data, R\+OI=None, col\+Headers=None, font\+Size=8, width=1.\+0, width\+Array=None, align=\char`\"{}L\char`\"{})
+\begin{DoxyCompactList}\small\item\em Generates a table from a list of lists of column data. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_ab9270daacb7fb78b62b040fb389a1a3f}{add\+Plot\+Page} (self, title, img\+Name, img\+Size=1.\+0)
+\begin{DoxyCompactList}\small\item\em Adds a page for tests with outputs consisting only of an image/plot. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a0c03db1c6bbb6d9de9fec314cf845cbb}{idle\+Current} (self, title, voltages, currents)
+\begin{DoxyCompactList}\small\item\em Idle current generation test, will be moved to \hyperlink{_w_r_e_b_test_8py}{W\+R\+E\+B\+Test.\+py} soon. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_ae508c11aef02aa49d0e846a03b71abf2}{residual\+Test} (self, title, datas, residuals, passed, stats, R\+OI=None, img\+Size=0.\+7, xdat=None, plt\+Range=None)
+\begin{DoxyCompactList}\small\item\em Report page for tests that consist of a single residual plot, including comments and pass/fail. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a6fa66ac0799cc7bd37698f30f0136931}{make\+Residual\+Plot\+Page} (self, title, img\+Name, datas, residuals, R\+OI=None, img\+Size=1.\+0, xdat=None, plt\+Range=None)
+\begin{DoxyCompactList}\small\item\em Generates the new page and plot for the residual tests. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_a6d5d3b21e55356e95a2c73d2e086620c}{make\+Plot\+Page} (self, title, img\+Name, datas, img\+Size=1.\+0, xdat=None)
+\begin{DoxyCompactList}\small\item\em Generates the new page and plot for the non-\/residual tests. \end{DoxyCompactList}\item 
+def \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f_ab247acf933388e099f79ae0213f72972}{pass\+Fail} (self, passed)
+\begin{DoxyCompactList}\small\item\em Return color-\/coded pass/fail result. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f}{P\+DF} generation class for reports. 
+
+\subsection{Member Function Documentation}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!add\+Plot\+Page@{add\+Plot\+Page}}
+\index{add\+Plot\+Page@{add\+Plot\+Page}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{add\+Plot\+Page(self, title, img\+Name, img\+Size=1.\+0)}{addPlotPage(self, title, imgName, imgSize=1.0)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+add\+Plot\+Page (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{title, }
+\item[{}]{img\+Name, }
+\item[{}]{img\+Size = {\ttfamily 1.0}}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_ab9270daacb7fb78b62b040fb389a1a3f}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_ab9270daacb7fb78b62b040fb389a1a3f}
+
+
+Adds a page for tests with outputs consisting only of an image/plot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Title of test on page \\
+\hline
+{\em img\+Name} & File to save plot as \\
+\hline
+{\em img\+Size} & Optional, percent of page width image should take up; defaults to 1.\+0 \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!column\+Table@{column\+Table}}
+\index{column\+Table@{column\+Table}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{column\+Table(self, col\+Data, R\+O\+I=\+None, col\+Headers=\+None, font\+Size=8, width=1.\+0, width\+Array=\+None, align=""L"")}{columnTable(self, colData, ROI=None, colHeaders=None, fontSize=8, width=1.0, widthArray=None, align="L")}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+column\+Table (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{col\+Data, }
+\item[{}]{R\+OI = {\ttfamily None}, }
+\item[{}]{col\+Headers = {\ttfamily None}, }
+\item[{}]{font\+Size = {\ttfamily 8}, }
+\item[{}]{width = {\ttfamily 1.0}, }
+\item[{}]{width\+Array = {\ttfamily None}, }
+\item[{}]{align = {\ttfamily \char`\"{}L\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a38eb7da8869e7b9252f9e6dad3d5129b}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a38eb7da8869e7b9252f9e6dad3d5129b}
+
+
+Generates a table from a list of lists of column data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col\+Data} & Tuple of column information as (\mbox{[}data\mbox{]}, header) to be put in a column, from left to right. \\
+\hline
+{\em R\+OI} & Optional parameter of \mbox{[}low, high\mbox{]} index of cells to be highlighted as a region of interest. \\
+\hline
+{\em col\+Headers} & Optional list of headers for columns; if specified, col\+Data is expected as (\mbox{[}data\mbox{]},\mbox{[}data\mbox{]},...) \\
+\hline
+{\em font\+Size} & Optional font size for the table. \\
+\hline
+{\em width} & Percent of page width the table should occupy. \\
+\hline
+{\em width\+Array} & Non-\/normalized list of relative column widths. Defaults to every column having equal width. \\
+\hline
+{\em align} & Align as left (\char`\"{}\+L\char`\"{}), center (\char`\"{}\+C\char`\"{}), right (\char`\"{}\+R\char`\"{}) \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!footer@{footer}}
+\index{footer@{footer}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{footer(self)}{footer(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+footer (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a01a4153716448dc03856712735fee900}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a01a4153716448dc03856712735fee900}
+
+
+Adds page numbers to every page. 
+
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!header@{header}}
+\index{header@{header}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{header(self)}{header(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+header (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_ae0da62a475a1b97d62428ae3c662f2a6}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_ae0da62a475a1b97d62428ae3c662f2a6}
+
+
+Adds a L\+S\+S\+T/\+S\+L\+AC header and title to every page. 
+
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!idle\+Current@{idle\+Current}}
+\index{idle\+Current@{idle\+Current}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{idle\+Current(self, title, voltages, currents)}{idleCurrent(self, title, voltages, currents)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+idle\+Current (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{title, }
+\item[{}]{voltages, }
+\item[{}]{currents}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a0c03db1c6bbb6d9de9fec314cf845cbb}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a0c03db1c6bbb6d9de9fec314cf845cbb}
+
+
+Idle current generation test, will be moved to \hyperlink{_w_r_e_b_test_8py}{W\+R\+E\+B\+Test.\+py} soon. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Title of test on page \\
+\hline
+{\em voltages} & List of (category title, \mbox{[}voltages\mbox{]}) \\
+\hline
+{\em currents} & List of (category title, \mbox{[}currents\mbox{]}) \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!make\+Plot\+Page@{make\+Plot\+Page}}
+\index{make\+Plot\+Page@{make\+Plot\+Page}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{make\+Plot\+Page(self, title, img\+Name, datas, img\+Size=1.\+0, xdat=\+None)}{makePlotPage(self, title, imgName, datas, imgSize=1.0, xdat=None)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+make\+Plot\+Page (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{title, }
+\item[{}]{img\+Name, }
+\item[{}]{datas, }
+\item[{}]{img\+Size = {\ttfamily 1.0}, }
+\item[{}]{xdat = {\ttfamily None}}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a6d5d3b21e55356e95a2c73d2e086620c}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a6d5d3b21e55356e95a2c73d2e086620c}
+
+
+Generates the new page and plot for the non-\/residual tests. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Title of test on page \\
+\hline
+{\em img\+Name} & Title of temporary plot image \\
+\hline
+{\em datas} & Zipped data arrays and legend titles \\
+\hline
+{\em img\+Size} & Optional, percent of page width image should take up; defaults to 1.\+0 \\
+\hline
+{\em xdat} & Optional zipped array of x values and titles. Defaults to iteration values. \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!make\+Residual\+Plot\+Page@{make\+Residual\+Plot\+Page}}
+\index{make\+Residual\+Plot\+Page@{make\+Residual\+Plot\+Page}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{make\+Residual\+Plot\+Page(self, title, img\+Name, datas, residuals, R\+O\+I=\+None, img\+Size=1.\+0, xdat=\+None, plt\+Range=\+None)}{makeResidualPlotPage(self, title, imgName, datas, residuals, ROI=None, imgSize=1.0, xdat=None, pltRange=None)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+make\+Residual\+Plot\+Page (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{title, }
+\item[{}]{img\+Name, }
+\item[{}]{datas, }
+\item[{}]{residuals, }
+\item[{}]{R\+OI = {\ttfamily None}, }
+\item[{}]{img\+Size = {\ttfamily 1.0}, }
+\item[{}]{xdat = {\ttfamily None}, }
+\item[{}]{plt\+Range = {\ttfamily None}}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a6fa66ac0799cc7bd37698f30f0136931}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a6fa66ac0799cc7bd37698f30f0136931}
+
+
+Generates the new page and plot for the residual tests. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Title of test on page \\
+\hline
+{\em img\+Name} & Title of temporary plot image \\
+\hline
+{\em datas} & Zipped data arrays and legend titles \\
+\hline
+{\em residuals} & Zipped array of residuals and legend titles \\
+\hline
+{\em R\+OI} & Optional parameter specifying region of interest in the plot \\
+\hline
+{\em img\+Size} & Optional, percent of page width image should take up; defaults to 1.\+0 \\
+\hline
+{\em xdat} & Optional zipped array of x values and titles. Defaults to iteration values. \\
+\hline
+{\em plt\+Range} & Optional specified plot range. \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!pass\+Fail@{pass\+Fail}}
+\index{pass\+Fail@{pass\+Fail}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{pass\+Fail(self, passed)}{passFail(self, passed)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+pass\+Fail (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{passed}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_ab247acf933388e099f79ae0213f72972}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_ab247acf933388e099f79ae0213f72972}
+
+
+Return color-\/coded pass/fail result. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em passed} & String of either \char`\"{}\+P\+A\+S\+S\char`\"{} or \char`\"{}\+F\+A\+I\+L\char`\"{} \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!residual\+Test@{residual\+Test}}
+\index{residual\+Test@{residual\+Test}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{residual\+Test(self, title, datas, residuals, passed, stats, R\+O\+I=\+None, img\+Size=0.\+7, xdat=\+None, plt\+Range=\+None)}{residualTest(self, title, datas, residuals, passed, stats, ROI=None, imgSize=0.7, xdat=None, pltRange=None)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+residual\+Test (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{title, }
+\item[{}]{datas, }
+\item[{}]{residuals, }
+\item[{}]{passed, }
+\item[{}]{stats, }
+\item[{}]{R\+OI = {\ttfamily None}, }
+\item[{}]{img\+Size = {\ttfamily 0.7}, }
+\item[{}]{xdat = {\ttfamily None}, }
+\item[{}]{plt\+Range = {\ttfamily None}}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_ae508c11aef02aa49d0e846a03b71abf2}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_ae508c11aef02aa49d0e846a03b71abf2}
+
+
+Report page for tests that consist of a single residual plot, including comments and pass/fail. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Title of test on page and title of temporary plot image \\
+\hline
+{\em datas} & Zipped data arrays and legend titles \\
+\hline
+{\em residuals} & Zipped array of residuals and legend titles \\
+\hline
+{\em passed} & Pass/fail result of test \\
+\hline
+{\em stats} & Relevant comments from the test \\
+\hline
+{\em R\+OI} & Optional parameter specifying region of interest in the plot \\
+\hline
+{\em img\+Size} & Optional, percent of page width image should take up; defaults to 1.\+0 \\
+\hline
+{\em xdat} & Optional zipped array of x values and titles. Defaults to iteration values. \\
+\hline
+{\em plt\+Range} & Optional specified plot range. \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!summary\+Page@{summary\+Page}}
+\index{summary\+Page@{summary\+Page}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{summary\+Page(self, board\+I\+D, board\+Type, link\+Version, F\+P\+G\+A\+Version, script\+Version, start\+Time, test\+List, pass\+List, stats\+List)}{summaryPage(self, boardID, boardType, linkVersion, FPGAVersion, scriptVersion, startTime, testList, passList, statsList)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+summary\+Page (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{board\+ID, }
+\item[{}]{board\+Type, }
+\item[{}]{link\+Version, }
+\item[{}]{F\+P\+G\+A\+Version, }
+\item[{}]{script\+Version, }
+\item[{}]{start\+Time, }
+\item[{}]{test\+List, }
+\item[{}]{pass\+List, }
+\item[{}]{stats\+List}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a08028486631686cbf99a23e97485478b}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a08028486631686cbf99a23e97485478b}
+
+
+Generate a summary page for the tests that were run. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em board\+ID} & Serial number of the board that is tested \\
+\hline
+{\em board\+Type} & Type of phsyical board model \\
+\hline
+{\em link\+Version} & Version of link software \\
+\hline
+{\em F\+P\+G\+A\+Version} & Front-\/end F\+P\+GA code version \\
+\hline
+{\em script\+Version} & Version of the script, given by the last modified date Y\+Y.\+M\+M.\+D\+D.\+hh.\+mm.\+ss \\
+\hline
+{\em test\+List} & List of test titles that were run \\
+\hline
+{\em pass\+List} & List of test results \\
+\hline
+{\em stats\+List} & List of relevant statistics returned from the tests \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}!test\+Title@{test\+Title}}
+\index{test\+Title@{test\+Title}!pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF@{pdf\+Gen\+W\+R\+E\+B\+::\+P\+DF}}
+\subsubsection[{\texorpdfstring{test\+Title(self, title)}{testTitle(self, title)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+P\+D\+F.\+test\+Title (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{title}
+\end{DoxyParamCaption}
+)}\hypertarget{classpdf_gen_w_r_e_b_1_1_p_d_f_a682682f02997f0cc3fefc7468265a90b}{}\label{classpdf_gen_w_r_e_b_1_1_p_d_f_a682682f02997f0cc3fefc7468265a90b}
+
+
+Generic title function for tests. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pdf_gen_w_r_e_b_8py}{pdf\+Gen\+W\+R\+E\+B.\+py}\end{DoxyCompactItemize}

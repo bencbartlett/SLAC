@@ -37,7 +37,7 @@ import matplotlib
 matplotlib.use('Agg')  # Fixes "RuntimeError: Invalid DISPLAY variable" error
 import matplotlib.pyplot as plt
 from astropy.io import fits
-from pdfGenVST import *
+from pdfGenWREB import *
 from threading import Thread
 from datetime import datetime
 

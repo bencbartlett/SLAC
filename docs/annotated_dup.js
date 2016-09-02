@@ -1,5 +1,9 @@
 var annotated_dup =
 [
+    [ "deprecated", null, [
+      [ "BoardSelect", "classdeprecated_1_1_board_select.html", "classdeprecated_1_1_board_select" ],
+      [ "JythonInterface", "classdeprecated_1_1_jython_interface.html", "classdeprecated_1_1_jython_interface" ]
+    ] ],
     [ "GREBTest", null, [
       [ "ASPICcommsTest", "class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test.html", "class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test" ],
       [ "ASPICLogging", "class_g_r_e_b_test_1_1_a_s_p_i_c_logging.html", "class_g_r_e_b_test_1_1_a_s_p_i_c_logging" ],
@@ -25,10 +29,6 @@ var annotated_dup =
     ] ],
     [ "pdfGenWREB", null, [
       [ "PDF", "classpdf_gen_w_r_e_b_1_1_p_d_f.html", "classpdf_gen_w_r_e_b_1_1_p_d_f" ]
-    ] ],
-    [ "REBTest", null, [
-      [ "BoardSelect", "class_r_e_b_test_1_1_board_select.html", "class_r_e_b_test_1_1_board_select" ],
-      [ "JythonInterface", "class_r_e_b_test_1_1_jython_interface.html", "class_r_e_b_test_1_1_jython_interface" ]
     ] ],
     [ "VSTTest", null, [
       [ "ASPICcommsTest", "class_v_s_t_test_1_1_a_s_p_i_ccomms_test.html", "class_v_s_t_test_1_1_a_s_p_i_ccomms_test" ],

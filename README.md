@@ -23,10 +23,10 @@ All external dependencies are contained within Anaconda:
 Additionally, the program requires a UNIX dialogs-like executable for the GUI to be run (default), which is installed by default on most Linux systems, including RHEL6.
 
 ## Running the testing suite
-- Ensure Jython console is running (./JythonConsole or the bootstrapper program)
-- Ensure `rebRun.sh` is running
-- `python REBTest.py [options]`
-Initial crashing yielding a ValueError is likely due to a `rebRun.sh` or `JythonConsole` crashing or not being loaded.
+- Ensure Jython console is running (./JythonConsole or the CCS bootstrapper program)
+- Ensure `rebRun.sh` is running with the approprate argument (`w` for WREB, `g` for GREB, `4` for VST)
+- `python (WREB/GREB/VST)Test.py [options]`
+Initial crashing yielding a `ValueError` is likely due to a `rebRun.sh` or `JythonConsole` crashing or not being loaded.
 
 ## Subtests
 

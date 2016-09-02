@@ -1,12 +1,13 @@
 var hierarchy =
 [
     [ "CcsJythonInterpreter", null, [
+      [ "deprecated.JythonInterface", "classdeprecated_1_1_jython_interface.html", null ],
       [ "GREBTest.JythonInterface", "class_g_r_e_b_test_1_1_jython_interface.html", null ],
-      [ "REBTest.JythonInterface", "class_r_e_b_test_1_1_jython_interface.html", null ],
       [ "VSTTest.JythonInterface", "class_v_s_t_test_1_1_jython_interface.html", null ],
       [ "WREBTest.JythonInterface", "class_w_r_e_b_test_1_1_jython_interface.html", null ]
     ] ],
     [ "object", null, [
+      [ "deprecated.BoardSelect", "classdeprecated_1_1_board_select.html", null ],
       [ "GREBTest.ASPICcommsTest", "class_g_r_e_b_test_1_1_a_s_p_i_ccomms_test.html", null ],
       [ "GREBTest.ASPICLogging", "class_g_r_e_b_test_1_1_a_s_p_i_c_logging.html", null ],
       [ "GREBTest.ASPICNoise", "class_g_r_e_b_test_1_1_a_s_p_i_c_noise.html", null ],
@@ -27,7 +28,6 @@ var hierarchy =
       [ "GREBTest.SCKRailsDiverging", "class_g_r_e_b_test_1_1_s_c_k_rails_diverging.html", null ],
       [ "GREBTest.Summary", "class_g_r_e_b_test_1_1_summary.html", null ],
       [ "GREBTest.TemperatureLogging", "class_g_r_e_b_test_1_1_temperature_logging.html", null ],
-      [ "REBTest.BoardSelect", "class_r_e_b_test_1_1_board_select.html", null ],
       [ "VSTTest.ASPICcommsTest", "class_v_s_t_test_1_1_a_s_p_i_ccomms_test.html", null ],
       [ "VSTTest.ASPICLogging", "class_v_s_t_test_1_1_a_s_p_i_c_logging.html", null ],
       [ "VSTTest.ASPICNoise", "class_v_s_t_test_1_1_a_s_p_i_c_noise.html", null ],

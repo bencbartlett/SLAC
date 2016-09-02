@@ -35,7 +35,7 @@
    <div id="projectname">REB Functional Tests
    &#160;<span id="projectnumber">1.0</span>
    </div>
-   <div id="projectbrief">Suite of tests for the WREB, GREB, and VST readout boards.</div>
+   <div id="projectbrief">Testing suite for the WREB, GREB, and VST readout boards</div>
   </td>
  </tr>
  </tbody>
@@ -103,7 +103,8 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">LSST Readout Electronics Boards Testing Suite </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Introduction</h2>
+<div class="textblock"><h2><a href="https://bencbartlett.github.io/SLAC/">Documentation</a></h2>
+<h2>Introduction</h2>
 <p>This is the testing suite for the readout electronics boards for the LSST CCD interface, designed to verify that the boards are defect-free and operating as expected. Note that this program communicates directly with the Jython interpreter to manipulate the board, so it does not need to be loaded into the Jython exectuor and can be run directly from the terminal with python.</p>
 <h3>Test versions</h3>
 <p>There are three separate versions of this test to cover the three types of readout boards:</p><ol type="1">
@@ -121,9 +122,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>Additionally, the program requires a UNIX dialogs-like executable for the GUI to be run (default), which is installed by default on most Linux systems, including RHEL6.</p>
 <h2>Running the testing suite</h2>
 <ul>
-<li>Ensure Jython console is running (./JythonConsole or the bootstrapper program)</li>
-<li>Ensure <code>rebRun.sh</code> is running</li>
-<li><code>python REBTest.py [options]</code> Initial crashing yielding a ValueError is likely due to a <code>rebRun.sh</code> or <code>JythonConsole</code> crashing or not being loaded.</li>
+<li>Ensure Jython console is running (./JythonConsole or the CCS bootstrapper program)</li>
+<li>Ensure <code>rebRun.sh</code> is running with the approprate argument (<code>w</code> for WREB, <code>g</code> for GREB, <code>4</code> for VST)</li>
+<li><code>python (WREB/GREB/VST)Test.py [options]</code> Initial crashing yielding a <code>ValueError</code> is likely due to a <code>rebRun.sh</code> or <code>JythonConsole</code> crashing or not being loaded.</li>
 </ul>
 <h2>Subtests</h2>
 <h3>Test structure</h3>
@@ -154,8 +155,6 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li><code>ASPICNoise</code>: Obtains a fits image from each ASPIC in the readout board. Analyses the images to measure the noise distribution and mean pixel value across the image. This test is run with three different sequencers: unclamped, clamped, and reset. Pass metric: no channels have a standard deviation in pixel value larger than X (currently 5.5).</li>
 <li><code>ASPICLogging</code>: Continually runs the ASPICNoise tests periodically; this was used for thermocycling testing over long periods of time. This test must be run with <code>-l</code> enabled.</li>
 </ul>
-<h2>Full documentation</h2>
-<p>Extensive doxygen-generated documentation is available in html and pdf formats in the "Documentation" directory.</p>
 <h2>Contact</h2>
 <p>My SLAC email (<code>bcb@slac.stanford.edu</code>) will be terminated when I leave SLAC in September. If something is wrong, confusing, or not working, feel free to contact me after I have left SLAC at <code>bartlett@caltech.edu</code>. </p>
 </div></div><!-- contents -->

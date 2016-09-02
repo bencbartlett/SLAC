@@ -1,0 +1,134 @@
+\hypertarget{class_g_r_e_b_test_1_1_parameter_logging}{}\section{G\+R\+E\+B\+Test.\+Parameter\+Logging Class Reference}
+\label{class_g_r_e_b_test_1_1_parameter_logging}\index{G\+R\+E\+B\+Test.\+Parameter\+Logging@{G\+R\+E\+B\+Test.\+Parameter\+Logging}}
+
+
+Periodically records specified values over the course of the testing sequence.  
+
+
+Inheritance diagram for G\+R\+E\+B\+Test.\+Parameter\+Logging\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_g_r_e_b_test_1_1_parameter_logging}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{class_g_r_e_b_test_1_1_parameter_logging_a9f4b5fea65ed9d1b1ead8c998e55e7d9}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, values\+To\+Read, delay=5, fn\+Test=None, backup=0)
+\begin{DoxyCompactList}\small\item\em Initializes the test. \end{DoxyCompactList}\item 
+def \hyperlink{class_g_r_e_b_test_1_1_parameter_logging_aa17135431592e8e48d6beef5bdf69bf7}{run\+Test} (self)
+\begin{DoxyCompactList}\small\item\em Starts the logging in a separate thread, moves to the next test. \end{DoxyCompactList}\item 
+def \hyperlink{class_g_r_e_b_test_1_1_parameter_logging_af0371ffd21126c1c792feeb48f6f0f50}{stop\+Test} (self)
+\begin{DoxyCompactList}\small\item\em Sets the recording option to false, allowing the test to stop. \end{DoxyCompactList}\item 
+def \hyperlink{class_g_r_e_b_test_1_1_parameter_logging_af29d8e244da00678d07584abd2aa6973}{record\+Continuously} (self)
+\begin{DoxyCompactList}\small\item\em Continuously records the requested parameters while self.\+recording is set to true. \end{DoxyCompactList}\item 
+def \hyperlink{class_g_r_e_b_test_1_1_parameter_logging_a490fb25836f3c8eccb514d165798e995}{pass\+Fail} (self)
+\begin{DoxyCompactList}\small\item\em Determine if the value logging passed -\/ this is done in a separate function, unlike other tests. \end{DoxyCompactList}\item 
+def \hyperlink{class_g_r_e_b_test_1_1_parameter_logging_aab5129de996e3ff7735676f208b1c9cd}{report} (self, pdf, report\+Path)
+\begin{DoxyCompactList}\small\item\em generate this test\textquotesingle{}s page in the P\+DF report. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Periodically records specified values over the course of the testing sequence. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}}
+\subsubsection[{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+(self, values\+To\+Read, delay=5, fn\+Test=\+None, backup=0)}{__init__(self, valuesToRead, delay=5, fnTest=None, backup=0)}}]{\setlength{\rightskip}{0pt plus 5cm}def G\+R\+E\+B\+Test.\+Parameter\+Logging.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{values\+To\+Read, }
+\item[{}]{delay = {\ttfamily 5}, }
+\item[{}]{fn\+Test = {\ttfamily None}, }
+\item[{}]{backup = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_g_r_e_b_test_1_1_parameter_logging_a9f4b5fea65ed9d1b1ead8c998e55e7d9}{}\label{class_g_r_e_b_test_1_1_parameter_logging_a9f4b5fea65ed9d1b1ead8c998e55e7d9}
+
+
+Initializes the test. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em values\+To\+Read} & A list of (\char`\"{}subsystem\char`\"{}, \char`\"{}value to read\char`\"{}) tuples \\
+\hline
+{\em delay} & Time to sleep between periodic queries \\
+\hline
+{\em fn\+Test} & The Functional\+Test() object, allowing this test to track progress/terminate \\
+\hline
+{\em backup} & Backup data every n cycles. If zero, do not back up. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}!pass\+Fail@{pass\+Fail}}
+\index{pass\+Fail@{pass\+Fail}!G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}}
+\subsubsection[{\texorpdfstring{pass\+Fail(self)}{passFail(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def G\+R\+E\+B\+Test.\+Parameter\+Logging.\+pass\+Fail (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_g_r_e_b_test_1_1_parameter_logging_a490fb25836f3c8eccb514d165798e995}{}\label{class_g_r_e_b_test_1_1_parameter_logging_a490fb25836f3c8eccb514d165798e995}
+
+
+Determine if the value logging passed -\/ this is done in a separate function, unlike other tests. 
+
+\index{G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}!record\+Continuously@{record\+Continuously}}
+\index{record\+Continuously@{record\+Continuously}!G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}}
+\subsubsection[{\texorpdfstring{record\+Continuously(self)}{recordContinuously(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def G\+R\+E\+B\+Test.\+Parameter\+Logging.\+record\+Continuously (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_g_r_e_b_test_1_1_parameter_logging_af29d8e244da00678d07584abd2aa6973}{}\label{class_g_r_e_b_test_1_1_parameter_logging_af29d8e244da00678d07584abd2aa6973}
+
+
+Continuously records the requested parameters while self.\+recording is set to true. 
+
+\index{G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}!report@{report}}
+\index{report@{report}!G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}}
+\subsubsection[{\texorpdfstring{report(self, pdf, report\+Path)}{report(self, pdf, reportPath)}}]{\setlength{\rightskip}{0pt plus 5cm}def G\+R\+E\+B\+Test.\+Parameter\+Logging.\+report (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pdf, }
+\item[{}]{report\+Path}
+\end{DoxyParamCaption}
+)}\hypertarget{class_g_r_e_b_test_1_1_parameter_logging_aab5129de996e3ff7735676f208b1c9cd}{}\label{class_g_r_e_b_test_1_1_parameter_logging_aab5129de996e3ff7735676f208b1c9cd}
+
+
+generate this test\textquotesingle{}s page in the P\+DF report. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pdf} & pyfpdf-\/compatible P\+DF object. \\
+\hline
+{\em report\+Path} & Path of directory containing the pdf report \\
+\hline
+\end{DoxyParams}
+\index{G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}!run\+Test@{run\+Test}}
+\index{run\+Test@{run\+Test}!G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}}
+\subsubsection[{\texorpdfstring{run\+Test(self)}{runTest(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def G\+R\+E\+B\+Test.\+Parameter\+Logging.\+run\+Test (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_g_r_e_b_test_1_1_parameter_logging_aa17135431592e8e48d6beef5bdf69bf7}{}\label{class_g_r_e_b_test_1_1_parameter_logging_aa17135431592e8e48d6beef5bdf69bf7}
+
+
+Starts the logging in a separate thread, moves to the next test. 
+
+\index{G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}!stop\+Test@{stop\+Test}}
+\index{stop\+Test@{stop\+Test}!G\+R\+E\+B\+Test\+::\+Parameter\+Logging@{G\+R\+E\+B\+Test\+::\+Parameter\+Logging}}
+\subsubsection[{\texorpdfstring{stop\+Test(self)}{stopTest(self)}}]{\setlength{\rightskip}{0pt plus 5cm}def G\+R\+E\+B\+Test.\+Parameter\+Logging.\+stop\+Test (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_g_r_e_b_test_1_1_parameter_logging_af0371ffd21126c1c792feeb48f6f0f50}{}\label{class_g_r_e_b_test_1_1_parameter_logging_af0371ffd21126c1c792feeb48f6f0f50}
+
+
+Sets the recording option to false, allowing the test to stop. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_g_r_e_b_test_8py}{G\+R\+E\+B\+Test.\+py}\end{DoxyCompactItemize}

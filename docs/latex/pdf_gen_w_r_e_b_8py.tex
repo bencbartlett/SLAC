@@ -1,0 +1,84 @@
+\hypertarget{pdf_gen_w_r_e_b_8py}{}\section{pdf\+Gen\+W\+R\+E\+B.\+py File Reference}
+\label{pdf_gen_w_r_e_b_8py}\index{pdf\+Gen\+W\+R\+E\+B.\+py@{pdf\+Gen\+W\+R\+E\+B.\+py}}
+
+
+Contains common P\+DF generation routines for the W\+R\+EB test report.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f}{pdf\+Gen\+W\+R\+E\+B.\+P\+DF}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classpdf_gen_w_r_e_b_1_1_p_d_f}{P\+DF} generation class for reports. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{pdf_gen_w_r_e_b_8py_a270c8c0ac6503ed499647f1c39ce6fe1}{pdf\+Gen\+W\+R\+E\+B.\+residual\+Plots} (datas, residuals, save\+As, R\+OI=None, xdat=None, plt\+Range=None)
+\begin{DoxyCompactList}\small\item\em Generates a set of plots and residuals. \end{DoxyCompactList}\item 
+def \hyperlink{pdf_gen_w_r_e_b_8py_a24d1f1e4c1cddcdaebeb3485d3b41f99}{pdf\+Gen\+W\+R\+E\+B.\+multi\+Plots} (datas, save\+As, xdat=None)
+\begin{DoxyCompactList}\small\item\em Generates a set of plots. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains common P\+DF generation routines for the W\+R\+EB test report. 
+
+External dependencies\+:
+\begin{DoxyItemize}
+\item Matplotlib
+\item Numpy 
+\end{DoxyItemize}
+
+\subsection{Function Documentation}
+\index{pdf\+Gen\+W\+R\+E\+B.\+py@{pdf\+Gen\+W\+R\+E\+B.\+py}!multi\+Plots@{multi\+Plots}}
+\index{multi\+Plots@{multi\+Plots}!pdf\+Gen\+W\+R\+E\+B.\+py@{pdf\+Gen\+W\+R\+E\+B.\+py}}
+\subsubsection[{\texorpdfstring{multi\+Plots(datas, save\+As, xdat=\+None)}{multiPlots(datas, saveAs, xdat=None)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+multi\+Plots (
+\begin{DoxyParamCaption}
+\item[{}]{datas, }
+\item[{}]{save\+As, }
+\item[{}]{xdat = {\ttfamily None}}
+\end{DoxyParamCaption}
+)}\hypertarget{pdf_gen_w_r_e_b_8py_file_a24d1f1e4c1cddcdaebeb3485d3b41f99}{}\label{pdf_gen_w_r_e_b_8py_file_a24d1f1e4c1cddcdaebeb3485d3b41f99}
+
+
+Generates a set of plots. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em datas} & Zipped data arrays and legend titles \\
+\hline
+{\em save\+As} & Filename to save plot as \\
+\hline
+{\em xdat} & Optional zipped array of x values and titles. Defaults to iteration values. \\
+\hline
+\end{DoxyParams}
+\index{pdf\+Gen\+W\+R\+E\+B.\+py@{pdf\+Gen\+W\+R\+E\+B.\+py}!residual\+Plots@{residual\+Plots}}
+\index{residual\+Plots@{residual\+Plots}!pdf\+Gen\+W\+R\+E\+B.\+py@{pdf\+Gen\+W\+R\+E\+B.\+py}}
+\subsubsection[{\texorpdfstring{residual\+Plots(datas, residuals, save\+As, R\+O\+I=\+None, xdat=\+None, plt\+Range=\+None)}{residualPlots(datas, residuals, saveAs, ROI=None, xdat=None, pltRange=None)}}]{\setlength{\rightskip}{0pt plus 5cm}def pdf\+Gen\+W\+R\+E\+B.\+residual\+Plots (
+\begin{DoxyParamCaption}
+\item[{}]{datas, }
+\item[{}]{residuals, }
+\item[{}]{save\+As, }
+\item[{}]{R\+OI = {\ttfamily None}, }
+\item[{}]{xdat = {\ttfamily None}, }
+\item[{}]{plt\+Range = {\ttfamily None}}
+\end{DoxyParamCaption}
+)}\hypertarget{pdf_gen_w_r_e_b_8py_file_a270c8c0ac6503ed499647f1c39ce6fe1}{}\label{pdf_gen_w_r_e_b_8py_file_a270c8c0ac6503ed499647f1c39ce6fe1}
+
+
+Generates a set of plots and residuals. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em datas} & Zipped data arrays and legend titles \\
+\hline
+{\em residuals} & Zipped array of residuals and legend titles \\
+\hline
+{\em save\+As} & Filename to save plot as \\
+\hline
+{\em R\+OI} & Optional parameter specifying region of interest in the plot \\
+\hline
+{\em xdat} & Optional zipped array of x values and titles. Defaults to iteration values. \\
+\hline
+{\em plt\+Range} & Optional specified plot range. \\
+\hline
+\end{DoxyParams}

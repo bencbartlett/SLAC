@@ -1,0 +1,279 @@
+\hypertarget{_v_s_t_test_8py}{}\section{V\+S\+T\+Test.\+py File Reference}
+\label{_v_s_t_test_8py}\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+
+
+Suite of tests for the V\+ST controller board.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_v_s_t_test_1_1_jython_interface}{V\+S\+T\+Test.\+Jython\+Interface}
+\begin{DoxyCompactList}\small\item\em Some hacky workarounds to clean up the limited communication with the Jython interface. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_idle_current_consumption}{V\+S\+T\+Test.\+Idle\+Current\+Consumption}
+\begin{DoxyCompactList}\small\item\em Test for idle current consumption in the V\+ST board. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_channel_test}{V\+S\+T\+Test.\+Channel\+Test}
+\begin{DoxyCompactList}\small\item\em Tests number of communicable channels available to the board. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_a_s_p_i_ccomms_test}{V\+S\+T\+Test.\+A\+S\+P\+I\+Ccomms\+Test}
+\begin{DoxyCompactList}\small\item\em Tests that the board can communicate with the A\+S\+P\+I\+CS. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_p_c_k_rails}{V\+S\+T\+Test.\+P\+C\+K\+Rails}
+\begin{DoxyCompactList}\small\item\em Tests the parallel clock rail performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_s_c_k_rails}{V\+S\+T\+Test.\+S\+C\+K\+Rails}
+\begin{DoxyCompactList}\small\item\em Tests the serial clock rail performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_s_c_k_rails_diverging}{V\+S\+T\+Test.\+S\+C\+K\+Rails\+Diverging}
+\begin{DoxyCompactList}\small\item\em Test the serial clock rail performance with a diverging voltage pattern. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_r_g_rails}{V\+S\+T\+Test.\+R\+G\+Rails}
+\begin{DoxyCompactList}\small\item\em Tests the reset gate rail performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_r_g_rails_diverging}{V\+S\+T\+Test.\+R\+G\+Rails\+Diverging}
+\begin{DoxyCompactList}\small\item\em Tests the reset gate rail performance with a diverging voltage pattern. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_o_g_bias}{V\+S\+T\+Test.\+O\+G\+Bias}
+\begin{DoxyCompactList}\small\item\em Tests the output gate performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_o_d_bias}{V\+S\+T\+Test.\+O\+D\+Bias}
+\begin{DoxyCompactList}\small\item\em Tests the output drain performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_g_d_bias}{V\+S\+T\+Test.\+G\+D\+Bias}
+\begin{DoxyCompactList}\small\item\em Tests the guard drain performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_r_d_bias}{V\+S\+T\+Test.\+R\+D\+Bias}
+\begin{DoxyCompactList}\small\item\em Tests the reset drain performance. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_temperature_logging}{V\+S\+T\+Test.\+Temperature\+Logging}
+\begin{DoxyCompactList}\small\item\em Requests temperature logs for R\+E\+B0.\+Temp(1-\/6) and C\+CD since the test started from the board\textquotesingle{}s database. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_parameter_logging}{V\+S\+T\+Test.\+Parameter\+Logging}
+\begin{DoxyCompactList}\small\item\em Periodically records specified values over the course of the testing sequence. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_a_s_p_i_c_noise}{V\+S\+T\+Test.\+A\+S\+P\+I\+C\+Noise}
+\begin{DoxyCompactList}\small\item\em Measure noise distribution in A\+S\+P\+I\+Cs for the unclamped, clamped, and reset cases. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_a_s_p_i_c_logging}{V\+S\+T\+Test.\+A\+S\+P\+I\+C\+Logging}
+\begin{DoxyCompactList}\small\item\em Continuously measure noise distribution in A\+S\+P\+I\+Cs. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_summary}{V\+S\+T\+Test.\+Summary}
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_v_s_t_test_1_1_summary}{Summary} object containing the needed information for the cover page. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_functional_test}{V\+S\+T\+Test.\+Functional\+Test}
+\begin{DoxyCompactList}\small\item\em Runs the functional testing suite. \end{DoxyCompactList}\item 
+class \hyperlink{class_v_s_t_test_1_1_g_u_i}{V\+S\+T\+Test.\+G\+UI}
+\begin{DoxyCompactList}\small\item\em Dialog-\/based \hyperlink{class_v_s_t_test_1_1_g_u_i}{G\+UI} for displaying test progress and navigating options. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{_v_s_t_test_8py_a7b1e56693c6345af98cf374f091a3d7f}{V\+S\+T\+Test.\+reset\+Settings} ()
+\begin{DoxyCompactList}\small\item\em Reset the board settings for use in between tests. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_a1021fa383fbdfff9d7e40c19513323de}{V\+S\+T\+Test.\+exit\+Script} ()
+\begin{DoxyCompactList}\small\item\em Reset settings and exit. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_a1ad006566463a5d75e4dde972d3d8f60}{V\+S\+T\+Test.\+read\+Rails} (rail\+Type, count=0, u\+Bound=20, l\+Bound=-\/20)
+\begin{DoxyCompactList}\small\item\em Reads the upper and lower voltages for a rail type (RG, S\+Clk, P\+Clk) and rejects if nonsensible. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_a439549e49523fa511b2356f8eb8c1e91}{V\+S\+T\+Test.\+volts\+To\+Rail\+D\+AC} (V, rf, ri)
+\begin{DoxyCompactList}\small\item\em Given a voltage, return a pair of voltage, shift D\+AC values. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_aabb8a82da8ff6a6e4a09bbb17dcd8408}{V\+S\+T\+Test.\+set\+R\+G\+Rail\+Voltage} (lowV, highV, rf=25.\+0, ri=10.\+0)
+\begin{DoxyCompactList}\small\item\em Set the voltage for the RG rail system. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_a5413ae0e16f994b3595a4edad028683d}{V\+S\+T\+Test.\+set\+S\+C\+K\+Rail\+Voltage} (lowV, highV, rf=25.\+0, ri=10.\+0)
+\begin{DoxyCompactList}\small\item\em Set the voltage for the S\+CK rail system. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_a7a6792fbdc75535202e39e7978ad1623}{V\+S\+T\+Test.\+set\+P\+C\+K\+Rail\+Voltage} (lowV, highV, rf=25.\+0, ri=10.\+0)
+\begin{DoxyCompactList}\small\item\em Set the voltage for the S\+CK rail system. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_ae7d8f44f78772a431a2614ab154e8593}{V\+S\+T\+Test.\+convert} (value, type\+\_\+)
+\begin{DoxyCompactList}\small\item\em Converts a value to the specified type. \end{DoxyCompactList}\item 
+def \hyperlink{_v_s_t_test_8py_ada35370cbdd39561b78c5ca075391467}{V\+S\+T\+Test.\+printv} (string)
+\begin{DoxyCompactList}\small\item\em Print if verbose is enabled. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Suite of tests for the V\+ST controller board. 
+
+This program communicates directly with the Jython interpreter to manipulate the board, so it does not need to be loaded into the Jython exectuor.
+
+External dependencies\+:
+\begin{DoxyItemize}
+\item astropy
+\item numpy
+\item matplotlib
+\end{DoxyItemize}
+
+To run\+:
+\begin{DoxyItemize}
+\item Ensure Jython console is running (./\+Jython\+Console or the bootstrapper program)
+\item Ensure reb\+Run.\+sh 4 is running
+\item \char`\"{}python V\+S\+T\+Test.\+py \mbox{[}options\mbox{]}\char`\"{} Initial crashing yielding a Value\+Error is likely due to a cr\+Run or Jython\+Console crashing or not being loaded.
+\end{DoxyItemize}
+
+Tests are structured as classes with four required methods\+:
+\begin{DoxyItemize}
+\item {\bfseries init} sets initial variables; minimum required variables are self.\+title and self.\+status.
+\item run\+Test is the body of the tests, running the code to execute the tests and storing the results to state variables.
+\item summarize writes summary information to the summary object passed to it; this is used in generating the cover page.
+\item report writes the portion of the pdf report that the test is responsible for. Tests are executed from a list of test objects defined in Functional\+Test(). 
+\end{DoxyItemize}
+
+\subsection{Function Documentation}
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!convert@{convert}}
+\index{convert@{convert}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{convert(value, type\+\_\+)}{convert(value, type_)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+convert (
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{type\+\_\+}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_ae7d8f44f78772a431a2614ab154e8593}{}\label{_v_s_t_test_8py_file_ae7d8f44f78772a431a2614ab154e8593}
+
+
+Converts a value to the specified type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Value to be converted \\
+\hline
+{\em type\+\_\+} & Type to convert to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Converted value 
+\end{DoxyReturn}
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!exit\+Script@{exit\+Script}}
+\index{exit\+Script@{exit\+Script}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{exit\+Script()}{exitScript()}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+exit\+Script (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_a1021fa383fbdfff9d7e40c19513323de}{}\label{_v_s_t_test_8py_file_a1021fa383fbdfff9d7e40c19513323de}
+
+
+Reset settings and exit. 
+
+Usually catches $^\wedge$C. \index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!printv@{printv}}
+\index{printv@{printv}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{printv(string)}{printv(string)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+printv (
+\begin{DoxyParamCaption}
+\item[{}]{string}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_ada35370cbdd39561b78c5ca075391467}{}\label{_v_s_t_test_8py_file_ada35370cbdd39561b78c5ca075391467}
+
+
+Print if verbose is enabled. 
+
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!read\+Rails@{read\+Rails}}
+\index{read\+Rails@{read\+Rails}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{read\+Rails(rail\+Type, count=0, u\+Bound=20, l\+Bound=-\/20)}{readRails(railType, count=0, uBound=20, lBound=-20)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+read\+Rails (
+\begin{DoxyParamCaption}
+\item[{}]{rail\+Type, }
+\item[{}]{count = {\ttfamily 0}, }
+\item[{}]{u\+Bound = {\ttfamily 20}, }
+\item[{}]{l\+Bound = {\ttfamily -\/20}}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_a1ad006566463a5d75e4dde972d3d8f60}{}\label{_v_s_t_test_8py_file_a1ad006566463a5d75e4dde972d3d8f60}
+
+
+Reads the upper and lower voltages for a rail type (RG, S\+Clk, P\+Clk) and rejects if nonsensible. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rail\+Type} & \char`\"{}\+R\+G\char`\"{}, \char`\"{}\+S\+Clk\char`\"{}, or \char`\"{}\+P\+Clk\char`\"{} -\/ specifies the type of rail to read \\
+\hline
+{\em u\+Bound} & Upper bound on sensible voltage \\
+\hline
+{\em l\+Bound} & Lower bound on sensible voltage \\
+\hline
+\end{DoxyParams}
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!reset\+Settings@{reset\+Settings}}
+\index{reset\+Settings@{reset\+Settings}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{reset\+Settings()}{resetSettings()}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+reset\+Settings (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_a7b1e56693c6345af98cf374f091a3d7f}{}\label{_v_s_t_test_8py_file_a7b1e56693c6345af98cf374f091a3d7f}
+
+
+Reset the board settings for use in between tests. 
+
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!set\+P\+C\+K\+Rail\+Voltage@{set\+P\+C\+K\+Rail\+Voltage}}
+\index{set\+P\+C\+K\+Rail\+Voltage@{set\+P\+C\+K\+Rail\+Voltage}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{set\+P\+C\+K\+Rail\+Voltage(low\+V, high\+V, rf=25.\+0, ri=10.\+0)}{setPCKRailVoltage(lowV, highV, rf=25.0, ri=10.0)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+set\+P\+C\+K\+Rail\+Voltage (
+\begin{DoxyParamCaption}
+\item[{}]{lowV, }
+\item[{}]{highV, }
+\item[{}]{rf = {\ttfamily 25.0}, }
+\item[{}]{ri = {\ttfamily 10.0}}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_a7a6792fbdc75535202e39e7978ad1623}{}\label{_v_s_t_test_8py_file_a7a6792fbdc75535202e39e7978ad1623}
+
+
+Set the voltage for the S\+CK rail system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lowV} & Desired lower rail voltage. \\
+\hline
+{\em highV} & Desired upper rail voltage \\
+\hline
+{\em rf} & Optional op-\/amp Rf, defaults to 49.\+9 Ohm. \\
+\hline
+{\em ri} & Optional op-\/amp Ri, defaults to 20.\+0 Ohm. \\
+\hline
+\end{DoxyParams}
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!set\+R\+G\+Rail\+Voltage@{set\+R\+G\+Rail\+Voltage}}
+\index{set\+R\+G\+Rail\+Voltage@{set\+R\+G\+Rail\+Voltage}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{set\+R\+G\+Rail\+Voltage(low\+V, high\+V, rf=25.\+0, ri=10.\+0)}{setRGRailVoltage(lowV, highV, rf=25.0, ri=10.0)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+set\+R\+G\+Rail\+Voltage (
+\begin{DoxyParamCaption}
+\item[{}]{lowV, }
+\item[{}]{highV, }
+\item[{}]{rf = {\ttfamily 25.0}, }
+\item[{}]{ri = {\ttfamily 10.0}}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_aabb8a82da8ff6a6e4a09bbb17dcd8408}{}\label{_v_s_t_test_8py_file_aabb8a82da8ff6a6e4a09bbb17dcd8408}
+
+
+Set the voltage for the RG rail system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lowV} & Desired lower rail voltage. \\
+\hline
+{\em highV} & Desired upper rail voltage \\
+\hline
+{\em rf} & Optional op-\/amp Rf, defaults to 49.\+9 Ohm. \\
+\hline
+{\em ri} & Optional op-\/amp Ri, defaults to 20.\+0 Ohm. \\
+\hline
+\end{DoxyParams}
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!set\+S\+C\+K\+Rail\+Voltage@{set\+S\+C\+K\+Rail\+Voltage}}
+\index{set\+S\+C\+K\+Rail\+Voltage@{set\+S\+C\+K\+Rail\+Voltage}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{set\+S\+C\+K\+Rail\+Voltage(low\+V, high\+V, rf=25.\+0, ri=10.\+0)}{setSCKRailVoltage(lowV, highV, rf=25.0, ri=10.0)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+set\+S\+C\+K\+Rail\+Voltage (
+\begin{DoxyParamCaption}
+\item[{}]{lowV, }
+\item[{}]{highV, }
+\item[{}]{rf = {\ttfamily 25.0}, }
+\item[{}]{ri = {\ttfamily 10.0}}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_a5413ae0e16f994b3595a4edad028683d}{}\label{_v_s_t_test_8py_file_a5413ae0e16f994b3595a4edad028683d}
+
+
+Set the voltage for the S\+CK rail system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lowV} & Desired lower rail voltage. \\
+\hline
+{\em highV} & Desired upper rail voltage \\
+\hline
+{\em rf} & Optional op-\/amp Rf, defaults to 49.\+9 Ohm. \\
+\hline
+{\em ri} & Optional op-\/amp Ri, defaults to 20.\+0 Ohm. \\
+\hline
+\end{DoxyParams}
+\index{V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}!volts\+To\+Rail\+D\+AC@{volts\+To\+Rail\+D\+AC}}
+\index{volts\+To\+Rail\+D\+AC@{volts\+To\+Rail\+D\+AC}!V\+S\+T\+Test.\+py@{V\+S\+T\+Test.\+py}}
+\subsubsection[{\texorpdfstring{volts\+To\+Rail\+D\+A\+C(\+V, rf, ri)}{voltsToRailDAC(V, rf, ri)}}]{\setlength{\rightskip}{0pt plus 5cm}def V\+S\+T\+Test.\+volts\+To\+Rail\+D\+AC (
+\begin{DoxyParamCaption}
+\item[{}]{V, }
+\item[{}]{rf, }
+\item[{}]{ri}
+\end{DoxyParamCaption}
+)}\hypertarget{_v_s_t_test_8py_file_a439549e49523fa511b2356f8eb8c1e91}{}\label{_v_s_t_test_8py_file_a439549e49523fa511b2356f8eb8c1e91}
+
+
+Given a voltage, return a pair of voltage, shift D\+AC values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em V} & Desired output voltage \\
+\hline
+{\em rf} & Op-\/amp Rf \\
+\hline
+{\em ri} & Op-\/amp Ri \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+(voltage, shift voltage) 
+\end{DoxyReturn}
